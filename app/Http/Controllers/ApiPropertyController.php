@@ -18,6 +18,7 @@ class ApiPropertyController extends Controller
     }
 
     /**
+
      * Show the form for creating a new resource.
      */
     public function create()
@@ -35,9 +36,9 @@ class ApiPropertyController extends Controller
             // 'email' => 'required|email|unique:landlords,email',
             'phone' => 'required|string|max:255',
             'property_name'=>'required|string|max:255',           
-             'landlord_id' => 'required|string|max:255',
-             'address' => 'required|string|max:255',
-              'description' => 'required|string|max:255',
+            'landlord_id' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
 
 
             // Add other validation rules as needed
@@ -96,7 +97,7 @@ class ApiPropertyController extends Controller
     
         $property->update($validatedData);
     
-        return response()->json(['message' => 'property updated successfully', 'data' => $property]);
+        return response()->json(['message' => 'property upunit_statusdated successfully', 'data' => $property]);
     }
 
     /**

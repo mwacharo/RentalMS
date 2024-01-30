@@ -9,7 +9,7 @@ class Tenant extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['tenant_name', 'email', 'phone', 'tenant_id'];
+    protected $fillable = ['tenant_name', 'email', 'phone','unit_id','property_id'];
 
    
 
@@ -24,6 +24,7 @@ class Tenant extends Model
 
     public function units()
     {
+        
         return $this->hasMany(Unit::class);
     }
 }

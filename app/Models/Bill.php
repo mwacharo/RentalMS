@@ -19,7 +19,7 @@ class Bill extends Model
     // }
 
      // Change from tenant_id to unit_id or property_id
-     protected $fillable = ['unit_id', 'water_bill', 'internet_bill', 'waste_collection', 'rent'];
+     protected $fillable = ['unit_id', 'water_bill', 'internet_bill', 'waste_collection', 'rent','deposit'];
 
      // Update relationship method
      public function unit()

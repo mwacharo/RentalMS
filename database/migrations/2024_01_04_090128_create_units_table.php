@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('property_id');
             $table->string('unit_number');
             $table->decimal('deposit', 8, 2);
-            $table->boolean('is_occupied')->default(false);
+            $table->string('unit_status');
             $table->timestamps();
 
             $table->foreign('property_id')->references('id')->on('properties');

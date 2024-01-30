@@ -9,7 +9,7 @@ class Unit extends Model
 {
     use HasFactory;
 
-   protected $fillable = ['property_id', 'unit_id','unit_number', 'is_occupied','deposit'];
+   protected $fillable = ['property_id', 'unit_id','unit_number', 'unit_status','deposit'];
 
     public function property()
     {

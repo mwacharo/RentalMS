@@ -12,11 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tenants', function (Blueprint $table) {
-            $table->id('id'); // Primary key
+            $table->id(); // Primary key, automatically named 'id'
             $table->string('tenant_name');
             $table->string('email')->unique();
             $table->string('phone');
+            $table->unsignedBigInteger('unit_id');
+            $table->string('property_id');
             $table->timestamps();
+
+            $table->foreign('unit_id')->references('id')->on('units');
+
+
         });
     }
 

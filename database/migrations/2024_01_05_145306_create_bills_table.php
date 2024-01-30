@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('internet_bill', 8, 2);
             $table->decimal('waste_collection', 8, 2);
             $table->decimal('rent', 8, 2);
+            $table->decimal('deposit', 8, 2);
             $table->timestamps();
 
             // Foreign key constraint

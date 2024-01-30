@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Property extends Model
 {
     use HasFactory;
-    protected $fillable = ['property_id','property_name','address','description', 'landlord_id',];
+    protected $fillable = ['property_id','property_name','address','description', 'landlord_id','number_of_units'];
 
     public function landlord()
     {
