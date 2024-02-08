@@ -106,4 +106,11 @@ class ApiLandlordController extends Controller
             return response()->json(['message' => 'Landlord not found'], 404);
         }
     }
+
+
+    public function landlordSearch(){
+
+    
+
+    }
 }

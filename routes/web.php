@@ -35,4 +35,46 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+
+    Route::get('/tenant', function () {
+        return Inertia::render('Tenant');
+    })->name('tenant');
+
+
+    Route::get('/landlord', function () {
+        return Inertia::render('Landlord');
+    })->name('landlord');
+
+    Route::get('/property', function () {
+        return Inertia::render('Property');
+    })->name('property');
+
+
+
+    Route::get('/booking', function () {
+        return Inertia::render('Booking');
+    })->name('booking');
+
+    Route::get('/lease', function () {
+        return Inertia::render('Lease');
+    })->name('lease');
+
+
+    Route::get('/payment', function () {
+        return Inertia::render('Payment');
+    })->name('payment');
+
+
+    Route::get('/admin', function () {
+        return Inertia::render('Admin');
+    })->name('admin');
+
+
+    Route::get('/invoice', function () {
+        return Inertia::render('Invoice');
+    })->name('invoice');
+
 });
+
+
+
