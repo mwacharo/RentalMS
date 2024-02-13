@@ -33,13 +33,16 @@ class ApiPropertyController extends Controller
     {
         //
         $validatedData = $request->validate([
-            // 'email' => 'required|email|unique:landlords,email',
+            'email' => 'required|email|unique:landlords,email',
             'phone' => 'required|string|max:255',
             'property_name'=>'required|string|max:255',           
             'landlord_id' => 'required|string|max:255',
             'address' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
-
+            'property_name' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'website' => 'nullable|string|max:255', // Assuming website can be nullable
+            'description' => 'nullable|string',
+            'number_of_units' => 'nullable|string',
 
             // Add other validation rules as needed
             // country 
@@ -85,8 +88,8 @@ class ApiPropertyController extends Controller
         }
     
         $validatedData = $request->validate([
-            // 'email' => 'required|email|unique:landlords,email',
-            // 'phone' => 'required|string|max:255',
+            'email' => 'required|email|unique:landlords,email',
+             'phone' => 'required|string|max:255',
             'property_name'=>'required|string|max:255',           
              'landlord_id' => 'required|string|max:255',
              'address' => 'required|string|max:255',
@@ -114,5 +117,16 @@ class ApiPropertyController extends Controller
                 } else {
                     return response()->json(['message' => 'Property not found'], 404);
                 }
+    }
+    public function propertySearch(Request $request)
+    {
+        $query = $request->get('query');
+
+        $properties = Property::where('property_name', 'LIKE', "%{$query}%")
+            ->orWhere('email', 'LIKE', "%{$query}%")
+            ->orWhere('phone', 'LIKE', "%{$query}%")
+            ->get();
+
+        return response()->json($properties);
     }
 }

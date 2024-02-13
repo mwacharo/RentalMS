@@ -1,19 +1,22 @@
 <template>
     <AppLayout>
         <VCard class="my-card" >
-          <container>
+          <v-container>
             <v-text-field
+            v-model="searchQuery"
                 label="Search"
+                @keyup.enter="performSearch"
                 variant="outlined"
             ></v-text-field>
-          </container>
+          </v-container>
         </VCard>
 
         <VCard class="my-card" outlined>
             <v-data-table
                 :headers="headers"
-                :items="desserts"
-                :sort-by="[{ key: 'calories', order: 'asc' }]"
+                :loading="loading"
+                :items="landlords"
+                :sort-by="[{ key: 'landlord_name', order: 'asc' }]"
             >
                 <template v-slot:top>
                     <v-toolbar flat>
@@ -44,35 +47,35 @@
                                         <v-row>
                                             <v-col cols="12" sm="6" md="4">
                                                 <v-text-field
-                                                    v-model="editedItem.name"
-                                                    label="Dessert name"
+                                                    v-model="editedItem.landlord_name"
+                                                    label="Landlord Name"
                                                 ></v-text-field>
                                             </v-col>
                                             <v-col cols="12" sm="6" md="4">
                                                 <v-text-field
                                                     v-model="
-                                                        editedItem.calories
+                                                        editedItem.email
                                                     "
-                                                    label="Calories"
+                                                    label="Email"
                                                 ></v-text-field>
                                             </v-col>
                                             <v-col cols="12" sm="6" md="4">
                                                 <v-text-field
-                                                    v-model="editedItem.fat"
-                                                    label="Fat (g)"
+                                                    v-model="editedItem.phone"
+                                                    label="phone"
                                                 ></v-text-field>
                                             </v-col>
                                             <v-col cols="12" sm="6" md="4">
-                                                <v-text-field
+                                                <!-- <v-text-field
                                                     v-model="editedItem.carbs"
-                                                    label="Carbs (g)"
-                                                ></v-text-field>
+                                                    label="ID Number"
+                                                ></v-text-field> -->
                                             </v-col>
                                             <v-col cols="12" sm="6" md="4">
-                                                <v-text-field
+                                                <!-- <v-text-field
                                                     v-model="editedItem.protein"
-                                                    label="Protein (g)"
-                                                ></v-text-field>
+                                                    label="Adress"
+                                                ></v-text-field> -->
                                             </v-col>
                                         </v-row>
                                     </v-container>
@@ -124,12 +127,19 @@
                     </v-toolbar>
                 </template>
                 <template v-slot:item.actions="{ item }">
+<!-- 
+                    
+                    <v-icon size="small" class="me-2" @click="showProperty(item)">
+                      mdi-city
+                    </v-icon> -->
+                    
                     <v-icon size="small" class="me-2" @click="editItem(item)">
                         mdi-pencil
                     </v-icon>
                     <v-icon size="small" @click="deleteItem(item)">
                         mdi-delete
                     </v-icon>
+                  
                 </template>
                 <template v-slot:no-data>
                     <v-btn color="primary" @click="initialize"> Reset </v-btn>
@@ -141,186 +151,175 @@
 
 <script>
 import AppLayout from "@/Layouts/AppLayout.vue";
+import axios from 'axios';
 
 export default {
-    components: {
-        AppLayout,
+  components: {
+    AppLayout,
+  },
+  data: () => ({
+    dialog: false,
+    loading: false,
+    dialogDelete: false,
+    headers: [
+      { title: "Landlord Name", align: "start", sortable: false, key: "landlord_name" },
+      { title: "Email", key: "email" },
+      { title: "Phone", key: "phone" },
+      { title: "Actions", key: "actions", sortable: false },
+    ],
+    landlords: [] ,
+    editedIndex: -1,
+    editedItem: {
+      landlord_name: "",
+      email: "",
+      phone: "",
+      searchQuery: '',
+
     },
-    data: () => ({
-        dialog: false,
-        dialogDelete: false,
-        headers: [
-            {
-                title: "Dessert (100g serving)",
-                align: "start",
-                sortable: false,
-                key: "name",
-            },
-            { title: "Calories", key: "calories" },
-            { title: "Fat (g)", key: "fat" },
-            { title: "Carbs (g)", key: "carbs" },
-            { title: "Protein (g)", key: "protein" },
-            { title: "Actions", key: "actions", sortable: false },
-        ],
-        desserts: [],
-        editedIndex: -1,
-        editedItem: {
-            name: "",
-            calories: 0,
-            fat: 0,
-            carbs: 0,
-            protein: 0,
-        },
-        defaultItem: {
-            name: "",
-            calories: 0,
-            fat: 0,
-            carbs: 0,
-            protein: 0,
-        },
-    }),
-
-    computed: {
-        formTitle() {
-            return this.editedIndex === -1 ? "New Landlord" : "Edit Landlord";
-        },
+    defaultItem: {
+      landlord_name: "",
+      email: "",
+      phone: "",
     },
-
-    watch: {
-        dialog(val) {
-            val || this.close();
-        },
-        dialogDelete(val) {
-            val || this.closeDelete();
-        },
+  }),
+  computed: {
+    formTitle() {
+      return this.editedIndex === -1 ? "New Landlord" : "Edit Landlord";
     },
-
-    created() {
-        this.initialize();
+  },
+  watch: {
+    dialog(val) {
+      val || this.close();
     },
+    dialogDelete(val) {
+      val || this.closeDelete();
+    },
+  },
 
-    methods: {
-        initialize() {
-            this.desserts = [
-                {
-                    name: "Frozen Yogurt",
-                    calories: 159,
-                    fat: 6.0,
-                    carbs: 24,
-                    protein: 4.0,
-                },
-                {
-                    name: "Ice cream sandwich",
-                    calories: 237,
-                    fat: 9.0,
-                    carbs: 37,
-                    protein: 4.3,
-                },
-                {
-                    name: "Eclair",
-                    calories: 262,
-                    fat: 16.0,
-                    carbs: 23,
-                    protein: 6.0,
-                },
-                {
-                    name: "Cupcake",
-                    calories: 305,
-                    fat: 3.7,
-                    carbs: 67,
-                    protein: 4.3,
-                },
-                {
-                    name: "Gingerbread",
-                    calories: 356,
-                    fat: 16.0,
-                    carbs: 49,
-                    protein: 3.9,
-                },
-                {
-                    name: "Jelly bean",
-                    calories: 375,
-                    fat: 0.0,
-                    carbs: 94,
-                    protein: 0.0,
-                },
-                {
-                    name: "Lollipop",
-                    calories: 392,
-                    fat: 0.2,
-                    carbs: 98,
-                    protein: 0,
-                },
-                {
-                    name: "Honeycomb",
-                    calories: 408,
-                    fat: 3.2,
-                    carbs: 87,
-                    protein: 6.5,
-                },
-                {
-                    name: "Donut",
-                    calories: 452,
-                    fat: 25.0,
-                    carbs: 51,
-                    protein: 4.9,
-                },
-                {
-                    name: "KitKat",
-                    calories: 518,
-                    fat: 26.0,
-                    carbs: 65,
-                    protein: 7,
-                },
-            ];
-        },
+  created() {
+    this.initialize();
+  },
+  methods: {
+    initialize() {
+      const API_URL = '/api/landlords';
+      axios.get(API_URL)
+        .then((response) => {
+          console.log('API Response:', response.data);
+          this.landlords = response.data;
+        })
+        .catch((error) => {
+          console.error('API Error:', error);
+        });
+    },
+    editItem(item) {
+      this.editedIndex = this.landlords.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
+    },
+    // showProperty(item) {
+    //   this.editedIndex = this.landlords.indexOf(item);
+    //   this.editedItem = Object.assign({}, item);
+    //   this.dialog = true;
+    // },
+    deleteItem(item) {
+      this.editedIndex = this.landlords.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialogDelete = true;
+    },
+    deleteItemConfirm() {
+      // this.landlords.splice(this.editedIndex, 1);
+      axios.delete(`/api/landlord/${this.editedItem.id}`)
+        .then(() => {
+          this.landlords.splice(this.editedIndex, 1);
+          this.closeDelete();
+        })
+        .catch(error => console.error('Deletion error:', error));
+    },
+    close() {
+      this.dialog = false;
+      this.resetForm();
+    },
+      
+      // this.closeDelete();
+    // },
+    // close() {
+    //   this.dialog = false;
+    //   this.$nextTick(() => {
+    //     this.editedItem = Object.assign({}, this.defaultItem);
+    //     this.editedIndex = -1;
+    //   });
+    // },
 
-        editItem(item) {
-            this.editedIndex = this.desserts.indexOf(item);
-            this.editedItem = Object.assign({}, item);
-            this.dialog = true;
-        },
+    closeDelete() {
+      this.dialogDelete = false;
+      this.resetForm();
+    },
+    resetForm() {
+      this.editedItem = Object.assign({}, this.defaultItem);
+      this.editedIndex = -1;
+    // },
+    // closeDelete() {
+    //   this.dialogDelete = false;
+    //   this.$nextTick(() => {
+    //     this.editedItem = Object.assign({}, this.defaultItem);
+    //     this.editedIndex = -1;
+    //   });
+     },
+    save() {
+      let request;
+      if (this.editedIndex > -1) {
+        // Object.assign(this.landlords[this.editedIndex], this.editedItem);
+        request = axios.put(`/api/landlord/${this.editedItem.id}`, this.editedItem);
 
-        deleteItem(item) {
-            this.editedIndex = this.desserts.indexOf(item);
-            this.editedItem = Object.assign({}, item);
-            this.dialogDelete = true;
-        },
+      } else {
+        // this.landlords.push(this.editedItem);
+        // this.landlords.push(response.data.data);
+        request = axios.post(`/api/landlord`, this.editedItem);
 
-        deleteItemConfirm() {
-            this.desserts.splice(this.editedIndex, 1);
-            this.closeDelete();
-        },
+      }
+      request.then(response => {
+        if (this.editedIndex > -1) {
+          Object.assign(this.landlords[this.editedIndex], response.data.data);
+        } else {
+          this.landlords.push(response.data.data);
+        }
+        this.close();
+      }).catch(error => console.error('Saving error:', error));
+    
+      this.close();
+    },
+    performSearch() {
+      this.loading= true
+        const API_URL = '/api/landlords/search?query=' + this.searchQuery;
+        axios.get(API_URL)
+            .then(response => {
+                console.log('Search response:', response.data);
+                this.landlords = response.data; // Update your landlords list with the search result
+      this.loading= false
+            })
+            .catch(error => {
+                console.error('Search error:', error);
+      this.loading= false
 
-        close() {
-            this.dialog = false;
-            this.$nextTick(() => {
-                this.editedItem = Object.assign({}, this.defaultItem);
-                this.editedIndex = -1;
             });
-        },
-
-        closeDelete() {
-            this.dialogDelete = false;
-            this.$nextTick(() => {
-                this.editedItem = Object.assign({}, this.defaultItem);
-                this.editedIndex = -1;
-            });
-        },
-
-        save() {
-            if (this.editedIndex > -1) {
-                Object.assign(this.desserts[this.editedIndex], this.editedItem);
-            } else {
-                this.desserts.push(this.editedItem);
-            }
-            this.close();
-        },
+    // closeDelete() {
+    //   this.dialogDelete = false;
+    //   this.$nextTick(() => {
+    //     this.editedItem = Object.assign({}, this.defaultItem);
+    //     this.editedIndex = -1;
+    //   });
+    // },
     },
+  },
 };
 </script>
+
 <style scoped>
-.my-card {
+  .my-card {
     margin: 40px; /* Adjust the margin as needed */
-}
+
+  }
 </style>
+
+
+

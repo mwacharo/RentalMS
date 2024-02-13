@@ -11,7 +11,7 @@ class Transaction extends Model
     // protected $fillable = ['tenant_id', 'unit_id','invoice_id', 'amount', 'paid_at','payment_method',''];
 
  
-    protected $fillable = ['tenant_id', 'invoice_id', 'amount', 'transaction_date', 'transaction_type', 'status'];
+    protected $fillable = ['tenant_id', 'invoice_id', 'amount','transaction_date', 'transaction_type', 'status'];
 
     public function tenant()
     {

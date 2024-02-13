@@ -13,8 +13,13 @@ class ApiLandlordController extends Controller
     public function index()
     {
         //
+        // return response();
+        // return  0;
         $landlords = Landlord::all();
+        // dd($landlords);
         return response()->json($landlords);
+      
+
     }
 
     /**
@@ -23,7 +28,7 @@ class ApiLandlordController extends Controller
     public function create()
     {
         //
-    
+
     }
 
     /**
@@ -36,6 +41,7 @@ class ApiLandlordController extends Controller
             'landlord_name' => 'required|string|max:255',
             'email' => 'required|email|unique:landlords,email',
             'phone' => 'required|string|max:255',
+            
             // Add other validation rules as needed
             // country 
             //State 
@@ -58,7 +64,6 @@ class ApiLandlordController extends Controller
         } else {
             return response()->json(['message' => 'Landlord not found'], 404);
         }
-    
     }
 
     /**
@@ -80,15 +85,15 @@ class ApiLandlordController extends Controller
         if (!$landlord) {
             return response()->json(['message' => 'Landlord not found'], 404);
         }
-    
+
         $validatedData = $request->validate([
             'landlord_name' => 'string|max:255',
             'email' => 'email|unique:landlords,email,' . $id,
             'phone' => 'string|max:255',
         ]);
-    
+
         $landlord->update($validatedData);
-    
+
         return response()->json(['message' => 'Landlord updated successfully', 'data' => $landlord]);
     }
 
@@ -108,9 +113,16 @@ class ApiLandlordController extends Controller
     }
 
 
-    public function landlordSearch(){
 
-    
+    public function landlordSearch(Request $request)
+    {
+        $query = $request->get('query');
 
+        $landlords = Landlord::where('landlord_name', 'LIKE', "%{$query}%")
+            ->orWhere('email', 'LIKE', "%{$query}%")
+            ->orWhere('phone', 'LIKE', "%{$query}%")
+            ->get();
+
+        return response()->json($landlords);
     }
 }
