@@ -12,10 +12,10 @@ class ApiLandlordController extends Controller
      */
     public function index()
     {
-        //
-        // return response();
-        // return  0;
+      
         $landlords = Landlord::all();
+        // $landlords = Landlord::with('properties')->get();
+
         // dd($landlords);
         return response()->json($landlords);
       

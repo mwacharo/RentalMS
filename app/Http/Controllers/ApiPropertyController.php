@@ -13,7 +13,7 @@ class ApiPropertyController extends Controller
     public function index()
     {
         //
-        $properties= Property::all();
+        $properties = Property::with('landlord')->get();
         return response()->json($properties);
     }
 
@@ -35,12 +35,12 @@ class ApiPropertyController extends Controller
         $validatedData = $request->validate([
             'email' => 'required|email|unique:landlords,email',
             'phone' => 'required|string|max:255',
-            'property_name'=>'required|string|max:255',           
-            'landlord_id' => 'required|string|max:255',
+            'property_name' => 'required|string|max:255',
+            'landlord_id' => 'required|max:255',
             'address' => 'required|string|max:255',
             'property_name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
-            'website' => 'nullable|string|max:255', // Assuming website can be nullable
+            // 'website' => 'nullable|string|max:255', // Assuming website can be nullable
             'description' => 'nullable|string',
             'number_of_units' => 'nullable|string',
 
@@ -50,6 +50,11 @@ class ApiPropertyController extends Controller
         ]);
 
         $landlord = Property::create($validatedData);
+
+
+        $landlord = Property::with('landlord')->find($landlord->id);
+
+
 
         return response()->json(['message' => 'Property created successfully', 'data' => $landlord], 201);
     }
@@ -86,21 +91,23 @@ class ApiPropertyController extends Controller
         if (!$property) {
             return response()->json(['message' => 'Property not found'], 404);
         }
-    
+
         $validatedData = $request->validate([
             'email' => 'required|email|unique:landlords,email',
-             'phone' => 'required|string|max:255',
-            'property_name'=>'required|string|max:255',           
-             'landlord_id' => 'required|string|max:255',
-             'address' => 'required|string|max:255',
-              'description' => 'required|string|max:255',
+            'phone' => 'required|string|max:255',
+            'property_name' => 'required|string|max:255',
+            'landlord_id' => 'required|max:255',
+            'address' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'number_of_units' => 'nullable',
 
-          
+
+
         ]);
-    
+
         $property->update($validatedData);
-    
-        return response()->json(['message' => 'property upunit_statusdated successfully', 'data' => $property]);
+
+        return response()->json(['message' => 'property upated successfully', 'data' => $property]);
     }
 
     /**
@@ -109,14 +116,14 @@ class ApiPropertyController extends Controller
     public function destroy(string $id)
     {
         //
-                //
-                $property = Property::find($id);
-                if ($property) {
-                    $property->delete();
-                    return response()->json(['message' => 'property deleted successfully']);
-                } else {
-                    return response()->json(['message' => 'Property not found'], 404);
-                }
+        //
+        $property = Property::find($id);
+        if ($property) {
+            $property->delete();
+            return response()->json(['message' => 'property deleted successfully']);
+        } else {
+            return response()->json(['message' => 'Property not found'], 404);
+        }
     }
     public function propertySearch(Request $request)
     {

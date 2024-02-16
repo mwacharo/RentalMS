@@ -22,4 +22,7 @@ class Landlord extends Model
     {
         return $this->hasManyThrough(Unit::class, Property::class);
     }
+    // public function properties()    {
+    //     return $this->hasMany(Property::class);
+    // }
 }

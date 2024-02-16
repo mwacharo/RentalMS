@@ -9,7 +9,7 @@ class Tenant extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['tenant_name', 'email', 'phone','unit_id','property_id'];
+    protected $fillable = ['tenant_name', 'email', 'phone','unit_id','property_id','national_id'];
 
    
 
@@ -27,4 +27,11 @@ class Tenant extends Model
         
         return $this->hasMany(Unit::class);
     }
+    
+    public function bills()
+    {
+        
+        return $this->hasMany(Bill::class);
+    }
+    
 }

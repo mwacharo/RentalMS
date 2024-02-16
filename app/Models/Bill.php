@@ -22,7 +22,12 @@ class Bill extends Model
      protected $fillable = ['unit_id', 'water_bill', 'internet_bill', 'waste_collection', 'rent','deposit'];
 
      // Update relationship method
-     public function unit()
+    //  public function unit()
+    //  {
+    //      return $this->belongsTo(Unit::class);
+    //  }
+
+     public function tenant()
      {
          return $this->belongsTo(Unit::class);
      }
