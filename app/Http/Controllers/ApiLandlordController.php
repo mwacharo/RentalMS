@@ -13,8 +13,8 @@ class ApiLandlordController extends Controller
     public function index()
     {
       
-        $landlords = Landlord::all();
-        // $landlords = Landlord::with('properties')->get();
+        // $landlords = Landlord::all();
+        $landlords = Landlord::with('properties')->get();
 
         // dd($landlords);
         return response()->json($landlords);
@@ -48,6 +48,8 @@ class ApiLandlordController extends Controller
         ]);
 
         $landlord = Landlord::create($validatedData);
+        
+
 
         return response()->json(['message' => 'Landlord created successfully', 'data' => $landlord], 201);
     }

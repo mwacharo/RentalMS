@@ -16,7 +16,7 @@
           <v-data-table
               :headers="headers"
               :loading="loading"
-              :items="landlords"
+              :items="tenants"
               :sort-by="[{ key: 'tenant_name', order: 'asc' }]"
           >
               <template v-slot:top>
@@ -48,7 +48,7 @@
                                           <v-col cols="12" sm="6" md="4">
                                               <v-text-field
                                                   v-model="
-                                                      editedItem.landlord_name
+                                                      editedItem.tenant_name
                                                   "
                                                   label="Tanant Name"
                                               ></v-text-field>
@@ -70,38 +70,38 @@
                                           <v-col cols="12" sm="6" md="4">
                                                 <v-select
                                                     v-model="
-                                                        editedItem.landlord_id
+                                                        editedItem.property_id
                                                     "
-                                                    :items="landlords"
+                                                    :items="properties"
                                                     item-title="property_name"
                                                     label="Property Name"
                                                     item-value="id"
                                                 ></v-select>
                                             </v-col>
 
-
-
-                                          <v-col cols="12" sm="6" md="4">
+ 
+<!-- 
+                                        <v-col cols="12" sm="6" md="4">
                                                 <v-text-field
                                                     v-model="
-                                                        editedItem.landlord_id
+                                                        editedItem.Unit_id
                                                     "
-                                                    label="Unit Name"
+                                                    label="Unit Number"
                                                 ></v-text-field>
-                                            </v-col>
-<!-- 
+                                            </v-col>   -->
+
 
                                             <v-col cols="12" sm="6" md="4">
                                                     <v-select
                                                         v-model="
-                                                            editedItem.landlord_id
+                                                            editedItem.unit_id
                                                         "
-                                                        :items="landlords"
-                                                        item-title="property_name"
+                                                        :items="units"
+                                                        item-title="unit_number"
                                                         label="Account Number"
                                                         item-value="id"
                                                     ></v-select>
-                                                </v-col> -->
+                                                </v-col> 
                                      
                                     
                                       </v-row>
@@ -159,7 +159,7 @@
                   <v-icon size="small" class="me-2" @click="editItem(item)">
                       mdi-pencil
                   </v-icon>
-                  <v-icon size="small" class="me-2" @click="assignBills(item)">
+                  <v-icon size="small" class="me-2" @click="openBill(item)">
                       mdi-cog
                   </v-icon>
                 
@@ -196,14 +196,23 @@ export default {
               title: "Tenant Name",
               align: "start",
               sortable: false,
-              key: "landlord_name",
+              key: "tenant_name",
           },
           { title: "Email", key: "email" },
           { title: "Phone", key: "phone" },
+          { title: "Property ", key: "property.property_name" },
           { title: "Actions", key: "actions", sortable: false },
       ],
       landlords: [],
       searchQuery: "",
+      properties:[],
+      tenants:[],
+      tenant_name:[],
+      property_id:[],
+      units:[],
+      bills:[],
+      
+      unit_id:"",
 
       editedIndex: -1,
       editedItem: {
@@ -215,6 +224,9 @@ export default {
           landlord_name: "",
           email: "",
           phone: "",
+          tenant_name:"",
+          property_id:""
+
       },
   }),
   computed: {
@@ -233,41 +245,46 @@ export default {
 
   created() {
       this.initialize();
+      this.fetchProperties();
+      this.fetchUnits();
+    //   this.assignBills()
+
   },
   methods: {
       initialize() {
-          const API_URL = "/api/landlords";
+          const API_URL = "/api/tenants";
           axios
               .get(API_URL)
               .then((response) => {
                   console.log("API Response:", response.data);
-                  this.landlords = response.data;
+                  this.tenants = response.data;
               })
               .catch((error) => {
                   console.error("API Error:", error);
               });
       },
-      assignBills(item){
-        // eventBus.$emit('billsEvent');
+      openBill(item){
         this.$refs.bill.show(item)
 
       },
+  
+
       editItem(item) {
-          this.editedIndex = this.landlords.indexOf(item);
+          this.editedIndex = this.tenants.indexOf(item);
           this.editedItem = Object.assign({}, item);
           this.dialog = true;
       },
    
       deleteItem(item) {
-          this.editedIndex = this.landlords.indexOf(item);
+          this.editedIndex = this.tenants.indexOf(item);
           this.editedItem = Object.assign({}, item);
           this.dialogDelete = true;
       },
       deleteItemConfirm() {
           axios
-              .delete(`/api/landlord/${this.editedItem.id}`)
+              .delete(`/api/tenant/${this.editedItem.id}`)
               .then(() => {
-                  this.landlords.splice(this.editedIndex, 1);
+                  this.tenants.splice(this.editedIndex, 1);
                   this.closeDelete();
               })
               .catch((error) => console.error("Deletion error:", error));
@@ -291,28 +308,29 @@ export default {
       save() {
           let request;
           if (this.editedIndex > -1) {
+            // console.log(Item);
               request = axios.put(
-                  `/api/landlord/${this.editedItem.id}`,
+                  `/api/tenant/${this.editedItem.id}`,
                   this.editedItem
               );
           } else {
-              request = axios.post(`/api/landlord`, this.editedItem);
+              request = axios.post(`/api/tenant`, this.editedItem);
           }
           request
               .then((response) => {
                   if (this.editedIndex > -1) {
                       Object.assign(
-                          this.landlords[this.editedIndex],
+                          this.tenants[this.editedIndex],
                           response.data.data
                       );
                   } else {
-                      this.landlords.push(response.data.data);
+                      this.tenants.push(response.data.data);
                   }
                   this.close();
               })
               .catch((error) => console.error("Saving error:", error));
 
-          this.close();
+        //   this.close();
       },
       performSearch() {
           this.loading = true;
@@ -321,7 +339,7 @@ export default {
               .get(API_URL)
               .then((response) => {
                   console.log("Search response:", response.data);
-                  this.landlords = response.data; // Update your landlords list with the search result
+                  this.tenants = response.data; // Update your landlords list with the search result
                   this.loading = false;
               })
               .catch((error) => {
@@ -330,8 +348,40 @@ export default {
               });
  
       },
+
+      fetchUnits(){
+        const API_URL= "api/units";
+        axios
+        .get(API_URL)
+        .then((response) =>{
+            console.log("units response:", response.data)
+            this.units = response.data;
+        })
+        .catch((error) => {
+            console.error("failed to load units:",error)
+        });
+
+      },
+  
+      fetchProperties(){
+        const API_URL= "api/property";
+        axios
+        .get(API_URL)
+        .then((response) =>{
+            console.log("properties response:", response.data)
+            this.properties = response.data;
+        })
+        .catch((error) => {
+            console.error("failed to load properties:",error)
+        })
+
+      }
   },
+
+
+   
 };
+
 </script>
 
 <style scoped>

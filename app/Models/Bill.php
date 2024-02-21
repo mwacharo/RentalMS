@@ -19,7 +19,10 @@ class Bill extends Model
     // }
 
      // Change from tenant_id to unit_id or property_id
-     protected $fillable = ['unit_id', 'water_bill', 'internet_bill', 'waste_collection', 'rent','deposit'];
+    //  protected $fillable = ['unit_id', 'water_bill', 'internet_bill', 'waste_collection', 'rent','deposit'];\\
+    protected $fillable= ['bill','amount',
+    // 'total_amount','unit_price'
+];
 
      // Update relationship method
     //  public function unit()
@@ -30,6 +33,11 @@ class Bill extends Model
      public function tenant()
      {
          return $this->belongsTo(Unit::class);
+     }
+
+     public function tenants()
+     {
+         return $this->belongsToMany(Tenant::class, 'tenants_bills')->using(TenantsBill::class);
      }
     
 }

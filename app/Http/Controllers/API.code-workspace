@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "../../../resources/js/Pages/API"
+		},
+		{
+			"path": "../../../resources/js/Pages/Auth"
+		},
+		{
+			"path": "../../../resources/js/Pages/Profile"
+		},
+		{
+			"path": "../../../resources/js/Pages/Teams"
+		}
+	],
+	"settings": {
+		"liveServer.settings.port": 5501
+	}
+}

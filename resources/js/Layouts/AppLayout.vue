@@ -55,6 +55,27 @@ const select = ref(false);
                     </v-list-item>
                 </Link>
 
+                <Link :href="route('unit')">
+                    <v-list-item color="info" value="unit">
+                        <template v-slot:prepend>
+                            <v-icon>mdi-city</v-icon>
+                        </template>
+
+                        <v-list-item-title>Unit</v-list-item-title>
+                    </v-list-item>
+                </Link>
+
+
+                <Link :href="route('bill')">
+                    <v-list-item color="info" value="bill">
+                        <template v-slot:prepend>
+                            <v-icon>mdi-currency-usd</v-icon>
+                        </template>
+
+                        <v-list-item-title>Bill</v-list-item-title>
+                    </v-list-item>
+                </Link>
+
                 <Link :href="route('booking')">
                     <v-list-item color="info" value="bookings">
                         <template v-slot:prepend>

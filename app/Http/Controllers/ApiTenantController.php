@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tenant;
+use App\Models\TenantsBill;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -13,7 +14,8 @@ class ApiTenantController extends Controller
      */
     public function index()
     {
-        $tenants = Tenant::all();
+        //  $tenants = Tenant::all();
+        $tenants = Tenant::with('property')->get();
         return response()->json($tenants);
     }
 
@@ -36,11 +38,12 @@ class ApiTenantController extends Controller
                 'tenant_name' => 'required|string|max:255',
                 'email' => 'required|email',
                 'phone' => 'required|string|max:255',
-                'unit_id' => 'required|string|max:255',
-                'property_id' => 'required|string|max:255',
+                'unit_id' => '|max:255',
+                'property_id' => 'required|max:255',
             ]);
 
             $tenant = Tenant::create($validatedData);
+            $tenant = Tenant::with('property')->find($tenant->id);
 
             return response()->json(['message' => 'Tenant created successfully', 'data' => $tenant], 201);
         } catch (\Exception $e) {
@@ -106,6 +109,40 @@ class ApiTenantController extends Controller
             return response()->json(['message' => 'Error updating tenant', 'error' => $e->getMessage()], 500);
         }
     }
+    public function  submitBill(Request $request, $id)
+    {
+        $bills = $request->bills;
+
+        try {
+            // $validatedData = $request->validate([
+
+            // ]);
+            foreach ($bills as $key => $bill) {
+                // return [
+                //     'tenant_id' => $id,
+                //     'bill_id' => $bill['billId'],
+                //     'amount' => $bill['amount'],
+                // ];
+                TenantsBill::create([
+                    'tenant_id' => $id,
+                    'bill_id' => $bill['billId'],
+                    'amount' => $bill['amount'],
+                ]);
+            }
+
+            // $tenant = Tenant::create($validatedData);
+            // $tenant = Tenant::with('property')->find($tenant->id);
+
+            return response()->json(['message' => 'Bills assigned successfully'], 201);
+        } catch (\Exception $e) {
+            // Log the exception for debugging
+            Log::error($e);
+
+            // Return an error response
+            return response()->json(['message' => 'Error assigning bill', 'error' => $e->getMessage()], 500);
+        }
+    }
+
 
     /**
      * Remove the specified resource from storage.
@@ -131,4 +168,3 @@ class ApiTenantController extends Controller
         }
     }
 }
-

@@ -74,6 +74,17 @@ Route::middleware([
         return Inertia::render('Invoice');
     })->name('invoice');
 
+
+    Route::get('/unit', function () {
+        return Inertia::render('Unit');
+    })->name('unit');
+
+    Route::get('/bill', function () {
+        return Inertia::render('Bills');
+    })->name('bill');
+
+
+
 });
 
 

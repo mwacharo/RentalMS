@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('property_id');
             $table->string('unit_number');
             $table->decimal('deposit', 8, 2);
+            $table->decimal('rent', 8, 2);
             $table->string('unit_status');
             $table->timestamps();
 

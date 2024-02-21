@@ -13,7 +13,8 @@ class ApiUnitController extends Controller
     public function index()
     {
         //
-        $units= Unit::all();
+        // $units= Unit::all();
+         $units=Unit::with('property')->get();
         return response()->json($units);
     }
 
@@ -32,10 +33,11 @@ class ApiUnitController extends Controller
     {
         //
         $validatedData= $request->validate([
-            'property_id' => 'required|string|max:255',
+            'property_id' => 'required|max:255',
             'unit_number'=>'required|string|max:255',           
             'deposit' => 'required|string|max:255',
-            'unit_status' => 'required|string|max:255',
+            'rent' => 'required|string|max:255',
+            'unit_status' => '|string|max:255',
     
         ]);
         $unit= Unit::create( $validatedData);
@@ -82,10 +84,10 @@ class ApiUnitController extends Controller
             
                 $validatedData = $request->validate([
                     // 'email' => 'required|email|unique:landlords,email', 
-                    'property_id' => 'required|string|max:255',
+                    'property_id' => 'required|max:255',
                     'unit_number' => 'required|string|max:255',
                     'deposit' => 'required|string|max:255',
-                    'unit_status' =>'required|string|max:255',  
+                    'unit_status' =>'|max:255',  
         
                   
                 ]);

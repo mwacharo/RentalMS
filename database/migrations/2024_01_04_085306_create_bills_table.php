@@ -13,16 +13,14 @@ return new class extends Migration
     {
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('unit_id'); // assuming bills are linked to units
-            $table->decimal('water_bill', 8, 2);
-            $table->decimal('internet_bill', 8, 2);
-            $table->decimal('waste_collection', 8, 2);
-            $table->decimal('rent', 8, 2);
-            $table->decimal('deposit', 8, 2);
+            $table->string('bill');
+            $table->decimal('amount', 8, 2);
+            // $table->decimal('total_amount', 8, 2);
+            // $table->decimal('unit_price', 8, 2);
+
             $table->timestamps();
 
             // Foreign key constraint
-            $table->foreign('unit_id')->references('id')->on('units')->onDelete('cascade');
         });
     }
 
