@@ -1,6 +1,6 @@
 <template>
     <AppLayout>
-        <vcard class="my-card">
+        <VCard class="my-card">
             <v-container>
                 <v-text-field
                     v-model="searchQuery"
@@ -11,7 +11,7 @@
             </v-container>
         </vcard>
         
-        <vcard class="my-card" outlined>
+        <VCard class="my-card" outlined>
             <v-data-table
                 :headers="headers"
                 :loading="loading"

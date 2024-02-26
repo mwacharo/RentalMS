@@ -2,10 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Utils\SMSUtil;
+use App\Models\Bill;
+use App\Models\BillInvoice;
+use App\Models\Invoice;
 use App\Models\Tenant;
 use App\Models\TenantsBill;
+use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+// use App\Services\TwilioService;
+
 
 class ApiTenantController extends Controller
 {
@@ -94,7 +101,7 @@ class ApiTenantController extends Controller
                 'tenant_name' => 'required|string|max:255',
                 'email' => 'required|email',
                 'phone' => 'required|string|max:255',
-                'unit_id' => 'required|string|max:255',
+                'unit_id' => 'required|max:255',
                 'property_id' => 'required|string|max:255',
             ]);
 
@@ -117,12 +124,8 @@ class ApiTenantController extends Controller
             // $validatedData = $request->validate([
 
             // ]);
+            // return $bills;
             foreach ($bills as $key => $bill) {
-                // return [
-                //     'tenant_id' => $id,
-                //     'bill_id' => $bill['billId'],
-                //     'amount' => $bill['amount'],
-                // ];
                 TenantsBill::create([
                     'tenant_id' => $id,
                     'bill_id' => $bill['billId'],
@@ -140,6 +143,96 @@ class ApiTenantController extends Controller
 
             // Return an error response
             return response()->json(['message' => 'Error assigning bill', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+
+
+    
+    public function tenantInvoice(Request $request, $id)
+    {
+        $tenant_id = $id;
+
+
+        $tenant = Tenant::with(['bills', 'unit'])->find($tenant_id);
+        // return (   $tenant);
+
+
+        if (!$tenant) {
+            return response()->json(['message' => 'Tenant not found'], 404);
+        }
+
+        $unit = $tenant->unit;
+
+        // Check if an invoice has already been created this month
+        $existingInvoice = Invoice::where('tenant_id', $tenant_id)
+            ->whereYear('created_at', now()->year)
+            ->whereMonth('created_at', now()->month)
+            ->first();
+
+        if ($existingInvoice) {
+            // An invoice has already been created this month, send a reminder
+            // Implement your reminder logic here
+            $smsutil = new SMSUtil();
+
+            $this->sendSmsToTenant($tenant, 'Reminder: Your invoice for this month is due date "" created.');
+            return response()->json(['message' => 'Reminder sent successfully']);
+        }
+
+        // If no invoice exists for this month, create a new one
+        $totalAmount = $unit->rent + $tenant->bills->sum('amount');
+        if (!$tenant->deposit_paid) {
+            $totalAmount += $unit->deposit;
+        }
+
+        $invoice = new Invoice();
+        $invoice->tenant_id = $tenant_id;
+        $invoice->unit_id = $unit->id;
+        $invoice->total_amount = $totalAmount;
+        // Add other invoice details if necessary
+        $invoice->save();
+
+        $phone = $tenant->phone;
+        $tenant_name = $tenant->tenant_name;
+        $unit_number = $unit->unit_number;
+        $property_name = $tenant->property_name;
+
+
+        $billsSummary = $this->getBillsSummary($tenant->bills);
+
+        $message =  " Hi {$tenant_name} Room Number {$unit_number} of {$property_name} Bills Summary: {$billsSummary}. Total Amount: {$invoice->total_amount}";
+        // return response()->json($message);
+
+        $this->sendSmsToTenant($tenant, $message);
+
+        // Attach bills to the invoice
+        foreach ($tenant->bills as $bill) {
+            $invoice->bills()->attach($bill->id, ['amount' => $bill->amount]);
+        }
+
+        return response()->json(['message' => 'Invoice created successfully', 'data' => $invoice]);
+    }
+
+    private function getBillsSummary($bills)
+    {
+        $billsSummary = '';
+
+        foreach ($bills as $bill) {
+            // $billsSummary .= "Bill: {$bill}, Amount: {$bill->amount}. ";
+            $billsSummary .= "Bill: {$bill->bill}, Amount: {$bill->amount}. ";
+        }
+
+        return $billsSummary;
+    }
+
+    private function sendSmsToTenant($tenant, $message)
+    {
+        try {
+            $sendSMS = new SMSUtil();
+            $sendSMS->sendSMS($tenant->phone, $message);
+        } catch (\Exception $e) {
+            Log::error('SMS sending failed: ' . $e->getMessage());
+            // Handle the exception as per your requirement
         }
     }
 

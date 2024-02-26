@@ -26,12 +26,24 @@ class Invoice extends Model
     //     return $this->hasMany(Transaction::class);
     // }
 
-    protected $fillable = [ 'bill_id', 'unit_id', 'property_id', 'total_amount', 'due_date', 'status', 'issued_at', 'commission'];
+    protected $fillable = [
+        //  'bill_id', 
+         'unit_id', 'property_id', 'total_amount', 'due_date', 'status', 'issued_at', 'commission'];
 
     // New relationship with Bill
+    // public function bills()
+    // {
+    //     return $this->hasMany(Bill::class);
+    // }
+
+
     public function bills()
     {
-        return $this->hasMany(Bill::class);
+        // return $this->belongsToMany(Bill::class, 'bill_invoices')->withPivot('amount');
+
+        return $this->belongsToMany(Bill::class, 'bill_invoices')
+        ->using(BillInvoice::class)
+        ->withPivot('amount');
     }
 
     // New relationship with Property

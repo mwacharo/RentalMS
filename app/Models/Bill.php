@@ -39,5 +39,17 @@ class Bill extends Model
      {
          return $this->belongsToMany(Tenant::class, 'tenants_bills')->using(TenantsBill::class);
      }
-    
+
+    //  public function invoice()
+    //  {
+    //      return $this->belongsTo(Invoice::class);
+    //  }
+     public function invoices()
+     {
+        //  return $this->belongsToMany(Invoice::class, 'bill_invoices')->withPivot('amount');
+
+        return $this->belongsToMany(Invoice::class, 'bill_invoices')
+        ->using(BillInvoice::class)
+        ->withPivot('amount');
+     }
 }

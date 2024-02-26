@@ -22,10 +22,10 @@ class Tenant extends Model
         return $this->hasMany(Invoice::class);
     }
 
-    public function units()
+    public function unit()
     {
 
-        return $this->hasMany(Unit::class);
+        return $this->belongsTo(Unit::class);
     }
 
     // public function bills()
