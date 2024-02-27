@@ -18,17 +18,17 @@ const select = ref(false);
                 <Link :href="route('dashboard')">
                     <v-list-item color="info" value="home">
                         <template v-slot:prepend>
-                            <v-icon>mdi-home</v-icon>
+                            <v-icon>mdi-view-dashboard</v-icon>
                         </template>
 
-                        <v-list-item-title>Home</v-list-item-title>
+                        <v-list-item-title>Dashboard</v-list-item-title>
                     </v-list-item>
                 </Link>
 
                 <Link :href="route('tenant')">
                     <v-list-item color="info" value="home">
                         <template v-slot:prepend>
-                            <v-icon>mdi-account</v-icon>
+                            <v-icon>mdi-account-tie</v-icon>
                         </template>
 
                         <v-list-item-title>Tenant</v-list-item-title>
@@ -48,7 +48,7 @@ const select = ref(false);
                 <Link :href="route('property')">
                     <v-list-item color="info" value="properties">
                         <template v-slot:prepend>
-                            <v-icon>mdi-city</v-icon>
+                            <v-icon>mdi-domain</v-icon>
                         </template>
 
                         <v-list-item-title>Property</v-list-item-title>
@@ -58,7 +58,7 @@ const select = ref(false);
                 <Link :href="route('unit')">
                     <v-list-item color="info" value="unit">
                         <template v-slot:prepend>
-                            <v-icon>mdi-city</v-icon>
+                            <v-icon>mdi-home-floor-a</v-icon>
                         </template>
 
                         <v-list-item-title>Unit</v-list-item-title>
@@ -79,7 +79,7 @@ const select = ref(false);
                 <Link :href="route('booking')">
                     <v-list-item color="info" value="bookings">
                         <template v-slot:prepend>
-                            <v-icon>mdi-home</v-icon>
+                            <v-icon>mdi-calendar-check</v-icon>
                         </template>
 
                         <v-list-item-title>Booking</v-list-item-title>
