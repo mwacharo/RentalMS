@@ -28,18 +28,11 @@ class Tenant extends Model
         return $this->belongsTo(Unit::class);
     }
 
-    // public function bills()
-    // {
-
-    //     return $this->hasMany(Bill::class);
-    // }
+ 
     public function property()
     {
         return $this->belongsTo(Property::class);
     }
-    //     public function deposit(){
-    //         return $this->hasMany(Deposit::class);
-    //     }
 
     public function bills()
     {

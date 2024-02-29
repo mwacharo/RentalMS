@@ -95,11 +95,12 @@ Route::put('/unit/{id}', [ApiUnitController::class, 'update']);
 
 
 
+Route::get('/invoices', [ApiInvoiceController::class, 'index']);
 
 Route::get('/invoice{id}', [ApiInvoiceController::class, 'show']);
 Route::post('/invoice{id}', [ApiInvoiceController::class, 'update']);
-Route::get('/invoices', [ApiInvoiceController::class, 'index']);
 Route::post('/invoice', [ApiInvoiceController::class, 'store']);
+
 
 
 
@@ -114,7 +115,6 @@ Route::delete('/property/{id}', [ApiPropertyController::class, 'destroy']);
 Route::delete('/unit/{id}', [ApiUnitController::class, 'destroy']);
 Route::post('/tenant{id}', [ApiTenantController::class, 'destroy']);
 Route::post('/invoice{id}', [ApiInvoiceController::class, 'destroy']);
-
 
 
 

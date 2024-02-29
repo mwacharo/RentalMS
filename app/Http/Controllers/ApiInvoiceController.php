@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Invoice;
 use Illuminate\Http\Request;
 
 class ApiInvoiceController extends Controller
@@ -12,7 +13,21 @@ class ApiInvoiceController extends Controller
     public function index()
     {
         //
-    }
+        // $invoices=Invoice::all();
+         $invoice=Invoice::with('tenant')->get();
+
+        // dd($invoice);
+
+        $invoices = Invoice::with(['unit','tenant.property','bills'])
+                ->get();
+
+
+      return response()->json($invoices);
+
+
+
+    
+     }
 
     /**
      * Show the form for creating a new resource.

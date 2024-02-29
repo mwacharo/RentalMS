@@ -9,16 +9,20 @@ class Unit extends Model
 {
     use HasFactory;
 
-   protected $fillable = ['property_id', 'unit_id','unit_number', 'unit_status','deposit','rent','tenant_id'];
+    protected $fillable = ['property_id', 'unit_id', 'unit_number', 'unit_status', 'deposit','deposit_status', 'rent', 'tenant_id'];
 
     public function property()
     {
         return $this->belongsTo(Property::class);
     }
 
+    // public function tenant()
+    // {
+    //     return $this->hasMany(Tenant::class);
+    // }
     public function tenant()
     {
-        return $this->hasMany(Tenant::class);
+        return $this->belongsTo(Tenant::class, 'tenant_id');
     }
 
     public function transactions()
@@ -27,12 +31,12 @@ class Unit extends Model
     }
 
 
-public function bills()
-{
-    return $this->hasMany(Bill::class);
-}
-public function invoices()
-{
-    return $this->hasMany(Invoice::class);
-}
+    public function bills()
+    {
+        return $this->hasMany(Bill::class);
+    }
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
 }

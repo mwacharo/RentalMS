@@ -102,7 +102,7 @@ class ApiTenantController extends Controller
                 'email' => 'required|email',
                 'phone' => 'required|string|max:255',
                 'unit_id' => 'required|max:255',
-                'property_id' => 'required|string|max:255',
+                'property_id' => 'required|max:255',
             ]);
 
             $tenant->update($validatedData);
@@ -148,13 +148,13 @@ class ApiTenantController extends Controller
 
 
 
-    
+
     public function tenantInvoice(Request $request, $id)
     {
         $tenant_id = $id;
 
 
-        $tenant = Tenant::with(['bills', 'unit'])->find($tenant_id);
+        $tenant = Tenant::with(['bills', 'unit','property'])->find($tenant_id);
         // return (   $tenant);
 
 
@@ -182,6 +182,7 @@ class ApiTenantController extends Controller
         // If no invoice exists for this month, create a new one
         $totalAmount = $unit->rent + $tenant->bills->sum('amount');
         if (!$tenant->deposit_paid) {
+            // check if deposit has status of paid do not include it if status not paid include it 
             $totalAmount += $unit->deposit;
         }
 
@@ -195,13 +196,14 @@ class ApiTenantController extends Controller
         $phone = $tenant->phone;
         $tenant_name = $tenant->tenant_name;
         $unit_number = $unit->unit_number;
-        $property_name = $tenant->property_name;
+        $property_name = $tenant->property->property_name;
 
 
         $billsSummary = $this->getBillsSummary($tenant->bills);
 
         $message =  " Hi {$tenant_name} Room Number {$unit_number} of {$property_name} Bills Summary: {$billsSummary}. Total Amount: {$invoice->total_amount}";
         // return response()->json($message);
+    dd($message);
 
         $this->sendSmsToTenant($tenant, $message);
 
@@ -219,7 +221,7 @@ class ApiTenantController extends Controller
 
         foreach ($bills as $bill) {
             // $billsSummary .= "Bill: {$bill}, Amount: {$bill->amount}. ";
-            $billsSummary .= "Bill: {$bill->bill}, Amount: {$bill->amount}. ";
+            $billsSummary .= " {$bill->bill},{$bill->amount}. ";
         }
 
         return $billsSummary;
@@ -235,7 +237,12 @@ class ApiTenantController extends Controller
             // Handle the exception as per your requirement
         }
     }
+    //fetch invoices 
+    // public function fetchInvoice()
+    // {  
 
+    
+    // }
 
     /**
      * Remove the specified resource from storage.
