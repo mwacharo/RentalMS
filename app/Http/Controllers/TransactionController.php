@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
 use App\Models\Transaction;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use App\Services\Mpesa;
 
 class TransactionController extends Controller
 {
@@ -27,9 +30,9 @@ class TransactionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTransactionRequest $request)
+    public function store(Request $request)
     {
-        //
+        Log::debug($request->all());
     }
 
     /**
@@ -63,4 +66,12 @@ class TransactionController extends Controller
     {
         //
     }
+
+    public function payment (request $response){
+
+        // Mpesa::sendSTKPush($phone, $unitNumber, $amount);
+
+
+    }
+
 }

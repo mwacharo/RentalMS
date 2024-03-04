@@ -1,13 +1,15 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiBillController;
+use App\Http\Controllers\ApiUnitController;
+use App\Http\Controllers\MpesaApiController;
+use App\Http\Controllers\ApiTenantController;
 use App\Http\Controllers\ApiInvoiceController;
 use App\Http\Controllers\ApiLandlordController;
 use App\Http\Controllers\ApiPropertyController;
-use App\Http\Controllers\ApiTenantController;
-use App\Http\Controllers\ApiUnitController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TransactionController;
 
 
 /*
@@ -115,6 +117,22 @@ Route::delete('/property/{id}', [ApiPropertyController::class, 'destroy']);
 Route::delete('/unit/{id}', [ApiUnitController::class, 'destroy']);
 Route::post('/tenant{id}', [ApiTenantController::class, 'destroy']);
 Route::post('/invoice{id}', [ApiInvoiceController::class, 'destroy']);
+
+
+
+
+Route::any('/payment', [TransactionController::class, 'payment']);
+Route::any('/confirmation', [TransactionController::class, 'store']);
+Route::any('/validation', [TransactionController::class, 'store']);
+
+
+
+// mpesa
+Route::get('/token', [MpesaApiController::class, 'generateToken']);
+Route::get('/stkpush', [MpesaApiController::class, 'initiateSTKPush']);
+Route::get('/callback', [MpesaApiController::class, 'handleCallback']);
+
+
 
 
 

@@ -40,7 +40,10 @@ class ApiUnitController extends Controller
             'unit_status' => '|string|max:255',
     
         ]);
+
         $unit= Unit::create( $validatedData);
+
+        $unit= Unit::with('property')->find($unit->id);
         return response()->json(['message' => 'Unit created successfully', 'data' => $unit], 201);
     
     }

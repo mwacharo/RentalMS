@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Utils\SMSUtil;
 use App\Models\Bill;
-use App\Models\BillInvoice;
-use App\Models\Invoice;
-use App\Models\Tenant;
-use App\Models\TenantsBill;
 use App\Models\Unit;
+use App\Models\Tenant;
+use App\Utils\SMSUtil;
+use App\Models\Invoice;
+use App\Models\BillInvoice;
+use App\Models\TenantsBill;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\MpesaApiController;
 // use App\Services\TwilioService;
 
 
@@ -154,7 +155,7 @@ class ApiTenantController extends Controller
         $tenant_id = $id;
 
 
-        $tenant = Tenant::with(['bills', 'unit','property'])->find($tenant_id);
+        $tenant = Tenant::with(['bills', 'unit', 'property'])->find($tenant_id);
         // return (   $tenant);
 
 
@@ -181,11 +182,14 @@ class ApiTenantController extends Controller
 
         // If no invoice exists for this month, create a new one
         $totalAmount = $unit->rent + $tenant->bills->sum('amount');
-        if (!$tenant->deposit_paid) {
-            // check if deposit has status of paid do not include it if status not paid include it 
+
+        // Check if deposit status is 0 to include it in totalAmount
+        if ($unit->deposit_status == '0') {
             $totalAmount += $unit->deposit;
         }
 
+
+      
         $invoice = new Invoice();
         $invoice->tenant_id = $tenant_id;
         $invoice->unit_id = $unit->id;
@@ -203,14 +207,17 @@ class ApiTenantController extends Controller
 
         $message =  " Hi {$tenant_name} Room Number {$unit_number} of {$property_name} Bills Summary: {$billsSummary}. Total Amount: {$invoice->total_amount}";
         // return response()->json($message);
-    dd($message);
+        //  dd($message);
 
-        $this->sendSmsToTenant($tenant, $message);
+        // $this->sendSmsToTenant($tenant, $message);
+        $mpesaUtil = new MpesaApiController();
+
+        $mpesaUtil->initiateSTKPush($phone, $unit_number, $invoice->total_amount);
 
         // Attach bills to the invoice
-        foreach ($tenant->bills as $bill) {
-            $invoice->bills()->attach($bill->id, ['amount' => $bill->amount]);
-        }
+        // foreach ($tenant->bills as $bill) {
+        //     $invoice->bills()->attach($bill->id, ['amount' => $bill->amount]);
+        // }
 
         return response()->json(['message' => 'Invoice created successfully', 'data' => $invoice]);
     }
@@ -226,6 +233,7 @@ class ApiTenantController extends Controller
 
         return $billsSummary;
     }
+    //attach link to  for client to click and trigger mpesa push  in message 
 
     private function sendSmsToTenant($tenant, $message)
     {
@@ -236,12 +244,13 @@ class ApiTenantController extends Controller
             Log::error('SMS sending failed: ' . $e->getMessage());
             // Handle the exception as per your requirement
         }
+        
     }
     //fetch invoices 
     // public function fetchInvoice()
     // {  
 
-    
+
     // }
 
     /**
