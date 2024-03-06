@@ -1,6 +1,5 @@
 <template>
     <AppLayout>
-
         <VCard class="my-card">
             <v-container>
                 <v-text-field
@@ -26,13 +25,31 @@
 
                         <v-divider class="mx-4" inset vertical></v-divider>
                         <v-spacer></v-spacer>
+
                         <v-dialog v-model="dialog" max-width="700px">
+
+                            
                             <template v-slot:activator="{ props }">
                                 <v-btn
+                                    color="success"
+                                    dark
+                                    class="mb-2 mr-2"
+                                    v-bind="props"
+                                    @click="openExcel"
+                                    prepend-icon="mdi-file-excel"
+                                    variant="outlined"
+                                >
+                                    Import
+                                </v-btn>
+
+                               
+
+                            <v-btn
                                     color="info"
                                     dark
                                     class="mb-2"
                                     v-bind="props"
+
                                     prepend-icon="mdi-send"
                                     variant="outlined"
                                 >
@@ -44,6 +61,7 @@
                                     dark
                                     class="mb-2"
                                     v-bind="props"
+
                                     prepend-icon="mdi-email"
                                 >
                                     Invoice
@@ -54,12 +72,14 @@
                                     dark
                                     class="mb-2"
                                     v-bind="props"
+
                                     prepend-icon="mdi-plus"
                                     variant="outlined"
                                 >
                                     Tenant
                                 </v-btn>
                             </template>
+
 
                             <V-card>
                                 <v-card-title>
@@ -132,7 +152,7 @@
                                         Save
                                     </v-btn>
                                 </v-card-actions>
-                            </v-card>
+                            </V-card>
                         </v-dialog>
                         <v-dialog v-model="dialogDelete" max-width="500px">
                             <v-card>
@@ -177,7 +197,7 @@
                         <span> Create Invoice</span>
                     </v-tooltip>
 
-<!-- 
+                    <!-- 
                     <v-tooltip location="bottom">
                         <template v-slot:activator="{ props }">
                             <v-btn
@@ -245,7 +265,9 @@
             </v-data-table>
             <!-- import of bill component -->
             <bill ref="bill" />
-            <tenantinvoice ref="tenantinvoice"/>
+            <tenantinvoice ref="tenantinvoice" />
+
+            <excel ref="excel" />
         </VCard>
     </AppLayout>
 </template>
@@ -255,13 +277,14 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import axios from "axios";
 import bill from "./Bill.vue";
 import tenantinvoice from "./TenantInvoice.vue";
+import excel from "./Excel.vue";
 
 export default {
     components: {
         AppLayout,
         bill,
         tenantinvoice,
-        
+        excel,
     },
     data: () => ({
         dialog: false,
@@ -279,10 +302,9 @@ export default {
             { title: "Property ", key: "property.property_name" },
             { title: "Actions", key: "actions", sortable: false },
         ],
-        
+
         // selected: [],
         invoiceData: null,
-
 
         landlords: [],
         searchQuery: "",
@@ -348,6 +370,9 @@ export default {
         openTenantInvoice(item) {
             this.$refs.tenantinvoice.show(item);
         },
+        openExcel(item) {
+            this.$refs.excel.show(item);
+        },
         tenantInvoice(item) {
             const API_URL = "api/tenantInvoice/" + item.id;
 
@@ -362,9 +387,6 @@ export default {
                     this.invoiceData = response.data; // Store the response data
 
                     // Handle success (e.g., show a success message or update UI)
-
-
-
                 })
                 .catch((error) => {
                     console.error("Error creating invoice:", error);
@@ -482,5 +504,3 @@ export default {
     margin: 40px; /* Adjust the margin as needed */
 }
 </style>
-
-

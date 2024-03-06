@@ -129,8 +129,17 @@ Route::any('/validation', [TransactionController::class, 'store']);
 
 // mpesa
 Route::get('/token', [MpesaApiController::class, 'generateToken']);
-Route::get('/stkpush', [MpesaApiController::class, 'initiateSTKPush']);
+// Route::get('/stkpush', [MpesaApiController::class, 'initiateSTKPush']);
 Route::get('/callback', [MpesaApiController::class, 'handleCallback']);
+
+
+// routes/web.php or routes/api.php
+
+// Route::get('/mpesa/stkpush/{phone}', [MpesaApiController::class, 'initiateSTKPush'])->name('mpesa.stkpush');
+// In your routes file
+Route::get('/api/mpesa/stkpush/{phone}/{unit_number}/{amount}', [MpesaApiController::class, 'initiateSTKPush'])->name('mpesa.stkpush');
+
+
 
 
 

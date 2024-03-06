@@ -174,10 +174,10 @@ class ApiTenantController extends Controller
         if ($existingInvoice) {
             // An invoice has already been created this month, send a reminder
             // Implement your reminder logic here
-            $smsutil = new SMSUtil();
+            //$smsutil = new SMSUtil();
 
-            $this->sendSmsToTenant($tenant, 'Reminder: Your invoice for this month is due date "" created.');
-            return response()->json(['message' => 'Reminder sent successfully']);
+            // $this->sendSmsToTenant($tenant, 'Reminder: Your invoice for this month is due date "" created.');
+            return response()->json(['message' => 'invoice was sent ']);
         }
 
         // If no invoice exists for this month, create a new one
@@ -189,7 +189,7 @@ class ApiTenantController extends Controller
         }
 
 
-      
+
         $invoice = new Invoice();
         $invoice->tenant_id = $tenant_id;
         $invoice->unit_id = $unit->id;
@@ -205,14 +205,34 @@ class ApiTenantController extends Controller
 
         $billsSummary = $this->getBillsSummary($tenant->bills);
 
-        $message =  " Hi {$tenant_name} Room Number {$unit_number} of {$property_name} Bills Summary: {$billsSummary}. Total Amount: {$invoice->total_amount}";
+
+        // Encode the phone number to make it URL-safe
+
+        $encodedPhone = urlencode($phone);
+        $encodedAmount = urlencode($invoice->total_amount);
+        $encodedUnitNumber = urlencode($unit_number);
+        // $encodedBillsSummary = urlencode($billsSummary);
+
+        // Create the link with the encoded phone number ,amount, unit_number, billsummary parameter
+        // $link = route('mpesa.stkpush', ['phone' => $encodedPhone]);
+
+        // Create the link with the encoded parameters
+        $link = route('mpesa.stkpush', [
+            'phone' => $encodedPhone,
+            'amount' => $encodedAmount,
+            'unit_number' => $encodedUnitNumber,
+            // 'bills_summary' => $encodedBillsSummary,
+        ]);
+
+
+        $message =  " Hi {$tenant_name} Room Number {$unit_number}, {$property_name} {$billsSummary}. Total Amount: {$invoice->total_amount}   Click this link to pay: {$link}";
         // return response()->json($message);
-        //  dd($message);
+         dd($message);
 
-        // $this->sendSmsToTenant($tenant, $message);
-        $mpesaUtil = new MpesaApiController();
+        $this->sendSmsToTenant($tenant, $message);
+        // $mpesaUtil = new MpesaApiController();
 
-        $mpesaUtil->initiateSTKPush($phone, $unit_number, $invoice->total_amount);
+        // $mpesaUtil->initiateSTKPush($phone, $unit_number, $invoice->total_amount);
 
         // Attach bills to the invoice
         // foreach ($tenant->bills as $bill) {
@@ -244,7 +264,6 @@ class ApiTenantController extends Controller
             Log::error('SMS sending failed: ' . $e->getMessage());
             // Handle the exception as per your requirement
         }
-        
     }
     //fetch invoices 
     // public function fetchInvoice()
