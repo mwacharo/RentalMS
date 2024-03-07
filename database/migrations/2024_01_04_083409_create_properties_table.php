@@ -19,7 +19,8 @@ return new class extends Migration
         $table->string('address');
         $table->string('email')->unique();
         $table->string('phone');
-        $table->string('website');
+        // $table->string('website');
+        $table->string('website')->nullable()->change();
         $table->string('description');
         $table->unsignedBigInteger('number_of_units');
         $table->unsignedBigInteger('landlord_id');
