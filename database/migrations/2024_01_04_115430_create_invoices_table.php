@@ -16,8 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('tenant_id');
             $table->unsignedBigInteger('unit_id');
             $table->decimal('total_amount', 8, 2);
-            $table->date('due_date');
-            $table->string('status');
+            $table->date('due_date')->nullable();
+            $table->string('status')->nullable();
             $table->timestamp('issued_at')->useCurrent();
             $table->timestamps();
             $table->foreign('tenant_id')->references('id')->on('tenants');

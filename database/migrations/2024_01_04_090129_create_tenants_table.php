@@ -16,8 +16,10 @@ return new class extends Migration
             $table->string('tenant_name');
             $table->string('email')->unique();
             $table->string('phone');
-            $table->unsignedBigInteger('unit_id');
-            $table->string('property_id');
+            $table->string('national_id')->nullable()->unique()->comment('National ID or Passport Number');
+
+            $table->unsignedBigInteger('unit_id')->nullable();
+            $table->string('property_id')->nullable();
             $table->timestamps();
 
             $table->foreign('unit_id')->references('id')->on('units');

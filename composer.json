@@ -12,6 +12,7 @@
         "laravel/jetstream": "^4.2",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
+        "maatwebsite/excel": "^3.1",
         "tightenco/ziggy": "^1.0",
         "twilio/sdk": "^7.15"
     },

@@ -20,21 +20,18 @@
                 :sort-by="[{ key: 'tenant_name', order: 'asc' }]"
             >
                 <template v-slot:top>
-                    <v-toolbar flat>
+                    <v-toolbar >
                         <v-toolbar-title>Tenant</v-toolbar-title>
 
                         <v-divider class="mx-4" inset vertical></v-divider>
                         <v-spacer></v-spacer>
 
                         <v-dialog v-model="dialog" max-width="700px">
-
-                            
                             <template v-slot:activator="{ props }">
                                 <v-btn
                                     color="success"
                                     dark
                                     class="mb-2 mr-2"
-                                    v-bind="props"
                                     @click="openExcel"
                                     prepend-icon="mdi-file-excel"
                                     variant="outlined"
@@ -42,14 +39,10 @@
                                     Import
                                 </v-btn>
 
-                               
-
-                            <v-btn
-                                    color="info"
+                                <v-btn
+                                    color="primary"
                                     dark
                                     class="mb-2"
-                                    v-bind="props"
-
                                     prepend-icon="mdi-send"
                                     variant="outlined"
                                 >
@@ -60,8 +53,6 @@
                                     color="primary"
                                     dark
                                     class="mb-2"
-                                    v-bind="props"
-
                                     prepend-icon="mdi-email"
                                 >
                                     Invoice
@@ -72,14 +63,12 @@
                                     dark
                                     class="mb-2"
                                     v-bind="props"
-
                                     prepend-icon="mdi-plus"
                                     variant="outlined"
                                 >
                                     Tenant
                                 </v-btn>
                             </template>
-
 
                             <V-card>
                                 <v-card-title>
@@ -154,6 +143,7 @@
                                 </v-card-actions>
                             </V-card>
                         </v-dialog>
+
                         <v-dialog v-model="dialogDelete" max-width="500px">
                             <v-card>
                                 <v-card-title class="text-h5"
@@ -504,3 +494,4 @@ export default {
     margin: 40px; /* Adjust the margin as needed */
 }
 </style>
+

@@ -71,8 +71,13 @@ Route::post('/tenant', [ApiTenantController::class, 'store']);
 Route::get('/tenants', [ApiTenantController::class, 'index']);
 Route::get('/tenant/{id}', [ApiTenantController::class, 'show']);
 Route::put('/tenant/{id}', [ApiTenantController::class, 'update']);
+Route::delete('/tenant/{id}', [ApiTenantController::class, 'destroy']);
+
 Route::post('submitBill/{id}', [ApiTenantController::class, 'submitBill']);
 Route::post('tenantInvoice/{id}', [ApiTenantController::class, 'tenantInvoice']);
+
+Route::post('/upload', [ApiTenantController::class, 'upload']);
+
 
 
 

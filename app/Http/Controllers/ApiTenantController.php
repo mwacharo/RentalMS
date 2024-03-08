@@ -12,6 +12,9 @@ use App\Models\TenantsBill;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\MpesaApiController;
+use App\Imports\TenantsImport;
+use Maatwebsite\Excel\Facades\Excel;
+
 // use App\Services\TwilioService;
 
 
@@ -293,6 +296,28 @@ class ApiTenantController extends Controller
 
             // Return an error response
             return response()->json(['message' => 'Error deleting tenant', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+
+    public function upload(Request $request)
+    {
+
+        $request->validate([
+            'property_id' => 'required|exists:properties,id',
+            'file' => 'required|mimes:xlsx,xls|max:10240', // Adjust the file size limit as needed
+        ]);
+        //   dd($request);
+        $propertyId = $request->input('property_id');
+        $file = $request->file('file');
+
+        try {
+            $import = new TenantsImport($propertyId);
+            Excel::import($import, $file);
+
+            return response()->json(['message' => 'Tenants uploaded successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 }
