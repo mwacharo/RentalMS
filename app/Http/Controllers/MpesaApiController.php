@@ -52,7 +52,7 @@ class MpesaApiController extends Controller
         return base64_encode($this->shortcode . $this->passkey . now()->format('YmdHis'));
     }
 
-    private function generateToken()
+    public function generateToken()
     {
         $response = Http::withHeaders([
             'Authorization' => 'Basic ' . $this->generateBase64(),
@@ -77,40 +77,66 @@ class MpesaApiController extends Controller
         return response()->json(['message' => 'Callback received successfully']);
     }
 
+    //     public function registerUrl()
+    //     {
+
+
+    //         $curl = curl_init();
+
+    //         curl_setopt_array($curl, array(
+    //             CURLOPT_URL => 'https://sandbox.safaricom.co.ke/mpesa/c2b/v1/registerurl',
+    //             CURLOPT_RETURNTRANSFER => true,
+    //             CURLOPT_ENCODING => '',
+    //             CURLOPT_MAXREDIRS => 10,
+    //             CURLOPT_TIMEOUT => 0,
+    //             CURLOPT_FOLLOWLOCATION => true,
+    //             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    //             CURLOPT_CUSTOMREQUEST => 'POST',
+    //             CURLOPT_POSTFIELDS => '{
+    //     "ShortCode": "",
+    //     "ResponseType": "",
+    //     "ConfirmationURL": "",//https://solssa.com/api/confirmation
+    //     "ValidationURL": "//https://solssa.com/api/validation"
+    // }',
+    //             CURLOPT_HTTPHEADER => array(
+    //                 'Authorization: Bearer <Access-Token>',
+    //                 'Content-Type: application/json',
+    //                 'Cookie: incap_ses_1025_2742146=mt6zKIkhFEHXe01/Mok5Dv/x7mUAAAAAM+p7RPnZA1IrlW+nEdgICA==; visid_incap_2742146=RdlS9dvfSFq2xLQMsjUKDf/x7mUAAAAAQUIPAAAAAABZe8evzdo55T186SJB4NoF'
+    //             ),
+    //         ));
+
+    //         $response = curl_exec($curl);
+
+    //         curl_close($curl);
+    //         echo $response;
+
+    //         echo $response;
+    //     }
     public function registerUrl()
+
+
     {
 
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://sandbox.safaricom.co.ke/mpesa/c2b/v1/registerurl',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => '{
-    "ShortCode": "",
-    "ResponseType": "",
-    "ConfirmationURL": "",//https://solssa.com/api/confirmation
-    "ValidationURL": "//https://solssa.com/api/validation"
-}',
-            CURLOPT_HTTPHEADER => array(
-                'Authorization: Bearer <Access-Token>',
-                'Content-Type: application/json',
-                'Cookie: incap_ses_1025_2742146=mt6zKIkhFEHXe01/Mok5Dv/x7mUAAAAAM+p7RPnZA1IrlW+nEdgICA==; visid_incap_2742146=RdlS9dvfSFq2xLQMsjUKDf/x7mUAAAAAQUIPAAAAAABZe8evzdo55T186SJB4NoF'
-            ),
-        ));
-
-        $response = curl_exec($curl);
-
-        curl_close($curl);
-        echo $response;
-
-        echo $response;
+        
+        // Prepare the request data
+        $requestData = [
+            "ShortCode" => "",
+            "ResponseType" => "",
+            "ConfirmationURL" => "https://solssa.com/api/confirmation",
+            "ValidationURL" => "https://solssa.com/api/validation",
+        ];
+    
+        // Make the HTTP request using Laravel's Http facade
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer' . $token,
+            'Content-Type' => 'application/json',
+        ])->post('https://sandbox.safaricom.co.ke/mpesa/c2b/v1/registerurl', $requestData);
+    
+        // Get the response content
+        $responseContent = $response->body();
+    
+        // Output the response
+        echo $responseContent;
     }
 
 
@@ -136,7 +162,7 @@ class MpesaApiController extends Controller
             Log::info('Confirmation Request Data:', $confirmationRequestData);
 
             // Create a new Transaction instance
-            $transaction = new Transaction([
+            $transaction = Transaction::create([
                 'transaction_type' => $confirmationRequestData['TransactionType'],
                 'trans_id' => $confirmationRequestData['TransID'],
                 'trans_time' => date('Y-m-d H:i:s', strtotime($confirmationRequestData['TransTime'])),
@@ -151,7 +177,7 @@ class MpesaApiController extends Controller
                 'last_name' => $confirmationRequestData['LastName'],
             ]);
 
-            $transaction->save();
+            // $transaction->save();
 
             // Your additional logic for handling the confirmation callback
 
@@ -173,7 +199,4 @@ class MpesaApiController extends Controller
             return response()->json(['error' => 'An error occurred during confirmation processing'], 500);
         }
     }
-
-
-  
 }
