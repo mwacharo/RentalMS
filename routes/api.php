@@ -138,6 +138,12 @@ Route::get('/token', [MpesaApiController::class, 'generateToken']);
 Route::get('/callback', [MpesaApiController::class, 'handleCallback']);
 
 
+Route::get('/confirmation', [MpesaApiController::class, 'handleConfirmationCallback']);
+
+Route::post('/mpesa/validation', [MpesaApiController::class, 'handleValidationCallback']);
+
+
+
 // routes/web.php or routes/api.php
 
 // Route::get('/mpesa/stkpush/{phone}', [MpesaApiController::class, 'initiateSTKPush'])->name('mpesa.stkpush');
