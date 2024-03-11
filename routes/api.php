@@ -139,8 +139,11 @@ Route::get('/callback', [MpesaApiController::class, 'handleCallback']);
 
 
 Route::get('/confirmation', [MpesaApiController::class, 'handleConfirmationCallback']);
+Route::post('/registerUrl', [MpesaApiController::class, 'registerUrl']);
+
 
 Route::post('/mpesa/validation', [MpesaApiController::class, 'handleValidationCallback']);
+
 
 
 

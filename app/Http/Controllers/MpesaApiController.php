@@ -95,8 +95,8 @@ class MpesaApiController extends Controller
             CURLOPT_POSTFIELDS => '{
     "ShortCode": "",
     "ResponseType": "",
-    "ConfirmationURL": "",//https://solssa.com/confirmation
-    "ValidationURL": "//https://solssa.com/validation"
+    "ConfirmationURL": "",//https://solssa.com/api/confirmation
+    "ValidationURL": "//https://solssa.com/api/validation"
 }',
             CURLOPT_HTTPHEADER => array(
                 'Authorization: Bearer <Access-Token>',
