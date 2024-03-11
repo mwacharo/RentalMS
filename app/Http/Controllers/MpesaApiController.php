@@ -84,6 +84,7 @@ class MpesaApiController extends Controller
     {
 
         $token = $this->generateToken();
+        dd($token);
         // Prepare the request data
         $requestData = [
             "ShortCode" => "",
