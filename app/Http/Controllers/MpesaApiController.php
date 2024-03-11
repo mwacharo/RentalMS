@@ -69,7 +69,7 @@ class MpesaApiController extends Controller
 
     public function handleCallback(Request $request)
     {
-        Log::info($request);
+        Log::info($request->all());
 
         return response()->json(['message' => 'Callback received successfully']);
     }
