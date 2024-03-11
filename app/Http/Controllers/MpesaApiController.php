@@ -41,7 +41,9 @@ class MpesaApiController extends Controller
             'TransactionDesc' => 'Invoice payment',
         ]);
 
-        return $response->body();
+        Log::info("Initial response" . $response->json());
+
+        return $response->json();
     }
 
     private function generatePassword()
