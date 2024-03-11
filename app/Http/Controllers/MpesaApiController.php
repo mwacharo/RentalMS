@@ -77,47 +77,13 @@ class MpesaApiController extends Controller
         return response()->json(['message' => 'Callback received successfully']);
     }
 
-    //     public function registerUrl()
-    //     {
 
-
-    //         $curl = curl_init();
-
-    //         curl_setopt_array($curl, array(
-    //             CURLOPT_URL => 'https://sandbox.safaricom.co.ke/mpesa/c2b/v1/registerurl',
-    //             CURLOPT_RETURNTRANSFER => true,
-    //             CURLOPT_ENCODING => '',
-    //             CURLOPT_MAXREDIRS => 10,
-    //             CURLOPT_TIMEOUT => 0,
-    //             CURLOPT_FOLLOWLOCATION => true,
-    //             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    //             CURLOPT_CUSTOMREQUEST => 'POST',
-    //             CURLOPT_POSTFIELDS => '{
-    //     "ShortCode": "",
-    //     "ResponseType": "",
-    //     "ConfirmationURL": "",//https://solssa.com/api/confirmation
-    //     "ValidationURL": "//https://solssa.com/api/validation"
-    // }',
-    //             CURLOPT_HTTPHEADER => array(
-    //                 'Authorization: Bearer <Access-Token>',
-    //                 'Content-Type: application/json',
-    //                 'Cookie: incap_ses_1025_2742146=mt6zKIkhFEHXe01/Mok5Dv/x7mUAAAAAM+p7RPnZA1IrlW+nEdgICA==; visid_incap_2742146=RdlS9dvfSFq2xLQMsjUKDf/x7mUAAAAAQUIPAAAAAABZe8evzdo55T186SJB4NoF'
-    //             ),
-    //         ));
-
-    //         $response = curl_exec($curl);
-
-    //         curl_close($curl);
-    //         echo $response;
-
-    //         echo $response;
-    //     }
     public function registerUrl()
 
 
     {
 
-        
+        $token = $this->generateToken();
         // Prepare the request data
         $requestData = [
             "ShortCode" => "",
@@ -140,17 +106,7 @@ class MpesaApiController extends Controller
     }
 
 
-    //     public function confirmation(Request $request)
-    //     {
-    //         Log::info($request->all());
-
-
-
-
-
-    //         return response()->json(['message' => 'Confirmation received successfully']);
-    //     }
-
+  
 
     public function handleConfirmationCallback(Request $request)
     {
