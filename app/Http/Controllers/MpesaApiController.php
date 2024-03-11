@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 class MpesaApiController extends Controller
 {
     private $baseUrl = 'https://sandbox.safaricom.co.ke';
-    private $shortcode = 600996;
+    private $shortcode = 174379;
     private $passkey = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919';
     private $phone = '254741821113';
     private $amount = 1;
