@@ -267,6 +267,7 @@ class ApiTenantController extends Controller
             Log::error('SMS sending failed: ' . $e->getMessage());
             // Handle the exception as per your requirement
         }
+        
     }
     //fetch invoices 
     // public function fetchInvoice()
@@ -305,7 +306,7 @@ class ApiTenantController extends Controller
 
         $request->validate([
             'property_id' => 'required|exists:properties,id',
-            'file' => 'required|mimes:xlsx,xls|max:10240', // Adjust the file size limit as needed
+            'file' => 'required|mimes:xlsx,xls|max:10240', 
         ]);
         //   dd($request);
         $propertyId = $request->input('property_id');
