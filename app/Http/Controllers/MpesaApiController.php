@@ -41,7 +41,7 @@ class MpesaApiController extends Controller
             'TransactionDesc' => 'Invoice payment',
         ]);
 
-        Log::info("Initial response" . $response->json());
+        Log::info("Initial response" . $response);
 
         return $response->json();
     }
