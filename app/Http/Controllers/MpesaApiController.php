@@ -128,37 +128,52 @@ class MpesaApiController extends Controller
 
     public function handleConfirmationCallback(Request $request)
     {
-        // Process the confirmation request and return a response
-        $confirmationRequestData = $request->all();
+        try {
+            // Process the confirmation request and return a response
+            $confirmationRequestData = $request->all();
 
-        // Assuming you receive the confirmation request data in the $confirmationRequestData array
+            // Log the confirmation request data for debugging
+            Log::info('Confirmation Request Data:', $confirmationRequestData);
 
-        // Create a new Transaction instance
-        $transaction = new Transaction([
-            'transaction_type' => $confirmationRequestData['TransactionType'],
-            'trans_id' => $confirmationRequestData['TransID'],
-            'trans_time' => date('Y-m-d H:i:s', strtotime($confirmationRequestData['TransTime'])),
-            'trans_amount' => $confirmationRequestData['TransAmount'],
-            'business_short_code' => $confirmationRequestData['BusinessShortCode'],
-            'bill_ref_number' => $confirmationRequestData['BillRefNumber'],
-            'org_account_balance' => $confirmationRequestData['OrgAccountBalance'] ?? null,
-            'third_party_trans_id' => $confirmationRequestData['ThirdPartyTransID'] ?? null,
-            'msisdn' => $confirmationRequestData['MSISDN'],
-            'first_name' => $confirmationRequestData['FirstName'],
-            'middle_name' => $confirmationRequestData['MiddleName'] ?? null,
-            'last_name' => $confirmationRequestData['LastName'],
-        ]);
+            // Create a new Transaction instance
+            $transaction = new Transaction([
+                'transaction_type' => $confirmationRequestData['TransactionType'],
+                'trans_id' => $confirmationRequestData['TransID'],
+                'trans_time' => date('Y-m-d H:i:s', strtotime($confirmationRequestData['TransTime'])),
+                'trans_amount' => $confirmationRequestData['TransAmount'],
+                'business_short_code' => $confirmationRequestData['BusinessShortCode'],
+                'bill_ref_number' => $confirmationRequestData['BillRefNumber'],
+                'org_account_balance' => $confirmationRequestData['OrgAccountBalance'] ?? null,
+                'third_party_trans_id' => $confirmationRequestData['ThirdPartyTransID'] ?? null,
+                'msisdn' => $confirmationRequestData['MSISDN'],
+                'first_name' => $confirmationRequestData['FirstName'],
+                'middle_name' => $confirmationRequestData['MiddleName'] ?? null,
+                'last_name' => $confirmationRequestData['LastName'],
+            ]);
 
-        $transaction->save();
+            $transaction->save();
 
-        // Your additional logic for handling the confirmation callback
+            // Your additional logic for handling the confirmation callback
 
-        // Sample response for confirmation
-        $confirmationResponse = [
-            "ResultCode" => "0",
-            "ResultDesc" => "Success",
-        ];
+            // Sample response for confirmation
+            $confirmationResponse = [
+                "ResultCode" => "0",
+                "ResultDesc" => "Success",
+            ];
 
-        return response()->json($confirmationResponse);
+            // Log the confirmation response for debugging
+            Log::info('Confirmation Response:', $confirmationResponse);
+
+            return response()->json($confirmationResponse);
+        } catch (\Exception $e) {
+            // Log any exceptions that may occur during processing
+            Log::error('Error during confirmation callback processing: ' . $e->getMessage());
+
+            // Handle the error appropriately (e.g., return an error response)
+            return response()->json(['error' => 'An error occurred during confirmation processing'], 500);
+        }
     }
+
+
+  
 }

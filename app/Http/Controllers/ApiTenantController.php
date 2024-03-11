@@ -230,7 +230,7 @@ class ApiTenantController extends Controller
 
         $message =  " Hi {$tenant_name} Room Number {$unit_number}, {$property_name} {$billsSummary}. Total Amount: {$invoice->total_amount}   Click this link to pay: {$link}";
         // return response()->json($message);
-         dd($message);
+         ($message);
 
         $this->sendSmsToTenant($tenant, $message);
         // $mpesaUtil = new MpesaApiController();
