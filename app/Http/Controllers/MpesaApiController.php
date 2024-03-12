@@ -55,11 +55,11 @@ class MpesaApiController extends Controller
     private function generateToken()
     {
         $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . $this->generateBase64(),
+            'Authorization' => 'Basic ' . $this->generateBase64()
         ])->get($this->baseUrl . '/oauth/v1/generate?grant_type=client_credentials');
 
         $data = $response->json();
-        dd($data);
+        ($data);
 
         return $data['access_token'];
     }
@@ -69,6 +69,7 @@ class MpesaApiController extends Controller
         $key = "Kz2aQK2DBA2cZV9vfqRjob65sTzCh3f7EOCjN9gQjEdpi9GO";
         $secret = "JaM6bGFTcvULVNN3GRfjsmBEMY2lIlPJ6yaAWWwlkidtXsAeNM5aG52ARQXV5Cax";
         return base64_encode($key . ':' . $secret);
+
     }
 
     public function handleCallback(Request $request)
@@ -158,3 +159,6 @@ class MpesaApiController extends Controller
         }
     }
 }
+
+
+
