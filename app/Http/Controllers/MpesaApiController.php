@@ -66,11 +66,29 @@ class MpesaApiController extends Controller
     //     return $data['access_token'];
     // }
 
+    // private function generateToken()
+    // {
+    //     $response = Http::withHeaders([
+    //         'Authorization' => 'Basic ' . $this->generateBase64(),
+    //     ])->get($this->baseUrl . '/oauth/v1/generate?grant_type=client_credentials');
+
+    //     $data = $response->json();
+
+    //     return $data['access_token'] ?? null; // Use null coalescing operator to handle null
+    // }
     private function generateToken()
     {
-        $response = Http::withHeaders([
+        Log::info('Generating token...');
+
+        $headers = [
             'Authorization' => 'Basic ' . $this->generateBase64(),
-        ])->get($this->baseUrl . '/oauth/v1/generate?grant_type=client_credentials');
+        ];
+
+        Log::debug('Request headers:', $headers);
+
+        $response = Http::withHeaders($headers)->get($this->baseUrl . '/oauth/v1/generate?grant_type=client_credentials');
+
+        Log::debug('Response:', $response->json());
 
         $data = $response->json();
 
