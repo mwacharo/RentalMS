@@ -85,6 +85,13 @@ Route::middleware([
 
 
 
+    Route::get('/agentdashboard', function () {
+        return Inertia::render('AgentDashboard');
+    })->name('agentdashboard');
+
+
+
+
 });
 
 

@@ -51,6 +51,11 @@ class ApiTenantController extends Controller
                 'phone' => 'required|string|max:255',
                 'unit_id' => '|max:255',
                 'property_id' => 'required|max:255',
+                'nationa_id' => 'max:255',
+                'agreement' => 'max:255',
+                
+
+
             ]);
 
             $tenant = Tenant::create($validatedData);

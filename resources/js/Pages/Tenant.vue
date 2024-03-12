@@ -20,7 +20,7 @@
                 :sort-by="[{ key: 'tenant_name', order: 'asc' }]"
             >
                 <template v-slot:top>
-                    <v-toolbar >
+                    <v-toolbar>
                         <v-toolbar-title>Tenant</v-toolbar-title>
 
                         <v-divider class="mx-4" inset vertical></v-divider>
@@ -120,6 +120,12 @@
                                                     item-value="id"
                                                 ></v-select>
                                             </v-col>
+
+                                            <v-file-input
+                                                label="Select  file"
+                                                accept="pfd"
+                                                @change="uploadaAgreement"
+                                            ></v-file-input>
                                         </v-row>
                                     </v-container>
                                 </v-card-text>
@@ -293,7 +299,7 @@ export default {
             { title: "Actions", key: "actions", sortable: false },
         ],
 
-        // selected: [],
+        selected: [],
         invoiceData: null,
 
         landlords: [],
@@ -494,4 +500,3 @@ export default {
     margin: 40px; /* Adjust the margin as needed */
 }
 </style>
-

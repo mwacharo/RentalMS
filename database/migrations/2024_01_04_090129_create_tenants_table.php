@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone');
             $table->string('national_id')->nullable()->unique()->comment('National ID or Passport Number');
+            $table->string('agreement')->nullable();
+
 
             $table->unsignedBigInteger('unit_id')->nullable();
             $table->string('property_id')->nullable();

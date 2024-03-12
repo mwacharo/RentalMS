@@ -52,7 +52,7 @@ class MpesaApiController extends Controller
         return base64_encode($this->shortcode . $this->passkey . now()->format('YmdHis'));
     }
 
-    public function generateToken()
+    private function generateToken()
     {
         $response = Http::withHeaders([
             'Authorization' => 'Basic ' . $this->generateBase64(),
