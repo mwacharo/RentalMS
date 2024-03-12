@@ -55,44 +55,15 @@ class MpesaApiController extends Controller
         return base64_encode($this->shortcode . $this->passkey . now()->format('YmdHis'));
     }
 
-    // private function generateToken()
-    // {
-    //     $response = Http::withHeaders([
-    //         'Authorization' => 'Basic ' . $this->generateBase64(),
-    //     ])->get($this->baseUrl . '/oauth/v1/generate?grant_type=client_credentials');
-
-    //     $data = $response->json();
-
-    //     return $data['access_token'];
-    // }
-
-    // private function generateToken()
-    // {
-    //     $response = Http::withHeaders([
-    //         'Authorization' => 'Basic ' . $this->generateBase64(),
-    //     ])->get($this->baseUrl . '/oauth/v1/generate?grant_type=client_credentials');
-
-    //     $data = $response->json();
-
-    //     return $data['access_token'] ?? null; // Use null coalescing operator to handle null
-    // }
     private function generateToken()
     {
-        Log::info('Generating token...');
-
-        $headers = [
+        $response = Http::withHeaders([
             'Authorization' => 'Basic ' . $this->generateBase64(),
-        ];
-
-        Log::debug('Request headers:', $headers);
-
-        $response = Http::withHeaders($headers)->get($this->baseUrl . '/oauth/v1/generate?grant_type=client_credentials');
-
-        Log::debug('Response:', $response->json());
+        ])->get($this->baseUrl . '/oauth/v1/generate?grant_type=client_credentials');
 
         $data = $response->json();
 
-        return $data['access_token'] ?? null; // Use null coalescing operator to handle null
+        return $data['access_token'];
     }
 
 
