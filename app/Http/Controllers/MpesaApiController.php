@@ -52,6 +52,17 @@ class MpesaApiController extends Controller
         return base64_encode($this->shortcode . $this->passkey . now()->format('YmdHis'));
     }
 
+    // private function generateToken()
+    // {
+    //     $response = Http::withHeaders([
+    //         'Authorization' => 'Basic ' . $this->generateBase64(),
+    //     ])->get($this->baseUrl . '/oauth/v1/generate?grant_type=client_credentials');
+
+    //     $data = $response->json();
+
+    //     return $data['access_token'];
+    // }
+
     private function generateToken()
     {
         $response = Http::withHeaders([
@@ -60,8 +71,9 @@ class MpesaApiController extends Controller
 
         $data = $response->json();
 
-        return $data['access_token'];
+        return $data['access_token'] ?? null; // Use null coalescing operator to handle null
     }
+
 
     private function generateBase64()
     {
@@ -92,22 +104,22 @@ class MpesaApiController extends Controller
             "ConfirmationURL" => "https://solssa.com/api/confirmation",
             "ValidationURL" => "https://solssa.com/api/validation",
         ];
-    
+
         // Make the HTTP request using Laravel's Http facade
         $response = Http::withHeaders([
             'Authorization' => 'Bearer' . $token,
             'Content-Type' => 'application/json',
         ])->post('https://sandbox.safaricom.co.ke/mpesa/c2b/v1/registerurl', $requestData);
-    
+
         // Get the response content
         $responseContent = $response->body();
-    
+
         // Output the response
         echo $responseContent;
     }
 
 
-  
+
 
     public function handleConfirmationCallback(Request $request)
     {
