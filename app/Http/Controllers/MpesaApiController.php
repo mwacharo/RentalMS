@@ -18,6 +18,9 @@ class MpesaApiController extends Controller
     private $appUrl = 'https://solssa.com/api/callback';
     private $apiUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
 
+    private $key = "Kz2aQK2DBA2cZV9vfqRjob65sTzCh3f7EOCjN9gQjEdpi9GO";
+    private $secret = "JaM6bGFTcvULVNN3GRfjsmBEMY2lIlPJ6yaAWWwlkidtXsAeNM5aG52ARQXV5Cax";
+
     public function initiateSTKPush($phone, $unit_number, $amount)
     {
         $timestamp = now()->format('YmdHis');
@@ -27,7 +30,7 @@ class MpesaApiController extends Controller
 
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $token,
-            'Content-Type' => 'application/json',
+            'Content-Type' => 'application/json', 174379
         ])->post($this->apiUrl, [
             'BusinessShortCode' => $this->shortcode,
             'Password' => $password,
@@ -99,8 +102,8 @@ class MpesaApiController extends Controller
         dd($token);
         // Prepare the request data
         $requestData = [
-            "ShortCode" => "",
-            "ResponseType" => "",
+            "ShortCode" => "174379",
+            "ResponseType" => "Completed",
             "ConfirmationURL" => "https://solssa.com/api/confirmation",
             "ValidationURL" => "https://solssa.com/api/validation",
         ];
