@@ -18,9 +18,6 @@ class MpesaApiController extends Controller
     private $appUrl = 'https://solssa.com/api/callback';
     private $apiUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
 
-    private $key = "Kz2aQK2DBA2cZV9vfqRjob65sTzCh3f7EOCjN9gQjEdpi9GO";
-    private $secret = "JaM6bGFTcvULVNN3GRfjsmBEMY2lIlPJ6yaAWWwlkidtXsAeNM5aG52ARQXV5Cax";
-
     public function initiateSTKPush($phone, $unit_number, $amount)
     {
         $timestamp = now()->format('YmdHis');
@@ -30,7 +27,7 @@ class MpesaApiController extends Controller
 
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $token,
-            'Content-Type' => 'application/json', 174379
+            'Content-Type' => 'application/json',
         ])->post($this->apiUrl, [
             'BusinessShortCode' => $this->shortcode,
             'Password' => $password,
@@ -66,7 +63,6 @@ class MpesaApiController extends Controller
         return $data['access_token'];
     }
 
-
     private function generateBase64()
     {
         $key = "Kz2aQK2DBA2cZV9vfqRjob65sTzCh3f7EOCjN9gQjEdpi9GO";
@@ -88,30 +84,30 @@ class MpesaApiController extends Controller
     {
 
         $token = $this->generateToken();
-        dd($token);
+        // dd($token);
         // Prepare the request data
         $requestData = [
-            "ShortCode" => "174379",
-            "ResponseType" => "Completed",
+            "ShortCode" => "",
+            "ResponseType" => "",
             "ConfirmationURL" => "https://solssa.com/api/confirmation",
             "ValidationURL" => "https://solssa.com/api/validation",
         ];
-
+    
         // Make the HTTP request using Laravel's Http facade
         $response = Http::withHeaders([
             'Authorization' => 'Bearer' . $token,
             'Content-Type' => 'application/json',
         ])->post('https://sandbox.safaricom.co.ke/mpesa/c2b/v1/registerurl', $requestData);
-
+    
         // Get the response content
         $responseContent = $response->body();
-
+    
         // Output the response
         echo $responseContent;
     }
 
 
-
+  
 
     public function handleConfirmationCallback(Request $request)
     {
