@@ -56,23 +56,25 @@ class MpesaApiController extends Controller
     {
         $response = Http::withHeaders([
             'Authorization' => 'Basic ' . $this->generateBase64(),
-        ])->get($this->baseUrl . '/oauth/v1/generate?grant_type=client_credentials');
-
-        // $log = $this->generateBase64();
-        // dd($log);
-        // dd($response);
+        ])->get($this->baseUrl.'/oauth/v1/generate?grant_type=client_credentials');
 
 
-        $data = $response->json();
-        dd($data);
+        if ($response->successful()) {
+            // Process the response
+            $data = $response->json();
+            dd($data);
+        } else {
+            // Handle unsuccessful response
+            dd($response->status(), $response->body());
+        }
 
-        return $data['access_token'];
+    
 
-        // // Get the response body
-        // $responseData = $response->body();
+        // $data = $response->json();
+        // dd($data);
 
-        // // Process the response as needed
-        // echo $responseData;
+        // return $data['access_token'];
+
     }
 
     private function generateBase64()
@@ -90,33 +92,33 @@ class MpesaApiController extends Controller
     }
 
 
-    public function registerUrl()
+    // public function registerUrl()
 
 
-    {
+    // {
 
-        $token = $this->generateToken();
-        // dd($token);
-        // Prepare the request data
-        $requestData = [
-            "ShortCode" => "",
-            "ResponseType" => "",
-            "ConfirmationURL" => "https://solssa.com/api/confirmation",
-            "ValidationURL" => "https://solssa.com/api/validation",
-        ];
+    //     $token = $this->generateToken();
+    //     // dd($token);
+    //     // Prepare the request data
+    //     $requestData = [
+    //         "ShortCode" => "",
+    //         "ResponseType" => "",
+    //         "ConfirmationURL" => "https://solssa.com/api/confirmation",
+    //         "ValidationURL" => "https://solssa.com/api/validation",
+    //     ];
 
-        // Make the HTTP request using Laravel's Http facade
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer' . $token,
-            'Content-Type' => 'application/json',
-        ])->post('https://sandbox.safaricom.co.ke/mpesa/c2b/v1/registerurl', $requestData);
+    //     // Make the HTTP request using Laravel's Http facade
+    //     $response = Http::withHeaders([
+    //         'Authorization' => 'Bearer' . $token,
+    //         'Content-Type' => 'application/json',
+    //     ])->post('https://sandbox.safaricom.co.ke/mpesa/c2b/v1/registerurl', $requestData);
 
-        // Get the response content
-        $responseContent = $response->body();
+    //     // Get the response content
+    //     $responseContent = $response->body();
 
-        // Output the response
-        echo $responseContent;
-    }
+    //     // Output the response
+    //     echo $responseContent;
+    // }
 
 
 
