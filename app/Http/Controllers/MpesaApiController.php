@@ -55,18 +55,30 @@ class MpesaApiController extends Controller
     private function generateToken()
     {
         try {
-            //code...
             $response = Http::withHeaders([
                 'Authorization' => 'Basic ' . $this->generateBase64(),
-                ])->get($this->baseUrl.'/oauth/v1/generate?grant_type=client_credentials');
-       
-       
-       
-             return $response->json()->body();
+            ])->get($this->baseUrl . '/oauth/v1/generate?grant_type=client_credentials');
+    
+            // Check if the request was successful
+            if ($response->successful()) {
+                // Check if the response content type is JSON
+                if ($response->header('content-type') === 'application/json') {
+                    // Return the JSON body of the response
+                    return $response->json();
+                } else {
+                    // Handle case where the response is not JSON
+                    throw new \Exception('Invalid response content type: ' . $response->header('content-type'));
+                }
+            } else {
+                // Handle unsuccessful response
+                throw new \Exception('HTTP Error: ' . $response->status());
+            }
         } catch (\Throwable $th) {
+            // Catch and rethrow any exceptions
             throw $th;
-            
         }
+    }
+    
    
 
     
@@ -76,7 +88,7 @@ class MpesaApiController extends Controller
 
         // return $data['access_token'];
 
-    }
+    
 
     private function generateBase64()
     {
