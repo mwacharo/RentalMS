@@ -59,7 +59,7 @@ class MpesaApiController extends Controller
         ])->get($this->baseUrl . '/oauth/v1/generate?grant_type=client_credentials');
 
         $data = $response->json();
-        dd($data);
+        // dd($data);
 
         return $data['access_token'];
     }
