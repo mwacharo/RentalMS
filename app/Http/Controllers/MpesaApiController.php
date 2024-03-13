@@ -60,11 +60,11 @@ class MpesaApiController extends Controller
 
         // $log = $this->generateBase64();
         // dd($log);
-        dd($response);
+        // dd($response);
 
 
         $data = $response->json();
-        // dd($data);
+        dd($data);
 
         return $data['access_token'];
 
