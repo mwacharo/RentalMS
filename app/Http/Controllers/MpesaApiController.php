@@ -62,9 +62,9 @@ class MpesaApiController extends Controller
         // dd($log);
 
 
-        // $data = $response->json();
+        $data = $response->json();
 
-        // return $data['access_token'];
+        return $data['access_token'];
 
         // Get the response body
         $responseData = $response->body();
