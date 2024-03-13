@@ -54,29 +54,20 @@ class MpesaApiController extends Controller
 
     private function generateToken()
     {
-        // $response = Http::withHeaders([
-        //     'Authorization' => 'Basic ' . $this->generateBase64(),
-        // ])->get($this->baseUrl.'/oauth/v1/generate?grant_type=client_credentials');
-
-
-        $url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
-        $base64Credentials = 'S3oyYVFLMkRCQTJjWlY5dmZxUmpvYjY1c1R6Q2gzZjdFT0NqTjlnUWpFZHBpOUdPOkphTTZiR0ZUY3ZVTFZOTjNHUmZqc21CRU1ZMmxJbFBKNnlhQVdXd2xraWR0WHNBZU5NNWFHNTJBUlFYVjVDYXg=';
-    
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . $base64Credentials,
-            'Cookie' => 'incap_ses_1018_2742146=LzFJN/r0oh8pr2gxGasgDiNa8WUAAAAAoDtbiNCJJV1E2lfC6U2YSw==; visid_incap_2742146=RdlS9dvfSFq2xLQMsjUKDf/x7mUAAAAAQUIPAAAAAABZe8evzdo55T186SJB4NoF',
-        ])->get($url);
-    
-
-
-        if ($response->successful()) {
-            // Process the response
-            $data = $response->json();
-            dd($data);
-        } else {
-            // Handle unsuccessful response
-            dd($response->status(), $response->body());
+        try {
+            //code...
+            $response = Http::withHeaders([
+                'Authorization' => 'Basic ' . $this->generateBase64(),
+                ])->get($this->baseUrl.'/oauth/v1/generate?grant_type=client_credentials');
+       
+       
+       
+             return $response->json()->body();
+        } catch (\Throwable $th) {
+            throw $th;
+            
         }
+   
 
     
 
