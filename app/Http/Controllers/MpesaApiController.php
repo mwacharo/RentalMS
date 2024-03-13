@@ -47,11 +47,12 @@ class MpesaApiController extends Controller
         return $response->json();
     }
 
-    private function generatePassword()
-    {
-        return base64_encode($this->shortcode . $this->passkey . now()->format('YmdHis'));
-    }
+    // private function generatePassword()
+    // {
+    //     return base64_encode($this->shortcode . $this->passkey . now()->format('YmdHis'));
+    // }
 
+    
     private function generateToken()
     {
         try {
@@ -88,7 +89,7 @@ class MpesaApiController extends Controller
 
         // return $data['access_token'];
 
-    
+    }
 
     private function generateBase64()
     {
