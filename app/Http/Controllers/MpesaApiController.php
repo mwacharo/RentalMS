@@ -15,7 +15,7 @@ class MpesaApiController extends Controller
     private $passkey = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919';
     private $phone = '254741821113';
     private $amount = 1;
-    private $appUrl = 'https://2236-41-90-189-168.ngrok-free.app/api/callback';
+    private $appUrl = 'https://51db-41-90-185-223.ngrok-free.app/api/callback';
     private $apiUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
 
     public function initiateSTKPush($phone, $unit_number, $amount)
@@ -54,26 +54,18 @@ class MpesaApiController extends Controller
 
     private function generateToken()
     {
-        // $response = Http::withHeaders([
-        //     'Authorization' => 'Basic ' . $this->generateBase64(),
-        // ])->get($this->baseUrl.'/oauth/v1/generate?grant_type=client_credentials');
-
-
-
-        // $data = $response->json();
-
-        // return $data['access_token'];
-
 
         $response = Http::withHeaders([
-                  'Authorization' => 'Basic ' . $this->generateBase64(),
+            'Authorization' => 'Basic ' . $this->generateBase64(),
 
-            // 'Authorization' => 'Basic S3oyYVFLMkRCQTJjWlY5dmZxUmpvYjY1c1R6Q2gzZjdFT0NqTjlnUWpFZHBpOUdPOkphTTZiR0ZUY3ZVTFZOTjNHUmZqc21CRU1ZMmxJbFBKNnlhQVdXd2xraWR0WHNBZU5NNWFHNTJBUlFYVjVDYXg=',
             'Cookie' => 'incap_ses_1018_2742146=oPrtAJGOJBcNds8xGasgDkyQ8WUAAAAAC5foIxbeBwqFOwtr67y7vg==; visid_incap_2742146=RdlS9dvfSFq2xLQMsjUKDf/x7mUAAAAAQUIPAAAAAABZe8evzdo55T186SJB4NoF',
         ])
             ->get('https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials');
 
-        echo $response->body();
+
+        // Decode the JSON response
+        $data = json_decode($response->body(), true);
+        return $data['access_token'];
     }
 
 
