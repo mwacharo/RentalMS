@@ -16,7 +16,7 @@ class MpesaApiController extends Controller
     private $phone = '254741821113';
     private $amount = 1;
     private $appUrl = 'https://solssa.com/api/callback';
-    private $apiUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+    private $apiUrl = 'https://solssa.com/mpesa/stkpush/v1/processrequest';
 
     public function initiateSTKPush($phone, $unit_number, $amount)
     {
