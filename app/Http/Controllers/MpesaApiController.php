@@ -47,49 +47,36 @@ class MpesaApiController extends Controller
         return $response->json();
     }
 
-    // private function generatePassword()
-    // {
-    //     return base64_encode($this->shortcode . $this->passkey . now()->format('YmdHis'));
-    // }
+    private function generatePassword()
+    {
+        return base64_encode($this->shortcode . $this->passkey . now()->format('YmdHis'));
+    }
 
-    
     private function generateToken()
     {
-        try {
-            $response = Http::withHeaders([
-                'Authorization' => 'Basic ' . $this->generateBase64(),
-            ])->get($this->baseUrl . '/oauth/v1/generate?grant_type=client_credentials');
-    
-            // Check if the request was successful
-            if ($response->successful()) {
-                // Check if the response content type is JSON
-                if ($response->header('content-type') === 'application/json') {
-                    // Return the JSON body of the response
-                    return $response->json();
-                } else {
-                    // Handle case where the response is not JSON
-                    throw new \Exception('Invalid response content type: ' . $response->header('content-type'));
-                }
-            } else {
-                // Handle unsuccessful response
-                throw new \Exception('HTTP Error: ' . $response->status());
-            }
-        } catch (\Throwable $th) {
-            // Catch and rethrow any exceptions
-            throw $th;
-        }
-    }
-    
-   
+        // $response = Http::withHeaders([
+        //     'Authorization' => 'Basic ' . $this->generateBase64(),
+        // ])->get($this->baseUrl.'/oauth/v1/generate?grant_type=client_credentials');
 
-    
+
 
         // $data = $response->json();
-        // dd($data);
 
         // return $data['access_token'];
 
+
+        $response = Http::withHeaders([
+                  'Authorization' => 'Basic ' . $this->generateBase64(),
+
+            // 'Authorization' => 'Basic S3oyYVFLMkRCQTJjWlY5dmZxUmpvYjY1c1R6Q2gzZjdFT0NqTjlnUWpFZHBpOUdPOkphTTZiR0ZUY3ZVTFZOTjNHUmZqc21CRU1ZMmxJbFBKNnlhQVdXd2xraWR0WHNBZU5NNWFHNTJBUlFYVjVDYXg=',
+            'Cookie' => 'incap_ses_1018_2742146=oPrtAJGOJBcNds8xGasgDkyQ8WUAAAAAC5foIxbeBwqFOwtr67y7vg==; visid_incap_2742146=RdlS9dvfSFq2xLQMsjUKDf/x7mUAAAAAQUIPAAAAAABZe8evzdo55T186SJB4NoF',
+        ])
+            ->get('https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials');
+
+        echo $response->body();
     }
+
+
 
     private function generateBase64()
     {
