@@ -66,7 +66,8 @@ class MpesaApiController extends Controller
 
         // Decode the JSON response
         $data = json_decode($response->body(), true);
-        return $data['access_token'];
+        $token =$data['access_token'];
+        dd($token);
     }
 
 
