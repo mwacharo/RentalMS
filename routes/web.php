@@ -18,7 +18,9 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
+ return Inertia::render('Welcome', [
+    //  return Inertia::render('Login', [
+
 
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -82,6 +84,12 @@ Route::middleware([
     Route::get('/bill', function () {
         return Inertia::render('Bills');
     })->name('bill');
+
+
+    Route::get('/phone', function () {
+        return Inertia::render('Phone');
+    })->name('phone');
+
 
 
 

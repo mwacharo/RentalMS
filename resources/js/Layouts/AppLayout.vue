@@ -128,6 +128,16 @@ const select = ref(false);
                         <v-list-item-title>Admin</v-list-item-title>
                     </v-list-item>
                 </Link>
+
+                <Link :href="route('phone')">
+                    <v-list-item color="success" value="phone">
+                        <template v-slot:prepend>
+                            <v-icon>mdi-phone</v-icon>
+                        </template>
+
+                        <v-list-item-title>Call Centre</v-list-item-title>
+                    </v-list-item>
+                </Link>
             </v-list>
 
             <!-- Add more menu items based on your specific features -->

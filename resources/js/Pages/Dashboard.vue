@@ -3,9 +3,9 @@
         <v-row>
             <v-col sm="3">Dashboard</v-col>
         </v-row>
-        <v-row>
+        <!-- <v-row>
             <v-col sm="3">FILTER</v-col>
-        </v-row>
+        </v-row> -->
 
         <v-row>
             <v-col sm="3">
