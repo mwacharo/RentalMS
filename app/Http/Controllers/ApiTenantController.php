@@ -6,6 +6,7 @@ use App\Models\Bill;
 use App\Models\Unit;
 use App\Models\Tenant;
 use App\Utils\SMSUtil;
+use App\Mail\TenantInvoiceMail;
 use App\Models\Invoice;
 use App\Models\BillInvoice;
 use App\Models\TenantsBill;
@@ -13,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\MpesaApiController;
 use App\Imports\TenantsImport;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 
 // use App\Services\TwilioService;
@@ -53,7 +55,7 @@ class ApiTenantController extends Controller
                 'property_id' => 'required|max:255',
                 'nationa_id' => 'max:255',
                 'agreement' => 'max:255',
-                
+
 
 
             ]);
@@ -151,7 +153,7 @@ class ApiTenantController extends Controller
             Log::error($e);
 
             // Return an error response
-            return response()->json(['message' => 'Error assigning bill', 'error' => $e->getMessage()], 500);
+            return response()->json(['message' => 'ErrgetBillsSummaryor assigning bill', 'error' => $e->getMessage()], 500);
         }
     }
 
@@ -161,6 +163,7 @@ class ApiTenantController extends Controller
     public function tenantInvoice(Request $request, $id)
     {
         $tenant_id = $id;
+        // dd($tenant_id);
 
 
         $tenant = Tenant::with(['bills', 'unit', 'property'])->find($tenant_id);
@@ -189,7 +192,16 @@ class ApiTenantController extends Controller
         }
 
         // If no invoice exists for this month, create a new one
+        // $tenant_bills= $tenant->bills;
+        // // dd( $tenant_bills);
+
+        
+        $deposit=$unit->deposit;
+        $rent=$unit->rent;
+
         $totalAmount = $unit->rent + $tenant->bills->sum('amount');
+        $deposit_status=$unit->deposit_status;
+        // dd($deposit_status);
 
         // Check if deposit status is 0 to include it in totalAmount
         if ($unit->deposit_status == '0') {
@@ -197,13 +209,15 @@ class ApiTenantController extends Controller
         }
 
 
-
+        $dueDate = now()->addDays(30);
         $invoice = new Invoice();
         $invoice->tenant_id = $tenant_id;
         $invoice->unit_id = $unit->id;
         $invoice->total_amount = $totalAmount;
         // Add other invoice details if necessary
+        $invoice->due_date = $dueDate; // Set the due date here
         $invoice->save();
+        // dd($invoice);
 
         $phone = $tenant->phone;
         $tenant_name = $tenant->tenant_name;
@@ -235,9 +249,35 @@ class ApiTenantController extends Controller
 
         $message =  " Hi {$tenant_name} Room Number {$unit_number}, {$property_name} {$billsSummary}. Total Amount: {$invoice->total_amount}   Click this link to pay: {$link}";
         // return response()->json($message);
-         dd($message);
 
-        $this->sendSmsToTenant($tenant, $message);
+
+        // dd($message);
+        // // dd( $tenant_bills);
+
+        // $this->sendSmsToTenant($tenant, $message);
+
+        // invoice to mail
+        $invoice = [
+            'inovoice_number' => $id,
+            'tenant_name' => $tenant_name,
+            'unit_number' => $unit_number,
+            'property_name' => $property_name,
+            'bills_summary' => $billsSummary,
+            'rent'=>$rent,
+            'deposit'=>$deposit,
+            'deposit_status'=>$deposit_status,
+            'issued_at' => $invoice->created_at->toDateString(), // Format the created_at date as needed
+            'due_date' => $invoice->due_date->toDateString(), // Format the due date as needed
+            'total_amount' => $invoice->total_amount,
+            'link'=>$link
+        ];
+
+        //  dd($invoice);
+        // dd($tenant->email);
+        Mail::to($tenant->email)->send(new TenantInvoiceMail($invoice, $tenant));
+
+
+        // $this->Sen
         // $mpesaUtil = new MpesaApiController();
 
         // $mpesaUtil->initiateSTKPush($phone, $unit_number, $invoice->total_amount);
@@ -266,8 +306,8 @@ class ApiTenantController extends Controller
     private function sendSmsToTenant($tenant, $message)
     {
         try {
-            $sendSMS = new SMSUtil();
-            $sendSMS->sendSMS($tenant->phone, $message);
+            // $sendSMS = new SMSUtil();
+            // $sendSMS->sendSMS($tenant->phone, $message);
         } catch (\Exception $e) {
             Log::error('SMS sending failed: ' . $e->getMessage());
             // Handle the exception as per your requirement

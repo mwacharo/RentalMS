@@ -14,7 +14,7 @@ class ApiUnitController extends Controller
     {
         //
         // $units= Unit::all();
-         $units=Unit::with('property')->get();
+        $units = Unit::with('property')->get();
         return response()->json($units);
     }
 
@@ -32,20 +32,19 @@ class ApiUnitController extends Controller
     public function store(Request $request)
     {
         //
-        $validatedData= $request->validate([
+        $validatedData = $request->validate([
             'property_id' => 'required|max:255',
-            'unit_number'=>'required|string|max:255',           
+            'unit_number' => 'required|string|max:255',
             'deposit' => 'required|string|max:255',
             'rent' => 'required|string|max:255',
             'unit_status' => '|string|max:255',
-    
+
         ]);
 
-        $unit= Unit::create( $validatedData);
+        $unit = Unit::create($validatedData);
 
-        $unit= Unit::with('property')->find($unit->id);
+        $unit = Unit::with('property')->find($unit->id);
         return response()->json(['message' => 'Unit created successfully', 'data' => $unit], 201);
-    
     }
 
     /**
@@ -54,15 +53,12 @@ class ApiUnitController extends Controller
     public function show(string $id)
     {
         //
-        $unit= Unit::find($id);
-        if($unit){
+        $unit = Unit::find($id);
+        if ($unit) {
             return response()->json($unit);
-
-        }
-        else {
+        } else {
             return response()->json(['message' => 'Unit not found']);
         }
-   
     }
 
     /**
@@ -79,25 +75,27 @@ class ApiUnitController extends Controller
     public function update(Request $request, string $id)
     {
         //
-                //
-                $unit = Unit::find($id);
-                if (!$unit) {
-                    return response()->json(['message' => 'unit not found'], 404);
-                }
-            
-                $validatedData = $request->validate([
-                    // 'email' => 'required|email|unique:landlords,email', 
-                    'property_id' => 'required|max:255',
-                    'unit_number' => 'required|string|max:255',
-                    'deposit' => 'required|string|max:255',
-                    'unit_status' =>'|max:255',  
-        
-                  
-                ]);
-            
-                $unit->update($validatedData);
-            
-                return response()->json(['message' => 'unit updated successfully', 'data' => $unit]);
+        //
+        $unit = Unit::find($id);
+        if (!$unit) {
+            return response()->json(['message' => 'unit not found'], 404);
+        }
+
+        $validatedData = $request->validate([
+            // 'email' => 'required|email|unique:landlords,email', 
+            'property_id' => 'required|max:255',
+            'unit_number' => 'required|string|max:255',
+            'deposit' => 'required|string|max:255',
+            'rent' => 'required|string|max:255',                    'deposit' => 'required|string|max:255',
+
+            'unit_status' => '|max:255',
+
+
+        ]);
+
+        $unit->update($validatedData);
+
+        return response()->json(['message' => 'unit updated successfully', 'data' => $unit]);
     }
 
     /**
