@@ -18,8 +18,8 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
- return Inertia::render('Welcome', [
-    //  return Inertia::render('Login', [
+//  return Inertia::render('Welcome', [
+     return Inertia::render('Login', [
 
 
         'canLogin' => Route::has('login'),

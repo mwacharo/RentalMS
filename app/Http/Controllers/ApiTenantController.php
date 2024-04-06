@@ -187,7 +187,7 @@ class ApiTenantController extends Controller
             // Implement your reminder logic here
             //$smsutil = new SMSUtil();
 
-            // $this->sendSmsToTenant($tenant, 'Reminder: Your invoice for this month is due date "" created.');
+            $this->sendSmsToTenant($tenant, 'Reminder: Your invoice for this month is due date "" created.');
             return response()->json(['message' => 'invoice was sent ']);
         }
 
@@ -251,10 +251,10 @@ class ApiTenantController extends Controller
         // return response()->json($message);
 
 
-        // dd($message);
+        //  dd($message);
         // // dd( $tenant_bills);
 
-        // $this->sendSmsToTenant($tenant, $message);
+        $this->sendSmsToTenant($tenant, $message);
 
         // invoice to mail
         $invoice = [
@@ -306,8 +306,8 @@ class ApiTenantController extends Controller
     private function sendSmsToTenant($tenant, $message)
     {
         try {
-            // $sendSMS = new SMSUtil();
-            // $sendSMS->sendSMS($tenant->phone, $message);
+            $sendSMS = new SMSUtil();
+             $sendSMS->sendSMS($tenant->phone, $message);
         } catch (\Exception $e) {
             Log::error('SMS sending failed: ' . $e->getMessage());
             // Handle the exception as per your requirement
