@@ -307,7 +307,7 @@ class ApiTenantController extends Controller
     {
         try {
             $sendSMS = new SMSUtil();
-             $sendSMS->sendSMS($tenant->phone, $message);
+            //  $sendSMS->sendSMS($tenant->phone, $message);
         } catch (\Exception $e) {
             Log::error('SMS sending failed: ' . $e->getMessage());
             // Handle the exception as per your requirement
