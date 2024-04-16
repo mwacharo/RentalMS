@@ -119,7 +119,7 @@ const select = ref(false);
                     </v-list-item>
                 </Link>
 
-                <!-- <Link :href="route('admin')">
+                <Link :href="route('admin')">
                     <v-list-item color="info" value="admins">
                         <template v-slot:prepend>
                             <v-icon>mdi-account-multiple</v-icon>
@@ -127,7 +127,7 @@ const select = ref(false);
 
                         <v-list-item-title>Admin</v-list-item-title>
                     </v-list-item>
-                </Link> -->
+                </Link>
 
                 <Link :href="route('phone')">
                     <v-list-item color="success" value="phone">
@@ -138,7 +138,23 @@ const select = ref(false);
                         <v-list-item-title>Call Centre</v-list-item-title>
                     </v-list-item>
                 </Link>
+
+
+                <Link :href="route('vacantAd')">
+  <v-list-item value="vacantAd">
+    <template v-slot:prepend>
+      <!-- mdi-home-outline or mdi-sign-real-estate can represent a property or vacancy well -->
+      <v-icon>mdi-home-outline</v-icon> 
+    </template>
+
+    <v-list-item-title>Vacancies Ad</v-list-item-title>
+  </v-list-item>
+</Link>
+
             </v-list>
+
+
+       
 
             <!-- Add more menu items based on your specific features -->
         </v-navigation-drawer>

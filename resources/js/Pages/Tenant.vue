@@ -349,7 +349,7 @@ export default {
     },
     methods: {
         initialize() {
-            const API_URL = "/api/tenants";
+            const API_URL = "/tenants";
             axios
                 .get(API_URL)
                 .then((response) => {
@@ -370,7 +370,7 @@ export default {
             this.$refs.excel.show(item);
         },
         tenantInvoice(item) {
-            const API_URL = "api/tenantInvoice/" + item.id;
+            const API_URL = "tenantInvoice/" + item.id;
 
             const data = {
                 tenantId: this.tenantId,
@@ -403,7 +403,7 @@ export default {
         },
         deleteItemConfirm() {
             axios
-                .delete(`/api/tenant/${this.editedItem.id}`)
+                .delete(`/tenant/${this.editedItem.id}`)
                 .then(() => {
                     this.tenants.splice(this.editedIndex, 1);
                     this.closeDelete();
@@ -428,11 +428,11 @@ export default {
             if (this.editedIndex > -1) {
                 // console.log(Item);
                 request = axios.put(
-                    `/api/tenant/${this.editedItem.id}`,
+                    `/tenant/${this.editedItem.id}`,
                     this.editedItem
                 );
             } else {
-                request = axios.post(`/api/tenant`, this.editedItem);
+                request = axios.post(`/tenant`, this.editedItem);
             }
             request
                 .then((response) => {
@@ -452,7 +452,7 @@ export default {
         },
         performSearch() {
             this.loading = true;
-            const API_URL = "/api/landlords/search?query=" + this.searchQuery;
+            const API_URL = "/landlords/search?query=" + this.searchQuery;
             axios
                 .get(API_URL)
                 .then((response) => {
@@ -467,7 +467,7 @@ export default {
         },
 
         fetchUnits() {
-            const API_URL = "api/units";
+            const API_URL = "units";
             axios
                 .get(API_URL)
                 .then((response) => {
@@ -480,7 +480,7 @@ export default {
         },
 
         fetchProperties() {
-            const API_URL = "api/property";
+            const API_URL = "property";
             axios
                 .get(API_URL)
                 .then((response) => {
@@ -500,3 +500,5 @@ export default {
     margin: 40px; /* Adjust the margin as needed */
 }
 </style>
+
+

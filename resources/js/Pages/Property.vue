@@ -235,7 +235,7 @@ export default {
     },
     methods: {
         initialize() {
-            const API_URL = "/api/property";
+            const API_URL = "/properties";
             axios
                 .get(API_URL)
                 .then((response) => {
@@ -259,7 +259,7 @@ export default {
         },
         deleteItemConfirm() {
             axios
-                .delete(`/api/property/${this.editedItem.id}`)
+                .delete(`/property/${this.editedItem.id}`)
                 .then(() => {
                     this.properties.splice(this.editedIndex, 1);
                     this.closeDelete();
@@ -283,11 +283,11 @@ export default {
             let request;
             if (this.editedIndex > -1) {
                 request = axios.put(
-                    `/api/property/${this.editedItem.id}`,
+                    `/property/${this.editedItem.id}`,
                     this.editedItem
                 );
             } else {
-                request = axios.post(`/api/property`, this.editedItem);
+                request = axios.post(`/property`, this.editedItem);
             }
             request
                 .then((response) => {
@@ -306,7 +306,7 @@ export default {
         },
         performSearch() {
             this.loading = true;
-            const API_URL = "/api/property/search?query=" + this.searchQuery;
+            const API_URL = "/property/search?query=" + this.searchQuery;
             axios
                 .get(API_URL)
                 .then((response) => {
@@ -320,7 +320,7 @@ export default {
                 });
         },
         fetchlandlord() {
-            const API_URL = "/api/landlords";
+            const API_URL = "/landlords";
             axios
                 .get(API_URL)
                 .then((response) => {

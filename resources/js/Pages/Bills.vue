@@ -188,7 +188,7 @@ export default {
     },
     methods: {
         initialize() {
-            const API_URL = "/api/billList";
+            const API_URL = "/billList";
             axios
                 .get(API_URL)
                 .then((response) => {
@@ -212,7 +212,7 @@ export default {
         },
         deleteItemConfirm() {
             axios
-                .delete(`/api/bill/${this.editedItem.id}`)
+                .delete(`/bill/${this.editedItem.id}`)
                 .then(() => {
                     this.bills.splice(this.editedIndex, 1);
                     this.closeDelete();
@@ -236,7 +236,7 @@ export default {
             let request;
             if (this.editedIndex > -1) {
                 request = axios.put(
-                    `/api/bill/${this.editedItem.id}`,
+                    `/bill/${this.editedItem.id}`,
                     this.editedItem
 
                     
@@ -244,7 +244,7 @@ export default {
                  this.initialize(); // refresh data
 
             } else {
-                request = axios.post(`/api/bill`, this.editedItem);
+                request = axios.post(`/bill`, this.editedItem);
             }
             request
                 .then((response) => {
@@ -266,7 +266,7 @@ export default {
         },
         performSearch() {
             this.loading = true;
-            const API_URL = "/api/bill/search?query=" + this.searchQuery;
+            const API_URL = "/bill/search?query=" + this.searchQuery;
             axios
                 .get(API_URL)
                 .then((response) => {
