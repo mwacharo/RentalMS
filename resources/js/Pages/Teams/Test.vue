@@ -121,7 +121,7 @@
     },
     methods: {
       initialize() {
-        axios.get('/api/landlords')
+        axios.get('/landlords')
           .then(response => {
             this.landlords = response.data;
           })
@@ -143,7 +143,7 @@
         this.dialogDelete = true;
       },
       deleteItemConfirm() {
-        axios.delete(`/api/landlord/${this.editedItem.id}`)
+        axios.delete(`/landlord/${this.editedItem.id}`)
           .then(() => {
             this.landlords.splice(this.editedIndex, 1);
             this.closeDelete();
@@ -165,9 +165,9 @@
       save() {
         let request;
         if (this.editedIndex > -1) {
-          request = axios.put(`/api/landlord/${this.editedItem.id}`, this.editedItem);
+          request = axios.put(`/landlord/${this.editedItem.id}`, this.editedItem);
         } else {
-          request = axios.post('/api/landlord', this.editedItem);
+          request = axios.post('/landlord', this.editedItem);
         }
         request.then(response => {
           if (this.editedIndex > -1) {
@@ -179,7 +179,7 @@
         }).catch(error => console.error('Saving error:', error));
       },
       performSearch() {
-        axios.get(`/api/landlords/search?query=${this.searchQuery}`)
+        axios.get(`/landlords/search?query=${this.searchQuery}`)
           .then(response => {
             this.landlords = response.data;
           })

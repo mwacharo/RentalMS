@@ -88,7 +88,7 @@ export default {
     
     methods: {
         initialize() {
-            const API_URL = "/api/invoices";
+            const API_URL = "/invoices";
             axios
                 .get(API_URL)
                 .then((response) => {
@@ -102,7 +102,7 @@ export default {
 
         performSearch() {
             this.loading = true;
-            const API_URL = "/api/invoice/search?query=" + this.searchQuery;
+            const API_URL = "/invoice/search?query=" + this.searchQuery;
             axios
                 .get(API_URL)
                 .then((response) => {

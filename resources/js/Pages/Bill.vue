@@ -50,7 +50,7 @@ export default {
             this.assignBills();
         },
         assignBills() {
-            const API_URL = "api/bills/"+this.id;
+            const API_URL = "bills/"+this.id;
             axios
                 .get(API_URL)
                 .then((response) => {
@@ -97,7 +97,7 @@ export default {
             };
 
             // API call to submit the data
-            const API_URL = "api/submitBill/"+this.id;
+            const API_URL = "submitBill/"+this.id;
             axios
                 .post(API_URL, data)
                 .then((response) => {

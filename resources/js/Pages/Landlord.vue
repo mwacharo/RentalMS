@@ -194,7 +194,7 @@ export default {
     },
     methods: {
         initialize() {
-            const API_URL = "/api/landlords";
+            const API_URL = "/landlords";
             axios
                 .get(API_URL)
                 .then((response) => {
@@ -218,7 +218,7 @@ export default {
         },
         deleteItemConfirm() {
             axios
-                .delete(`/api/landlord/${this.editedItem.id}`)
+                .delete(`/landlord/${this.editedItem.id}`)
                 .then(() => {
                     this.landlords.splice(this.editedIndex, 1);
                     this.closeDelete();
@@ -245,11 +245,11 @@ export default {
             let request;
             if (this.editedIndex > -1) {
                 request = axios.put(
-                    `/api/landlord/${this.editedItem.id}`,
+                    `/landlord/${this.editedItem.id}`,
                     this.editedItem
                 );
             } else {
-                request = axios.post(`/api/landlord`, this.editedItem);
+                request = axios.post(`/landlord`, this.editedItem);
             }
             request
                 .then((response) => {
@@ -269,7 +269,7 @@ export default {
         },
         performSearch() {
             this.loading = true;
-            const API_URL = "/api/landlords/search?query=" + this.searchQuery;
+            const API_URL = "/landlords/search?query=" + this.searchQuery;
             axios
                 .get(API_URL)
                 .then((response) => {

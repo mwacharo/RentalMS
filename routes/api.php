@@ -6,10 +6,12 @@ use App\Http\Controllers\ApiBillController;
 use App\Http\Controllers\ApiUnitController;
 use App\Http\Controllers\MpesaApiController;
 use App\Http\Controllers\ApiTenantController;
+use App\Http\Controllers\ApiVacantController;
 use App\Http\Controllers\ApiInvoiceController;
 use App\Http\Controllers\ApiLandlordController;
 use App\Http\Controllers\ApiPropertyController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\ApiBookVacantController;
 
 
 /*
@@ -25,11 +27,10 @@ use App\Http\Controllers\TransactionController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-
-   
 });
 
 // Route to get a list 
+/*
 Route::get('/landlords', [ApiLandlordController::class, 'index']);
 Route::get('/landlords/search', [ApiLandlordController::class, 'landlordSearch']);
 Route::post('/landlord', [ApiLandlordController::class, 'store']);
@@ -42,10 +43,10 @@ Route::put('/landlord/{id}', [ApiLandlordController::class, 'update']);
 
 
 
-Route::get('/property', [ApiPropertyController ::class, 'index']);
+Route::get('/property', [ApiPropertyController::class, 'index']);
 Route::get('/property/search', [ApiPropertyController::class, 'propertySearch']);
 Route::post('/property', [ApiPropertyController::class, 'store']);
-Route::get('/property/{id}', [ApiPropertyController ::class, 'show']);
+Route::get('/property/{id}', [ApiPropertyController::class, 'show']);
 Route::put('/property/{id}', [ApiPropertyController::class, 'update']);
 
 
@@ -90,8 +91,8 @@ Route::post('/upload', [ApiTenantController::class, 'upload']);
 
 
 Route::post('/unit', [ApiUnitController::class, 'store']);
-Route::get('/unit/{id}', [ApiUnitController ::class, 'show']);
-Route::get('/units', [ApiUnitController ::class, 'index']);
+Route::get('/unit/{id}', [ApiUnitController::class, 'show']);
+Route::get('/units', [ApiUnitController::class, 'index']);
 Route::put('/unit/{id}', [ApiUnitController::class, 'update']);
 
 
@@ -156,9 +157,17 @@ Route::post('/mpesa/validation', [MpesaApiController::class, 'handleValidationCa
 Route::get('/mpesa/stkpush/{phone}/{unit_number}/{amount}', [MpesaApiController::class, 'initiateSTKPush'])->name('mpesa.stkpush');
 
 
+Route::get('/vacant', [ApiVacantController::class, 'index']);
+
+Route::post('/vacantAd', [ApiVacantController::class, 'store']);
+Route::post('/book{id}', [ApiBookVacantController::class, 'store']);
+Route::get('/book{id}', [ApiBookVacantController::class, 'index']);
 
 
 
+*/
 
 
-
+// Route::middleware('auth:api')->group(function () {
+//     Route::apiResource('/book{id}', 'ApiBookVacantController');
+// });

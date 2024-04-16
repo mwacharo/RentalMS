@@ -11,7 +11,7 @@
             </v-container>
         </VCard>
 
-        <VCard class="my-card" outlined>
+        <VCard class="my-card" outlined>    
             <v-data-table
                 :headers="headers"
                 :loading="loading"
@@ -228,6 +228,7 @@ export default {
         formTitle() {
             return this.editedIndex === -1 ? "New Unit" : "Edit Unit";
         },
+        
     },
     watch: {
         dialog(val) {
@@ -244,7 +245,7 @@ export default {
     },
     methods: {
         initialize() {
-            const API_URL = "/api/units";
+            const API_URL = "/units";
             axios
                 .get(API_URL)
                 .then((response) => {
@@ -272,7 +273,7 @@ export default {
         },
         deleteItemConfirm() {
             axios
-                .delete(`/api/unit/${this.editedItem.id}`)
+                .delete(`/unit/${this.editedItem.id}`)
                 .then(() => {
                     this.units.splice(this.editedIndex, 1);
                     this.closeDelete();
@@ -297,11 +298,11 @@ export default {
             if (this.editedIndex > -1) {
                 // console.log(Item);
                 request = axios.put(
-                    `/api/unit/${this.editedItem.id}`,
+                    `/unit/${this.editedItem.id}`,
                     this.editedItem
                 );
             } else {
-                request = axios.post(`/api/unit`, this.editedItem);
+                request = axios.post(`/unit`, this.editedItem);
             }
             request
                 .then((response) => {
@@ -321,7 +322,7 @@ export default {
         },
         performSearch() {
             this.loading = true;
-            const API_URL = "/api/unit/search?query=" + this.searchQuery;
+            const API_URL = "/unit/search?query=" + this.searchQuery;
             axios
                 .get(API_URL)
                 .then((response) => {
@@ -335,7 +336,7 @@ export default {
                 });
         },
         fetchProperties() {
-            const API_URL = "api/property";
+            const API_URL = "property";
             axios
                 .get(API_URL)
                 .then((response) => {

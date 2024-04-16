@@ -96,7 +96,7 @@ export default {
             // this.openExcel(item);
         },
         fetchProperties() {
-            const API_URL = "api/property";
+            const API_URL = "property";
 
             axios
                 .get(API_URL)
@@ -116,7 +116,7 @@ export default {
             formData.append("file", this.selectedFile);
 
             axios
-                .post("api/upload", formData, {
+                .post("upload", formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
