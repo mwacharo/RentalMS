@@ -37,7 +37,7 @@ class ApiBookVacantController extends Controller
             'tenant_id' => 'required|exists:users,id',
             'date' => 'required|date',
             'status' => 'string|max:255',
-            'number_of_units' => 'required',
+            // 'number_of_units' => 'required',
         ]);
 
         $booking = BookVacant::create($validated);

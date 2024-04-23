@@ -115,7 +115,7 @@
                 </v-data-table> -->
 
                 <v-data-table
-                    :headers="headers"
+                    :headers="bookingHeaders"
                     :items="bookings"
                     :sort-by="[{ key: 'calories', order: 'asc' }]"
                 >
@@ -363,7 +363,7 @@ export default {
         },
     },
 };
-</script>
+</script>fetchBookings
 
 <style scoped>
 .my-card {
