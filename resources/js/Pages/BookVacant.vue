@@ -14,6 +14,15 @@
                         required
                         outlined
                     ></v-text-field>
+
+                    <v-text-field
+                        v-model="date"
+                        type="number"
+                        label="Enter Number of Unit(s)"
+                        :rules="dateRules"
+                        required
+                        outlined
+                    ></v-text-field>
                     <v-textarea
                         v-model="message"
                         label="Message"
@@ -41,6 +50,7 @@ export default {
         return {
             tenant_id: this.$page.props.auth.user.id, // Fetch the logged-in user's ID from shared data
             dialog: false,
+            number_of_units:"",
             valid: true,
             date: null,
             message: "",
@@ -49,6 +59,8 @@ export default {
             // tenant_id: $page.props.auth.user.id,
 
             dateRules: [(v) => !!v || "Date is required"],
+            number_of_unitsRules: [(v) => !!v || "Number of units is required"],
+
             messageRules: [
                 (v) =>
                     (v && v.length <= 200) ||
@@ -79,6 +91,7 @@ export default {
                 vacant_id: this.id,
                 property_id: this.property_id,
                 tenant_id: this.tenant_id,
+                number_of_units: this.number_of_units,
 
                 // tenantId: this.tenantId,
             };
