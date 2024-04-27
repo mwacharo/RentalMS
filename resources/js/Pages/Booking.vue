@@ -363,7 +363,7 @@ export default {
         },
     },
 };
-</script>fetchBookings
+</script>
 
 <style scoped>
 .my-card {
