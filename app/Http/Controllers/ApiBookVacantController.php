@@ -14,10 +14,10 @@ class ApiBookVacantController extends Controller
 
     public function index()
     {
-        $id=Auth::id();
+        $id = Auth::id();
         // dd($id);
         // $bookings=BookVacant::all();  
-        $bookings = BookVacant::with('property')->where('tenant_id', $id)->get();  
+        $bookings = BookVacant::with('property')->where('tenant_id', $id)->get();
 
         return response()->json($bookings);
     }
@@ -37,6 +37,7 @@ class ApiBookVacantController extends Controller
             'tenant_id' => 'required|exists:users,id',
             'date' => 'required|date',
             'status' => 'string|max:255',
+            // 'number_of_units' => 'required',
         ]);
 
         $booking = BookVacant::create($validated);
@@ -87,5 +88,16 @@ class ApiBookVacantController extends Controller
         $booking->delete();
 
         return response()->json(['message' => 'Booking successfully deleted']);
+    }
+
+    public function getBookingsByProperty()
+
+    {
+        $id = Auth::id();
+   
+        $bookings = BookVacant::where('property_id', $id)->get();
+
+        return response()->json($bookings);
+
     }
 }

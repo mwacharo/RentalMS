@@ -5,8 +5,6 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
-// use App\Http\Controllers\ApiBookVacantController;
-
 use App\Http\Controllers\ApiBillController;
 use App\Http\Controllers\ApiUnitController;
 use App\Http\Controllers\MpesaApiController;
@@ -17,6 +15,7 @@ use App\Http\Controllers\ApiLandlordController;
 use App\Http\Controllers\ApiPropertyController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ApiBookVacantController;
+// use App\Http\Controllers\ApiBookVacantController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -139,7 +138,7 @@ Route::put('/property/{id}', [ApiPropertyController::class, 'update']);
 
 
 
-Route::get('/bills/{id}', [ApiBillController::class, 'index']);
+Route::get('/bills/{id}', [ApiBillController::class, 'inApiBookVacantControllerdex']);
 Route::post('/bill', [ApiBillController::class, 'store']);
 Route::get('/billList', [ApiBillController::class, 'billList']);
 
@@ -247,8 +246,16 @@ Route::get('/mpesa/stkpush/{phone}/{unit_number}/{amount}', [MpesaApiController:
 Route::get('/vacant', [ApiVacantController::class, 'index']);
 
 Route::post('/vacantAd', [ApiVacantController::class, 'store']);
+
+
 Route::post('/book{id}', [ApiBookVacantController::class, 'store']);
-Route::get('/book{id}', [ApiBookVacantController::class, 'index']);
+// Route::get('/book{id}', [ApiBookVacantContrbookingsoller::class, 'index']);
+
+
+Route::get('/bookings', [ApiBookVacantController::class, 'index']);
+Route::get('/booked', [ApiBookVacantController::class, 'getBookingsByProperty']);
+
+
 
 
 

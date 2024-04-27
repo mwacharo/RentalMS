@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('property_id');
             $table->date('date');
             $table->string('status')->default('pending');
+            $table->string('number_of_units');
             $table->timestamps();
         });
     }

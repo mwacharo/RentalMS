@@ -107,11 +107,148 @@
             <div v-if="tab === 'fetchBookings'">
                 <!-- Component or code for bookings -->
 
-                <v-data-table
+                <!-- <v-data-table
                     :headers="bookingHeaders"
                     :items="bookings"
                     class="elevation-1"
                 >
+                </v-data-table> -->
+
+                <v-data-table
+                    :headers="bookingHeaders"
+                    :items="bookings"
+                    :sort-by="[{ key: 'calories', order: 'asc' }]"
+                >
+                    <template v-slot:top>
+                        <v-toolbar flat>
+                            <v-toolbar-title>Bookings</v-toolbar-title>
+                            <v-divider class="mx-4" inset vertical></v-divider>
+                            <v-spacer></v-spacer>
+                            <v-dialog v-model="dialog" max-width="500px">
+                                <!-- <template v-slot:activator="{ props }">
+                                    <v-btn
+                                        class="mb-2"
+                                        color="primary"
+                                        dark
+                                        v-bind="props"
+                                    >
+                                        New Item
+                                    </v-btn>
+                                </template> -->
+                                <v-card>
+                                    <v-card-title>
+                                        <span class="text-h5">{{
+                                            formTitle
+                                        }}</span>
+                                    </v-card-title>
+
+                                    <v-card-text>
+                                        <v-container>
+                                            <v-row>
+                                                <v-col cols="12" md="4" sm="6">
+                                                    <v-text-field
+                                                        v-model="editedItem.id"
+                                                        label="Dessert name"
+                                                    ></v-text-field>
+                                                </v-col>
+                                                <v-col cols="12" md="4" sm="6">
+                                                    <v-text-field
+                                                        v-model="
+                                                            editedItem.vacant_id
+                                                        "
+                                                        label="Calories"
+                                                    ></v-text-field>
+                                                </v-col>
+                                                <v-col cols="12" md="4" sm="6">
+                                                    <v-text-field
+                                                        v-model="
+                                                            editedItem.property_id
+                                                        "
+                                                        label="Fat (g)"
+                                                    ></v-text-field>
+                                                </v-col>
+                                                <v-col cols="12" md="4" sm="6">
+                                                    <v-text-field
+                                                        v-model="
+                                                            editedItem.date
+                                                        "
+                                                        label="Carbs (g)"
+                                                    ></v-text-field>
+                                                </v-col>
+                                                <v-col cols="12" md="4" sm="6">
+                                                    <v-text-field
+                                                        v-model="
+                                                            editedItem.status
+                                                        "
+                                                        label="Protein (g)"
+                                                    ></v-text-field>
+                                                </v-col>
+                                            </v-row>
+                                        </v-container>
+                                    </v-card-text>
+
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn
+                                            color="blue-darken-1"
+                                            variant="text"
+                                            @click="close"
+                                        >
+                                            Cancel
+                                        </v-btn>
+                                        <v-btn
+                                            color="blue-darken-1"
+                                            variant="text"
+                                            @click="save"
+                                        >
+                                            Save
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-dialog>
+                            <v-dialog v-model="dialogDelete" max-width="500px">
+                                <v-card>
+                                    <v-card-title class="text-h5"
+                                        >Are you sure you want to delete this
+                                        item?</v-card-title
+                                    >
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn
+                                            color="blue-darken-1"
+                                            variant="text"
+                                            @click="closeDelete"
+                                            >Cancel</v-btn
+                                        >
+                                        <v-btn
+                                            color="blue-darken-1"
+                                            variant="text"
+                                            @click="deleteItemConfirm"
+                                            >OK</v-btn
+                                        >
+                                        <v-spacer></v-spacer>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-dialog>
+                        </v-toolbar>
+                    </template>
+                    <template v-slot:item.actions="{ item }">
+                        <v-icon
+                            class="me-2"
+                            size="small"
+                            @click="editItem(item)"
+                        >
+                            mdi-pencil
+                        </v-icon>
+                        <v-icon size="small" @click="deleteItem(item)">
+                            mdi-delete
+                        </v-icon>
+                    </template>
+                    <template v-slot:no-data>
+                        <v-btn color="primary" @click="initialize">
+                            Reset
+                        </v-btn>
+                    </template>
                 </v-data-table>
             </div>
             <bookvacant ref="bookVacant" />
@@ -144,37 +281,7 @@ export default {
 
             tab: "viewPosts", // This is the initial tab that will be shown
             valid: true,
-            ad: {
-                title: "",
-                address: "",
-                description: "",
-                number_of_unitsRules: "",
-                propertyType: null,
-                images: [],
 
-                // Add other property ad details here
-            },
-            titleRules: [
-                (v) => !!v || "Title is required",
-                (v) =>
-                    (v && v.length <= 255) ||
-                    "Title must be less than 255 characters",
-            ],
-            addressRules: [(v) => !!v || "Address is required"],
-            descriptionRules: [(v) => !!v || "Description is required"],
-            number_of_unitsRules: [
-                (v) => !!v || "number of units    is required",
-            ],
-            rentRules: [(v) => !!v || "rent   is required"],
-
-            propertyTypes: [
-                "Apartment",
-                "House",
-                "Studio",
-                "Condo",
-                "Townhouse",
-                "Other",
-            ],
             properties: [],
             property_name: "",
             property_id: "",
@@ -211,50 +318,6 @@ export default {
     },
 
     methods: {
-        submitAd() {
-            if (this.$refs.form.validate()) {
-                // Initialize FormData object
-                let formData = new FormData();
-
-                // Append regular fields to formData
-                formData.append("property_id", this.property_id); // Assuming property_id is stored in this.property_id
-                formData.append("description", this.ad.description);
-                formData.append("number_of_units", this.ad.number_of_units);
-                formData.append("rent", this.ad.rent);
-                // Append other fields as necessary
-
-                // Append image files to formData
-                if (this.ad.images && this.ad.images.length > 0) {
-                    this.ad.images.forEach((file, index) => {
-                        formData.append(`images[${index}]`, file);
-                    });
-                }
-
-                // Use axios to send a POST request
-                axios
-                    .post("/vacantAd", formData, {
-                        headers: {
-                            "Content-Type": "multipart/form-data",
-                        },
-                    })
-                    .then((response) => {
-                        // Handle success
-                        console.log("Ad submitted successfully", response.data);
-                        // You can redirect the user or show a success message
-                    })
-                    .catch((error) => {
-                        // Handle error
-                        console.error(
-                            "Failed to submit ad",
-                            error.response.data
-                        );
-                        // Show error message to user
-                    });
-            } else {
-                console.log("Form is invalid");
-            }
-        },
-
         OpenBookVacant(item) {
             this.$refs.bookVacant.show(item);
         },
@@ -290,7 +353,9 @@ export default {
                 .get("/bookings")
                 .then((response) => {
                     // this.bookings = response.data;
-                    this.bookings = Array.isArray(response.data) ? response.data : [];
+                    this.bookings = Array.isArray(response.data)
+                        ? response.data
+                        : [];
                 })
                 .catch((error) => {
                     console.error("Failed to load bookings:", error);
@@ -298,7 +363,7 @@ export default {
         },
     },
 };
-</script>
+</script>fetchBookings
 
 <style scoped>
 .my-card {
