@@ -253,6 +253,8 @@ Route::post('/book{id}', [ApiBookVacantController::class, 'store']);
 
 
 Route::get('/bookings', [ApiBookVacantController::class, 'index']);
+Route::get('/booked', [ApiBookVacantController::class, 'getBookingsByProperty']);
+
 
 
 
