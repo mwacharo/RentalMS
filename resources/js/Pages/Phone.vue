@@ -377,7 +377,7 @@ export default {
         },
 
         fetchProperties() {
-            const API_URL = "property";
+            const API_URL = "properties";
             axios
                 .get(API_URL)
                 .then((response) => {
