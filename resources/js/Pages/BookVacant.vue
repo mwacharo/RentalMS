@@ -16,7 +16,7 @@
                     ></v-text-field>
 
                     <v-text-field
-                        v-model="date"
+                        v-model="number_of_units"
                         type="number"
                         label="Enter Number of Unit(s)"
                         :rules="dateRules"
