@@ -212,9 +212,12 @@ export default {
         },
         deleteItemConfirm() {
             axios
+
                 .delete(`/bill/${this.editedItem.id}`)
                 .then(() => {
                     this.bills.splice(this.editedIndex, 1);
+                    this.$toastr.warning(' deleted')
+
                     this.closeDelete();
                 })
                 .catch((error) => console.error("Deletion error:", error));
@@ -236,6 +239,8 @@ export default {
             let request;
             if (this.editedIndex > -1) {
                 request = axios.put(
+                    this.$toastr.success(' Updated')
+
                     `/bill/${this.editedItem.id}`,
                     this.editedItem
 
@@ -244,6 +249,8 @@ export default {
                  this.initialize(); // refresh data
 
             } else {
+                this.$toastr.success(' created ')
+
                 request = axios.post(`/bill`, this.editedItem);
             }
             request

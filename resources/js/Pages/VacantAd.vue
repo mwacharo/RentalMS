@@ -136,6 +136,7 @@ export default {
             property_id: "",
             rent: "",
             vacants: [],
+            propertyBookings:[],
             // ...other data properties
             headers: [
                 { title: "ID", key: "id" },
@@ -154,6 +155,9 @@ export default {
     created() {
         this.fetchProperties();
         this.viewPosts();
+        this.bookings();
+
+
     },
     methods: {
         submitAd() {
@@ -222,6 +226,19 @@ export default {
                 .catch((error) => {
                     console.error("failed to load vacants:", error);
                 });
+        },
+        bookings(){
+            const API_URL = "booked";
+            axios
+                .get(API_URL)
+                .then((response) => {
+                    console.log("propertyBookings response:", response.data);
+                    this.propertyBookings = response.data;
+                })
+                .catch((error) => {
+                    console.error("failed to load propertyBookings:", error);
+                });
+
         },
     },
 };

@@ -37,6 +37,8 @@ class ApiBookVacantController extends Controller
             'tenant_id' => 'required|exists:users,id',
             'date' => 'required|date',
             'status' => 'string|max:255',
+            'number_of_units' => 'string|max:255',
+
             // 'number_of_units' => 'required',
         ]);
 
@@ -90,10 +92,11 @@ class ApiBookVacantController extends Controller
         return response()->json(['message' => 'Booking successfully deleted']);
     }
 
-    public function getBookingsByProperty()
+    public function propertyBookings()
 
     {
         $id = Auth::id();
+        // dd($id);
    
         $bookings = BookVacant::where('property_id', $id)->get();
 
