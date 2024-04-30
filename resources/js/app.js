@@ -1,5 +1,8 @@
 import './bootstrap';
 import '../css/app.css';
+// toast
+import ToastrPlugin from './toastr-plugin'
+
 
 import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/inertia-vue3'
@@ -16,6 +19,9 @@ createInertiaApp({
     const app = createApp({ render: () => h(App, props) })
     app.use(plugin)
     app.use(vuetify)
+    // toast
+    app.use(ToastrPlugin)
+
     app.use(ZiggyVue, Ziggy)
 
     app.mount(el)
