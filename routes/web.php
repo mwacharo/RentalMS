@@ -231,7 +231,7 @@ Route::get('/confirmation', [MpesaApiController::class, 'handleConfirmationCallb
 Route::get('/registerUrl', [MpesaApiController::class, 'registerUrl']);
 
 
-Route::post('/mpesa/validation', [MpesaApiController::class, 'handleValidationCallback']);
+// Route::post('/mpesa/validation', [MpesaApiController::class, 'handleValidationCallback']);
 
 
 
@@ -240,7 +240,7 @@ Route::post('/mpesa/validation', [MpesaApiController::class, 'handleValidationCa
 
 // Route::get('/mpesa/stkpush/{phone}', [MpesaApiController::class, 'initiateSTKPush'])->name('mpesa.stkpush');
 // In your routes file
-Route::get('/mpesa/stkpush/{phone}/{unit_number}/{amount}', [MpesaApiController::class, 'initiateSTKPush'])->name('mpesa.stkpush');
+// Route::get('/mpesa/stkpush/{phone}/{unit_number}/{amount}', [MpesaApiController::class, 'initiateSTKPush'])->name('mpesa.stkpush');
 
 
 Route::get('/vacant', [ApiVacantController::class, 'index']);

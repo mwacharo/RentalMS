@@ -32,18 +32,7 @@ class ApiTenantController extends Controller
         return response()->json($tenants);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        // This method is typically used for displaying the form for creating a new resource,
-        // but in an API, it's not commonly used. You can leave it empty.
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+   
     public function store(Request $request)
     {
         try {
@@ -87,18 +76,8 @@ class ApiTenantController extends Controller
         return response()->json($tenant);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        // This method is typically used for displaying the form for editing a resource,
-        // but in an API, it's not commonly used. You can leave it empty.
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    
     public function update(Request $request, string $id)
     {
         try {

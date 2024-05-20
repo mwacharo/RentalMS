@@ -28,6 +28,11 @@ use App\Http\Controllers\ApiBookVacantController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('/callback', [MpesaApiController::class, 'handleCallback']);
+// Route::get('/mpesa/stkpush/{phone}', [MpesaApiController::class, 'initiateSTKPush'])->name('mpesa.stkpush');
+// In your routes file
+Route::get('/mpesa/stkpush/{phone}/{unit_number}/{amount}', [MpesaApiController::class, 'initiateSTKPush'])->name('mpesa.stkpush');
+
 
 // Route to get a list 
 /*
@@ -136,7 +141,6 @@ Route::any('/validation', [TransactionController::class, 'store']);
 // mpesa
 Route::get('/token', [MpesaApiController::class, 'generateToken']);
 // Route::get('/stkpush', [MpesaApiController::class, 'initiateSTKPush']);
-Route::get('/callback', [MpesaApiController::class, 'handleCallback']);
 
 
 Route::get('/confirmation', [MpesaApiController::class, 'handleConfirmationCallback']);
@@ -152,9 +156,7 @@ Route::post('/mpesa/validation', [MpesaApiController::class, 'handleValidationCa
 
 // routes/web.php or routes/api.php
 
-// Route::get('/mpesa/stkpush/{phone}', [MpesaApiController::class, 'initiateSTKPush'])->name('mpesa.stkpush');
-// In your routes file
-Route::get('/mpesa/stkpush/{phone}/{unit_number}/{amount}', [MpesaApiController::class, 'initiateSTKPush'])->name('mpesa.stkpush');
+
 
 
 Route::get('/vacant', [ApiVacantController::class, 'index']);
