@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('unit_number');
             $table->decimal('deposit', 8, 2);
             $table->string('deposit_status')->default('0'); // Set default value
+            $table->unsignedBigInteger('unit_id')->nullable();
+            $table->unsignedBigInteger('tenant_id')->nullable();
+
 
             $table->decimal('rent', 8, 2);
             $table->string('unit_status')->default('0');

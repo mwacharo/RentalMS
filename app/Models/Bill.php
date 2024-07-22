@@ -30,7 +30,7 @@ class Bill extends Model
     //      return $this->belongsTo(Unit::class);
     //  }
 
-     public function tenant()
+     public function unit()
      {
          return $this->belongsTo(Unit::class);
      }

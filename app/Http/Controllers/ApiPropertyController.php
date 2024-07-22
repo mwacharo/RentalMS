@@ -13,8 +13,8 @@ class ApiPropertyController extends Controller
     public function index()
     {
         //
-        request('json');
-        $properties = Property::with('landlord')->get();
+        // request('json');
+        $properties = Property::with('units','landlord')->get();
         return response()->json($properties);
     }
 

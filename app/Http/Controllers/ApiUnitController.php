@@ -14,7 +14,7 @@ class ApiUnitController extends Controller
     {
         //
         // $units= Unit::all();
-        $units = Unit::with('property')->get();
+        $units = Unit::with('tenant','property',)->get();
         return response()->json($units);
     }
 

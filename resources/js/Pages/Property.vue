@@ -2,22 +2,14 @@
     <AppLayout>
         <VCard class="my-card">
             <v-container>
-                <v-text-field
-                    v-model="searchQuery"
-                    label="Search"
-                    @keyup.enter="performSearch"
-                    variant="outlined"
-                ></v-text-field>
+                <v-text-field v-model="searchQuery" label="Search" @keyup.enter="performSearch"
+                    variant="outlined"></v-text-field>
             </v-container>
         </vcard>
-        
+
         <VCard class="my-card" outlined>
-            <v-data-table
-                :headers="headers"
-                :loading="loading"
-                :items="properties"
-                :sort-by="[{ key: 'property_name', order: 'asc' }]"
-            >
+            <v-data-table :headers="headers" :loading="loading" :items="properties"
+                :sort-by="[{ key: 'property_name', order: 'asc' }]">
                 <template v-slot:top>
                     <v-toolbar flat>
                         <v-toolbar-title>Property</v-toolbar-title>
@@ -26,12 +18,7 @@
                         <v-spacer></v-spacer>
                         <v-dialog v-model="dialog" max-width="500px">
                             <template v-slot:activator="{ props }">
-                                <v-btn
-                                    color="primary"
-                                    dark
-                                    class="mb-2"
-                                    v-bind="props"
-                                >
+                                <v-btn color="primary" dark class="mb-2" v-bind="props">
                                     New Property
                                 </v-btn>
                             </template>
@@ -45,59 +32,33 @@
                                     <v-container>
                                         <v-row>
                                             <v-col cols="12" sm="6" md="4">
-                                                <v-text-field
-                                                    v-model="
-                                                        editedItem.property_name
-                                                    "
-                                                    label="Property Name"
-                                                ></v-text-field>
+                                                <v-text-field v-model="editedItem.property_name
+                                                    " label="Property Name"></v-text-field>
                                             </v-col>
                                             <v-col cols="12" sm="6" md="4">
-                                                <v-text-field
-                                                    v-model="editedItem.email"
-                                                    label="Email"
-                                                ></v-text-field>
+                                                <v-text-field v-model="editedItem.email" label="Email"></v-text-field>
                                             </v-col>
                                             <v-col cols="12" sm="6" md="4">
-                                                <v-text-field
-                                                    v-model="editedItem.phone"
-                                                    label="phone"
-                                                ></v-text-field>
+                                                <v-text-field v-model="editedItem.phone" label="phone"></v-text-field>
                                             </v-col>
                                             <v-col cols="12" sm="6" md="4">
-                                                <v-text-field
-                                                    v-model="editedItem.address"
-                                                    label="Address"
-                                                ></v-text-field>
+                                                <v-text-field v-model="editedItem.address"
+                                                    label="Address"></v-text-field>
                                             </v-col>
                                             <v-col cols="12" sm="6" md="4">
-                                                <v-text-field
-                                                    v-model="
-                                                        editedItem.description
-                                                    "
-                                                    label="Description"
-                                                ></v-text-field>
+                                                <v-text-field v-model="editedItem.description
+                                                    " label="Description"></v-text-field>
                                             </v-col>
 
                                             <v-col cols="12" sm="6" md="4">
-                                                <v-text-field
-                                                    v-model="
-                                                        editedItem.number_of_units
-                                                    "
-                                                    label="Units"
-                                                ></v-text-field>
+                                                <v-text-field v-model="editedItem.number_of_units
+                                                    " label="Units"></v-text-field>
                                             </v-col>
 
                                             <v-col cols="12" sm="6" md="4">
-                                                <v-select
-                                                    v-model="
-                                                        editedItem.landlord_id
-                                                    "
-                                                    :items="landlords"
-                                                    item-title="landlord_name"
-                                                    label="Landlord Name"
-                                                    item-value="id"
-                                                ></v-select>
+                                                <v-select v-model="editedItem.landlord_id
+                                                    " :items="landlords" item-title="landlord_name"
+                                                    label="Landlord Name" item-value="id"></v-select>
                                             </v-col>
                                         </v-row>
                                     </v-container>
@@ -105,18 +66,10 @@
 
                                 <v-card-actions>
                                     <v-spacer></v-spacer>
-                                    <v-btn
-                                        color="blue-darken-1"
-                                        variant="text"
-                                        @click="close"
-                                    >
+                                    <v-btn color="blue-darken-1" variant="text" @click="close">
                                         Cancel
                                     </v-btn>
-                                    <v-btn
-                                        color="blue-darken-1"
-                                        variant="text"
-                                        @click="save"
-                                    >
+                                    <v-btn color="blue-darken-1" variant="text" @click="save">
                                         Save
                                     </v-btn>
                                 </v-card-actions>
@@ -124,24 +77,12 @@
                         </v-dialog>
                         <v-dialog v-model="dialogDelete" max-width="500px">
                             <v-card>
-                                <v-card-title class="text-h5"
-                                    >Are you sure you want to delete this
-                                    item?</v-card-title
-                                >
+                                <v-card-title class="text-h5">Are you sure you want to delete this
+                                    item?</v-card-title>
                                 <v-card-actions>
                                     <v-spacer></v-spacer>
-                                    <v-btn
-                                        color="blue-darken-1"
-                                        variant="text"
-                                        @click="closeDelete"
-                                        >Cancel</v-btn
-                                    >
-                                    <v-btn
-                                        color="blue-darken-1"
-                                        variant="text"
-                                        @click="deleteItemConfirm"
-                                        >OK</v-btn
-                                    >
+                                    <v-btn color="blue-darken-1" variant="text" @click="closeDelete">Cancel</v-btn>
+                                    <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">OK</v-btn>
                                     <v-spacer></v-spacer>
                                 </v-card-actions>
                             </v-card>
@@ -152,6 +93,8 @@
                     <v-icon size="small" class="me-2" @click="editItem(item)">
                         mdi-pencil
                     </v-icon>
+                    <v-icon size="small" class="me-2" @click="viewUnits(item)">
+                        mdi-home-outline                                  </v-icon>
                     <v-icon size="small" @click="deleteItem(item)">
                         mdi-delete
                     </v-icon>
@@ -160,6 +103,7 @@
                     <v-btn color="primary" @click="initialize"> Reset </v-btn>
                 </template>
             </v-data-table>
+            <PropertyUnit ref="PropertyUnit" />
         </VCard>
     </AppLayout>
 </template>
@@ -167,10 +111,13 @@
 <script>
 import AppLayout from "@/Layouts/AppLayout.vue";
 import axios from "axios";
+import PropertyUnit from "./PropertyUnit.vue";
 
 export default {
     components: {
         AppLayout,
+        PropertyUnit,
+
     },
     data: () => ({
         dialog: false,
@@ -234,6 +181,12 @@ export default {
         this.fetchlandlord();
     },
     methods: {
+
+        viewUnits (item){
+            this.$refs.PropertyUnit.show(item);
+
+
+        },
         initialize() {
             const API_URL = "/properties";
             axios
@@ -337,6 +290,7 @@ export default {
 
 <style scoped>
 .my-card {
-    margin: 40px; /* Adjust the margin as needed */
+    margin: 40px;
+    /* Adjust the margin as needed */
 }
 </style>

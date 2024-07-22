@@ -28,7 +28,7 @@ class ApiTenantController extends Controller
     public function index()
     {
         //  $tenants = Tenant::all();
-        $tenants = Tenant::with('property')->get();
+        $tenants = Tenant::with('property','unit')->get();
         return response()->json($tenants);
     }
 

@@ -2,23 +2,14 @@
     <AppLayout>
         <VCard class="my-card">
             <v-container>
-                <v-text-field
-                    v-model="searchQuery"
-                    label="Search"
-                    @keyup.enter="performSearch"
-                    variant="outlined"
-                ></v-text-field>
+                <v-text-field v-model="searchQuery" label="Search" @keyup.enter="performSearch"
+                    variant="outlined"></v-text-field>
             </v-container>
         </VCard>
 
         <VCard class="my-card" outlined>
-            <v-data-table
-                show-select
-                :headers="headers"
-                :loading="loading"
-                :items="tenants"
-                :sort-by="[{ key: 'tenant_name', order: 'asc' }]"
-            >
+            <v-data-table show-select :headers="headers" :loading="loading" :items="tenants"
+                :sort-by="[{ key: 'tenant_name', order: 'asc' }]">
                 <template v-slot:top>
                     <v-toolbar>
                         <v-toolbar-title>Tenant</v-toolbar-title>
@@ -28,44 +19,21 @@
 
                         <v-dialog v-model="dialog" max-width="700px">
                             <template v-slot:activator="{ props }">
-                                <v-btn
-                                    color="success"
-                                    dark
-                                    class="mb-2 mr-2"
-                                    @click="openExcel"
-                                    prepend-icon="mdi-file-excel"
-                                    variant="outlined"
-                                >
+                                <v-btn color="success" dark class="mb-2 mr-2" @click="openExcel"
+                                    prepend-icon="mdi-file-excel" variant="outlined">
                                     Import
                                 </v-btn>
 
-                                <v-btn
-                                    color="primary"
-                                    dark
-                                    class="mb-2"
-                                    prepend-icon="mdi-send"
-                                    variant="outlined"
-                                >
+                                <v-btn color="primary" dark class="mb-2" prepend-icon="mdi-send" variant="outlined">
                                     Invoice
                                 </v-btn>
 
-                                <v-btn
-                                    color="primary"
-                                    dark
-                                    class="mb-2"
-                                    prepend-icon="mdi-email"
-                                >
+                                <v-btn color="primary" dark class="mb-2" prepend-icon="mdi-email">
                                     Invoice
                                 </v-btn>
 
-                                <v-btn
-                                    color="primary"
-                                    dark
-                                    class="mb-2"
-                                    v-bind="props"
-                                    prepend-icon="mdi-plus"
-                                    variant="outlined"
-                                >
+                                <v-btn color="primary" dark class="mb-2" v-bind="props" prepend-icon="mdi-plus"
+                                    variant="outlined">
                                     Tenant
                                 </v-btn>
                             </template>
@@ -79,71 +47,40 @@
                                     <v-container>
                                         <v-row>
                                             <v-col cols="12" sm="6" md="4">
-                                                <v-text-field
-                                                    v-model="
-                                                        editedItem.tenant_name
-                                                    "
-                                                    label="Tanant Name"
-                                                ></v-text-field>
+                                                <v-text-field v-model="editedItem.tenant_name
+                                                    " label="Tanant Name"></v-text-field>
                                             </v-col>
                                             <v-col cols="12" sm="6" md="4">
-                                                <v-text-field
-                                                    v-model="editedItem.email"
-                                                    label="Email"
-                                                ></v-text-field>
+                                                <v-text-field v-model="editedItem.email" label="Email"></v-text-field>
                                             </v-col>
                                             <v-col cols="12" sm="6" md="4">
-                                                <v-text-field
-                                                    v-model="editedItem.phone"
-                                                    label="phone"
-                                                ></v-text-field>
+                                                <v-text-field v-model="editedItem.phone" label="phone"></v-text-field>
                                             </v-col>
 
                                             <v-col cols="12" sm="6" md="4">
-                                                <v-select
-                                                    v-model="
-                                                        editedItem.property_id
-                                                    "
-                                                    :items="properties"
-                                                    item-title="property_name"
-                                                    label="Property Name"
-                                                    item-value="id"
-                                                ></v-select>
+                                                <v-select v-model="editedItem.property_id
+                                                    " :items="properties" item-title="property_name"
+                                                    label="Property Name" item-value="id"></v-select>
                                             </v-col>
 
                                             <v-col cols="12" sm="6" md="4">
-                                                <v-select
-                                                    v-model="editedItem.unit_id"
-                                                    :items="units"
-                                                    item-title="unit_number"
-                                                    label="Account Number"
-                                                    item-value="id"
-                                                ></v-select>
+                                                <v-select v-model="editedItem.unit_id" :items="units"
+                                                    item-title="unit_number" label="Account Number"
+                                                    item-value="id"></v-select>
                                             </v-col>
 
-                                            <v-file-input
-                                                label="Select  file"
-                                                accept="pfd"
-                                                @change="uploadaAgreement"
-                                            ></v-file-input>
+                                            <v-file-input label="Select  file" accept="pfd"
+                                                @change="uploadaAgreement"></v-file-input>
                                         </v-row>
                                     </v-container>
                                 </v-card-text>
 
                                 <v-card-actions>
                                     <v-spacer></v-spacer>
-                                    <v-btn
-                                        color="blue-darken-1"
-                                        variant="text"
-                                        @click="close"
-                                    >
+                                    <v-btn color="blue-darken-1" variant="text" @click="close">
                                         Cancel
                                     </v-btn>
-                                    <v-btn
-                                        color="blue-darken-1"
-                                        variant="text"
-                                        @click="save"
-                                    >
+                                    <v-btn color="blue-darken-1" variant="text" @click="save">
                                         Save
                                     </v-btn>
                                 </v-card-actions>
@@ -152,24 +89,12 @@
 
                         <v-dialog v-model="dialogDelete" max-width="500px">
                             <v-card>
-                                <v-card-title class="text-h5"
-                                    >Are you sure you want to delete this
-                                    item?</v-card-title
-                                >
+                                <v-card-title class="text-h5">Are you sure you want to delete this
+                                    item?</v-card-title>
                                 <v-card-actions>
                                     <v-spacer></v-spacer>
-                                    <v-btn
-                                        color="blue-darken-1"
-                                        variant="text"
-                                        @click="closeDelete"
-                                        >Cancel</v-btn
-                                    >
-                                    <v-btn
-                                        color="blue-darken-1"
-                                        variant="text"
-                                        @click="deleteItemConfirm"
-                                        >OK</v-btn
-                                    >
+                                    <v-btn color="blue-darken-1" variant="text" @click="closeDelete">Cancel</v-btn>
+                                    <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">OK</v-btn>
                                     <v-spacer></v-spacer>
                                 </v-card-actions>
                             </v-card>
@@ -180,12 +105,7 @@
                 <template v-slot:item.actions="{ item }">
                     <v-tooltip location="bottom">
                         <template v-slot:activator="{ props }">
-                            <v-btn
-                                icon
-                                v-bind="props"
-                                @click="tenantInvoice(item)"
-                                variant="text"
-                            >
+                            <v-btn icon v-bind="props" @click="tenantInvoice(item)" variant="text">
                                 <v-icon color="info"> mdi-book </v-icon>
                             </v-btn>
                         </template>
@@ -211,12 +131,7 @@
 
                     <v-tooltip location="bottom">
                         <template v-slot:activator="{ props }">
-                            <v-btn
-                                icon
-                                v-bind="props"
-                                @click="editItem(item)"
-                                variant="text"
-                            >
+                            <v-btn icon v-bind="props" @click="editItem(item)" variant="text">
                                 <v-icon color="info"> mdi-pencil </v-icon>
                             </v-btn>
                         </template>
@@ -226,12 +141,7 @@
 
                     <v-tooltip location="bottom">
                         <template v-slot:activator="{ props }">
-                            <v-btn
-                                icon
-                                v-bind="props"
-                                @click="openBill(item)"
-                                variant="text"
-                            >
+                            <v-btn icon v-bind="props" @click="openBill(item)" variant="text">
                                 <v-icon color="info"> mdi-cog </v-icon>
                             </v-btn>
                         </template>
@@ -241,12 +151,7 @@
 
                     <v-tooltip location="bottom">
                         <template v-slot:activator="{ props }">
-                            <v-btn
-                                icon
-                                v-bind="props"
-                                @click="deleteItem(item)"
-                                variant="text"
-                            >
+                            <v-btn icon v-bind="props" @click="deleteItem(item)" variant="text">
                                 <v-icon color="error"> mdi-delete </v-icon>
                             </v-btn>
                         </template>
@@ -497,8 +402,7 @@ export default {
 
 <style scoped>
 .my-card {
-    margin: 40px; /* Adjust the margin as needed */
+    margin: 40px;
+    /* Adjust the margin as needed */
 }
 </style>
-
-

@@ -22,7 +22,7 @@ class Unit extends Model
     // }
     public function tenant()
     {
-        return $this->belongsTo(Tenant::class, 'tenant_id');
+        return $this->belongsTo(Tenant::class);
     }
 
     public function transactions()
