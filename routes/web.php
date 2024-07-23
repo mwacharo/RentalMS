@@ -15,6 +15,8 @@ use App\Http\Controllers\ApiLandlordController;
 use App\Http\Controllers\ApiPropertyController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ApiBookVacantController;
+use App\Http\Controllers\ApiUserController;
+
 // use App\Http\Controllers\ApiBookVacantController;
 /*
 |--------------------------------------------------------------------------
@@ -111,6 +113,13 @@ Route::middleware([
     Route::get('/vacantAd', function () {
         return Inertia::render('VacantAd');
     })->name('vacantAd');
+
+
+
+Route::get('/users', [ApiUserController::class, 'index']);
+Route::post('/user', [ApiUserController::class, 'store']);
+// Route::get('/update', [ApiUserController::class, 'update']);
+// Route::get('/user', [ApiUserController::class, 'index']);
 
 
 
