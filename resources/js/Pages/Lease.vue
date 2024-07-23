@@ -1,326 +1,196 @@
 <template>
     <AppLayout>
-        <VCard class="my-card" >
-          <container>
-            <v-text-field
-                label="Search"
-                variant="outlined"
-            ></v-text-field>
-          </container>
+        <VCard class="my-card">
+            <container>
+                <v-text-field label="Search" variant="outlined"></v-text-field>
+            </container>
         </VCard>
 
         <VCard class="my-card" outlined>
-            <v-data-table
-                :headers="headers"
-                :items="desserts"
-                :sort-by="[{ key: 'calories', order: 'asc' }]"
-            >
+            <v-data-table :headers="headers" :items="leases" :sort-by="[{ key: 'calories', order: 'asc' }]">
                 <template v-slot:top>
                     <v-toolbar flat>
                         <v-toolbar-title>Lease</v-toolbar-title>
+                        <v-btn color="primary" dark class="mb-2" @click="LeaseDetails" prepend-icon="mdi-plus"
+                            variant="outlined">
+                            Lease Details
+                        </v-btn>
 
-                        
-                        <v-divider class="mx-4" inset vertical></v-divider>
-                        <v-spacer></v-spacer>
-                        <v-dialog v-model="dialog" max-width="500px">
-                            <template v-slot:activator="{ props }">
-                                <v-btn
-                                    color="primary"
-                                    dark
-                                    class="mb-2"
-                                    v-bind="props"
-                                >
-                                    New Landlord
-                                </v-btn>
-                            </template>
-
-                            <v-card>
-                                <v-card-title>
-                                    <span class="text-h5">{{ formTitle }}</span>
-                                </v-card-title>
-
-                                <v-card-text>
-                                    <v-container>
-                                        <v-row>
-                                            <v-col cols="12" sm="6" md="4">
-                                                <v-text-field
-                                                    v-model="editedItem.name"
-                                                    label="Dessert name"
-                                                ></v-text-field>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" md="4">
-                                                <v-text-field
-                                                    v-model="
-                                                        editedItem.calories
-                                                    "
-                                                    label="Calories"
-                                                ></v-text-field>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" md="4">
-                                                <v-text-field
-                                                    v-model="editedItem.fat"
-                                                    label="Fat (g)"
-                                                ></v-text-field>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" md="4">
-                                                <v-text-field
-                                                    v-model="editedItem.carbs"
-                                                    label="Carbs (g)"
-                                                ></v-text-field>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" md="4">
-                                                <v-text-field
-                                                    v-model="editedItem.protein"
-                                                    label="Protein (g)"
-                                                ></v-text-field>
-                                            </v-col>
-                                        </v-row>
-                                    </v-container>
-                                </v-card-text>
-
-                                <v-card-actions>
-                                    <v-spacer></v-spacer>
-                                    <v-btn
-                                        color="blue-darken-1"
-                                        variant="text"
-                                        @click="close"
-                                    >
-                                        Cancel
-                                    </v-btn>
-                                    <v-btn
-                                        color="blue-darken-1"
-                                        variant="text"
-                                        @click="save"
-                                    >
-                                        Save
-                                    </v-btn>
-                                </v-card-actions>
-                            </v-card>
-                        </v-dialog>
-                        <v-dialog v-model="dialogDelete" max-width="500px">
-                            <v-card>
-                                <v-card-title class="text-h5"
-                                    >Are you sure you want to delete this
-                                    item?</v-card-title
-                                >
-                                <v-card-actions>
-                                    <v-spacer></v-spacer>
-                                    <v-btn
-                                        color="blue-darken-1"
-                                        variant="text"
-                                        @click="closeDelete"
-                                        >Cancel</v-btn
-                                    >
-                                    <v-btn
-                                        color="blue-darken-1"
-                                        variant="text"
-                                        @click="deleteItemConfirm"
-                                        >OK</v-btn
-                                    >
-                                    <v-spacer></v-spacer>
-                                </v-card-actions>
-                            </v-card>
-                        </v-dialog>
+                        <v-btn color="primary" dark class="mb-2" @click="OpenCreateLease" prepend-icon="mdi-plus"
+                            variant="outlined">
+                            Lease
+                        </v-btn>
                     </v-toolbar>
                 </template>
-                <template v-slot:item.actions="{ item }">
-                    <v-icon size="small" class="me-2" @click="editItem(item)">
-                        mdi-pencil
-                    </v-icon>
-                    <v-icon size="small" @click="deleteItem(item)">
-                        mdi-delete
-                    </v-icon>
-                </template>
-                <template v-slot:no-data>
-                    <v-btn color="primary" @click="initialize"> Reset </v-btn>
-                </template>
+
             </v-data-table>
+
+            <!-- create a lease dialog-->
+            <v-dialog v-model="dialog" max-width="800px">
+                <v-card>
+                    <v-card-title>
+                        <span class="headline">Create Lease Agreement</span>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-form @submit.prevent="createLeaseAgreement">
+                            <v-select label="Tenant" :items="tenants" item-title="tenant_name" item-value="id"
+                                v-model="leaseAgreement.tenant_id" required></v-select>
+                            <v-select label="Property" :items="properties" item-title="property_name" item-value="id"
+                                v-model="leaseAgreement.property_id" required></v-select>
+                            <v-select label="Unit" :items="units" item-title="unit_number" item-value="id"
+                                v-model="leaseAgreement.unit_id" required></v-select>
+                            <v-text-field label="Start Date" v-model="leaseAgreement.start_date" type="date"
+                                required></v-text-field>
+                            <v-text-field label="End Date" v-model="leaseAgreement.end_date" type="date"
+                                required></v-text-field>
+                            <v-text-field label="Rent Amount" v-model="leaseAgreement.rent_amount"
+                                required></v-text-field>
+                            <v-text-field label="Security Deposit" v-model="leaseAgreement.security_deposit"
+                                required></v-text-field>
+                                <!-- <v-col cols="12" sm="6">
+                  <h6>Terms and Conditions</h6>
+                  <p><strong>1. Parties</strong></p>
+                  <p>The Landlord and Tenant as specified above.</p>
+                  <p><strong>2. Term</strong></p>
+                  <p>The lease starts on {{ lease.start_date }} and ends on {{ lease.end_date }}.</p>
+                  <p><strong>3. Rent</strong></p>
+                  <p>The monthly rent is KES {{ lease.rent }}, payable on or before the due date each month.</p>
+                  <p><strong>4. Security Deposit</strong></p>
+                  <p>The security deposit is KES {{ lease.security_deposit }}.</p>
+                  <p><strong>5. Utilities</strong></p>
+                  <p>The Tenant is responsible for all utilities.</p>
+                  <p><strong>6. Maintenance and Repairs</strong></p>
+                  <p>The Tenant shall maintain the Premises in good condition and notify the Landlord of necessary repairs.</p>
+                  <p><strong>7. Use of Premises</strong></p>
+                  <p>The Premises are for residential purposes only.</p>
+                  <p><strong>8. Alterations</strong></p>
+                  <p>No alterations without written consent from the Landlord.</p>
+                  <p><strong>9. Subletting and Assignment</strong></p>
+                  <p>No subletting or assignment without written consent from the Landlord.</p>
+                  <p><strong>10. Termination</strong></p>
+                  <p>Either party may terminate with [Number of Days] days notice.</p>
+                </v-col> -->
+
+                            <v-btn type="submit" color="primary">Create Lease</v-btn>
+                        </v-form>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" text @click="dialog = false">Cancel</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
         </VCard>
     </AppLayout>
 </template>
 
 <script>
 import AppLayout from "@/Layouts/AppLayout.vue";
+import axios from "axios";
 
 export default {
     components: {
         AppLayout,
     },
-    data: () => ({
-        dialog: false,
-        dialogDelete: false,
-        headers: [
-            {
-                title: "Dessert (100g serving)",
-                align: "start",
-                sortable: false,
-                key: "name",
+    data() {
+        return {
+            dialog: false,
+            leaseAgreement: {
+                tenant_id: '',
+                property_id: '',
+                unit_id: '',
+                start_date: '',
+                end_date: '',
+                rent_amount: '',
+                security_deposit: ''
             },
-            { title: "Calories", key: "calories" },
-            { title: "Fat (g)", key: "fat" },
-            { title: "Carbs (g)", key: "carbs" },
-            { title: "Protein (g)", key: "protein" },
-            { title: "Actions", key: "actions", sortable: false },
-        ],
-        desserts: [],
-        editedIndex: -1,
-        editedItem: {
-            name: "",
-            calories: 0,
-            fat: 0,
-            carbs: 0,
-            protein: 0,
-        },
-        defaultItem: {
-            name: "",
-            calories: 0,
-            fat: 0,
-            carbs: 0,
-            protein: 0,
-        },
-    }),
-
-    computed: {
-        formTitle() {
-            return this.editedIndex === -1 ? "New Landlord" : "Edit Landlord";
-        },
+            tenants: [],
+            properties: [],
+            units: [],
+            headers: [
+                { title: "Lease ID", align: "start", sortable: false, key: "ID" },
+                { title: "Property", key: "calories" },
+                { title: "Unit", key: "fat" },
+                { title: "Tenant", key: "fat" },
+                { title: "Start Date", key: "carbs" },
+                { title: "End Date", key: "protein" },
+                { title: "Rent Amount", key: "protein" },
+                { title: "Security Deposit", key: "protein" },
+                { title: "Actions", key: "actions", sortable: false }
+            ],
+            leases: [],
+            editedIndex: -1,
+            editedItem: {},
+            defaultItem: {}
+        };
     },
-
-    watch: {
-        dialog(val) {
-            val || this.close();
-        },
-        dialogDelete(val) {
-            val || this.closeDelete();
-        },
-    },
-
     created() {
         this.initialize();
     },
-
     methods: {
-        initialize() {
-            this.desserts = [
-                {
-                    name: "Frozen Yogurt",
-                    calories: 159,
-                    fat: 6.0,
-                    carbs: 24,
-                    protein: 4.0,
-                },
-                {
-                    name: "Ice cream sandwich",
-                    calories: 237,
-                    fat: 9.0,
-                    carbs: 37,
-                    protein: 4.3,
-                },
-                {
-                    name: "Eclair",
-                    calories: 262,
-                    fat: 16.0,
-                    carbs: 23,
-                    protein: 6.0,
-                },
-                {
-                    name: "Cupcake",
-                    calories: 305,
-                    fat: 3.7,
-                    carbs: 67,
-                    protein: 4.3,
-                },
-                {
-                    name: "Gingerbread",
-                    calories: 356,
-                    fat: 16.0,
-                    carbs: 49,
-                    protein: 3.9,
-                },
-                {
-                    name: "Jelly bean",
-                    calories: 375,
-                    fat: 0.0,
-                    carbs: 94,
-                    protein: 0.0,
-                },
-                {
-                    name: "Lollipop",
-                    calories: 392,
-                    fat: 0.2,
-                    carbs: 98,
-                    protein: 0,
-                },
-                {
-                    name: "Honeycomb",
-                    calories: 408,
-                    fat: 3.2,
-                    carbs: 87,
-                    protein: 6.5,
-                },
-                {
-                    name: "Donut",
-                    calories: 452,
-                    fat: 25.0,
-                    carbs: 51,
-                    protein: 4.9,
-                },
-                {
-                    name: "KitKat",
-                    calories: 518,
-                    fat: 26.0,
-                    carbs: 65,
-                    protein: 7,
-                },
-            ];
-        },
-
-        editItem(item) {
-            this.editedIndex = this.desserts.indexOf(item);
-            this.editedItem = Object.assign({}, item);
+        OpenCreateLease() {
             this.dialog = true;
-        },
 
-        deleteItem(item) {
-            this.editedIndex = this.desserts.indexOf(item);
-            this.editedItem = Object.assign({}, item);
-            this.dialogDelete = true;
         },
-
-        deleteItemConfirm() {
-            this.desserts.splice(this.editedIndex, 1);
-            this.closeDelete();
+        initialize() {
+            // Fetch initial data here
+            this.fetchTenants();
+            this.fetchProperties();
+            this.fetchUnits();
         },
-
-        close() {
-            this.dialog = false;
-            this.$nextTick(() => {
-                this.editedItem = Object.assign({}, this.defaultItem);
-                this.editedIndex = -1;
+        fetchTenants() {
+            // Fetch tenants from the backend
+            axios.get('tenants').then(response => {
+                this.tenants = response.data;
             });
         },
-
-        closeDelete() {
-            this.dialogDelete = false;
-            this.$nextTick(() => {
-                this.editedItem = Object.assign({}, this.defaultItem);
-                this.editedIndex = -1;
+        fetchProperties() {
+            // Fetch properties from the backend
+            axios.get('properties').then(response => {
+                this.properties = response.data;
             });
         },
+        // fetchUnits(propertyId) {
+        fetchUnits() {
+            // Fetch units based on the selected property from the backend
+            // axios.get(`properties/${propertyId}/units`).then(response => {
+            axios.get('units').then(response => {
 
-        save() {
-            if (this.editedIndex > -1) {
-                Object.assign(this.desserts[this.editedIndex], this.editedItem);
-            } else {
-                this.desserts.push(this.editedItem);
-            }
-            this.close();
+                this.units = response.data;
+            });
+        },
+        createLeaseAgreement() {
+            // Send lease agreement data to the backend
+            axios.post('/lease-agreements', this.leaseAgreement).then(response => {
+                // Handle response
+                console.log(response.data);
+                // Add the new lease to the leases array or refresh the leases list
+                this.leases.push(response.data);
+                this.dialog = false;
+                // Reset the form
+                this.leaseAgreement = {
+                    tenant_id: '',
+                    property_id: '',
+                    unit_id: '',
+                    start_date: '',
+                    end_date: '',
+                    rent_amount: '',
+                    security_deposit: ''
+                };
+            });
         },
     },
+    // watch: {
+    //     'leaseAgreement.property_id': function(newPropertyId) {
+    //         this.fetchUnits(newPropertyId);
+    //     }
+    // }
 };
 </script>
+
 <style scoped>
 .my-card {
-    margin: 40px; /* Adjust the margin as needed */
+    margin: 40px;
+    /* Adjust the margin as needed */
 }
 </style>

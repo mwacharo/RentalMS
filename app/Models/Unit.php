@@ -39,4 +39,9 @@ class Unit extends Model
     {
         return $this->hasMany(Invoice::class);
     }
-}
+
+//     public function leaseAgreements()
+//     {
+//         return $this->hasMany(LeaseAgreement::class);
+//     }
+ }
