@@ -31,31 +31,31 @@
                                 <v-card-text>
                                     <v-container>
                                         <v-row>
-                                            <v-col cols="12" sm="6" md="4">
+                                            <v-col cols="12" sm="6" >
                                                 <v-text-field v-model="editedItem.property_name
                                                     " label="Property Name"></v-text-field>
                                             </v-col>
-                                            <v-col cols="12" sm="6" md="4">
+                                            <v-col cols="12" sm="6" >
                                                 <v-text-field v-model="editedItem.email" label="Email"></v-text-field>
                                             </v-col>
-                                            <v-col cols="12" sm="6" md="4">
+                                            <v-col cols="12" sm="6" >
                                                 <v-text-field v-model="editedItem.phone" label="phone"></v-text-field>
                                             </v-col>
-                                            <v-col cols="12" sm="6" md="4">
+                                            <v-col cols="12" sm="6" >
                                                 <v-text-field v-model="editedItem.address"
                                                     label="Address"></v-text-field>
                                             </v-col>
-                                            <v-col cols="12" sm="6" md="4">
+                                            <v-col cols="12" sm="6" >
                                                 <v-text-field v-model="editedItem.description
                                                     " label="Description"></v-text-field>
                                             </v-col>
 
-                                            <v-col cols="12" sm="6" md="4">
+                                            <v-col cols="12" sm="6" >
                                                 <v-text-field v-model="editedItem.number_of_units
                                                     " label="Units"></v-text-field>
                                             </v-col>
 
-                                            <v-col cols="12" sm="6" md="4">
+                                            <v-col cols="12" sm="6" >
                                                 <v-select v-model="editedItem.landlord_id
                                                     " :items="landlords" item-title="landlord_name"
                                                     label="Landlord Name" item-value="id"></v-select>

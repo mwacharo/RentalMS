@@ -118,6 +118,17 @@ const select = ref(false);
                 </v-list-item>
                 </Link>
 
+
+                <Link :href="route('company')">
+                <v-list-item color="info" value="company">
+                    <template v-slot:prepend>
+                        <v-icon>mdi-account-multiple</v-icon>
+                    </template>
+
+                    <v-list-item-title>Company</v-list-item-title>
+                </v-list-item>
+                </Link>
+
                 <Link :href="route('phone')">
                 <v-list-item color="success" value="phone">
                     <template v-slot:prepend>

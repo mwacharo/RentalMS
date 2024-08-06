@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class ApiUserController extends Controller
 {
@@ -41,11 +42,17 @@ class ApiUserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:landlords,email',
             'phone' => 'required|string|max:255',
+            'company' => 'nullable|string|max:255', // Validation for the company field
             
         
         ]);
 
+        // $password = Str::random(8);
+        // $validatedData['password'] = Hash::make($password);
+
         $users = User::create($validatedData);
+
+        // Mail::to($user->email)->send(new WelcomeUser($user->email,$user->name, $password,));
         
 
 

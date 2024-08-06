@@ -83,6 +83,11 @@ Route::middleware([
         return Inertia::render('Admin');
     })->name('admin');
 
+    Route::get('/company', function () {
+        return Inertia::render('Company');
+    })->name('company');
+
+
 
     Route::get('/invoice', function () {
         return Inertia::render('Invoice');

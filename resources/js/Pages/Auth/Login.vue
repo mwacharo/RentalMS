@@ -129,7 +129,7 @@ const submit = () => {
                             :class="{ 'opacity-25': form.processing }"
                             @click="submit"
                         >
-                            Log In
+                            Log In100
                         </v-btn>
 
                         <v-card-text class="text-center">
@@ -149,6 +149,6 @@ const submit = () => {
 
 <style scoped>
 .my-card {
-    margin: 200px; /* Adjust the margin as needed */
+    margin: 100px; /* Adjust the margin as needed */
 }
 </style>
