@@ -33,10 +33,12 @@ Route::get('/callback', [MpesaApiController::class, 'handleCallback']);
 // In your routes file
 Route::get('/mpesa/stkpush/{phone}/{unit_number}/{amount}', [MpesaApiController::class, 'initiateSTKPush'])->name('mpesa.stkpush');
 
+Route::get('/landlords', [ApiLandlordController::class, 'index']);
+
+
 
 // Route to get a list 
 /*
-Route::get('/landlords', [ApiLandlordController::class, 'index']);
 Route::get('/landlords/search', [ApiLandlordController::class, 'landlordSearch']);
 Route::post('/landlord', [ApiLandlordController::class, 'store']);
 Route::get('/landlord/{id}', [ApiLandlordController::class, 'show']);

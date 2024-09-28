@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id(); // Primary key, automatically named 'id'
             $table->string('tenant_name');
             $table->string('email')->unique();
-            $table->string('phone');
+            $table->string('phone')->nullable();
             $table->string('national_id')->nullable()->unique()->comment('National ID or Passport Number');
             $table->string('agreement')->nullable();
-
-
+            $table->string('password')->nullable();
+            $table->rememberToken();
             $table->unsignedBigInteger('unit_id')->nullable();
             $table->string('property_id')->nullable();
             $table->timestamps();

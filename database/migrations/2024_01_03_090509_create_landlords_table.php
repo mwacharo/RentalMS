@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id(); // Primary key
             $table->string('landlord_name');
             $table->string('email')->unique();
-            $table->string('phone');
+            $table->string('password')->nullable();
+            $table->string('phone')->nullable();
+            $table->rememberToken();
             $table->timestamps();
             $table->softDeletes(); 
 

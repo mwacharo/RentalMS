@@ -151,6 +151,21 @@ const select = ref(false);
                 </v-list-item>
                 </Link>
 
+
+
+
+                <Link :href="route('maintenance')">
+
+                <v-list-item color value="/maintenance-requests">
+                    <template v-slot:prepend>
+                        <v-icon>mdi-wrench</v-icon>
+                    </template>
+                    <v-list-item-title>Maintenance</v-list-item-title>
+
+                </v-list-item>
+
+                </Link>
+
                 <Link :href="route('payment')">
                 <v-list-item color="info" value="payment">
                     <template v-slot:prepend>

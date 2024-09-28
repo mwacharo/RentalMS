@@ -118,10 +118,14 @@
               <template v-slot:item.actions="{ item }">
          
 
-                  <v-icon size="small" class="me-2" @click="editItem(item)">
+                  <v-icon size="small"  color="info" class="me-2" @click="editItem(item)">
                       mdi-pencil
                   </v-icon>
-                  <v-icon size="small" @click="deleteItem(item)">
+
+                  <v-icon size="small"  color="success" class="me-2" @click="openUserPermissions(item)">
+                      mdi-lock
+                  </v-icon>
+                  <v-icon size="small"  color="error" @click="deleteItem(item)">
                       mdi-delete
                   </v-icon>
               </template>
@@ -129,6 +133,8 @@
                   <v-btn color="primary" @click="initialize"> Reset </v-btn>
               </template>
           </v-data-table>
+
+        <Permissions ref="UserPermissions"/>
       </vcard>
   </AppLayout>
 </template>
@@ -136,10 +142,13 @@
 <script>
 import AppLayout from "@/Layouts/AppLayout.vue";
 import axios from "axios";
+import Permissions from "./Permissions.vue";
 
 export default {
   components: {
       AppLayout,
+      Permissions,
+
   },
   data: () => ({
       dialog: false,
@@ -200,6 +209,10 @@ export default {
               .catch((error) => {
                   console.error("API Error:", error);
               });
+      },
+      openUserPermissions(item){
+        this.$refs.UserPermissions.showDialog(item);
+
       },
       editItem(item) {
           this.editedIndex = this.users.indexOf(item);

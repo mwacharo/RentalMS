@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\UnitScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,7 +10,7 @@ class Unit extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['property_id', 'unit_id', 'unit_number', 'unit_status', 'deposit','deposit_status', 'rent', 'tenant_id'];
+    protected $fillable = ['property_id', 'unit_id', 'unit_number', 'unit_status', 'deposit', 'deposit_status', 'rent', 'tenant_id'];
 
     public function property()
     {
@@ -40,8 +41,21 @@ class Unit extends Model
         return $this->hasMany(Invoice::class);
     }
 
-//     public function leaseAgreements()
-//     {
-//         return $this->hasMany(LeaseAgreement::class);
-//     }
- }
+    //     public function leaseAgreements()
+    //     {
+    //         return $this->hasMany(LeaseAgreement::class);
+    //     }
+
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new UnitScope);
+
+    }   
+    // protected static function booted()
+    // {
+    //     static::addGlobalScope(new UnitScope());
+    // }
+}

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Unit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ApiUnitController extends Controller
 {
@@ -12,6 +13,11 @@ class ApiUnitController extends Controller
      */
     public function index()
     {
+
+
+    //    $user =Auth::user()->name;
+
+    //    return $user;
         //
         // $units= Unit::all();
         $units = Unit::with('tenant','property',)->get();

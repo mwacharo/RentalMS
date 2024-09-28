@@ -23,9 +23,11 @@ class DatabaseSeeder extends Seeder
         //  $this->call(LandlordSeeder::class);
         // $this->call(PropertySeeder::class);
         // $this->call(UnitSeeder::class);
-        $this->call(TenantSeeder::class);
+        // $this->call(TenantSeeder::class);
     //     $this->call(BillSeeder::class);
     //     $this->call(InvoiceSeeder::class);
     //     $this->call(TransactionSeeder::class);
+         $this->call(RolesAndPermissionsSeeder::class);
+
     }
 }

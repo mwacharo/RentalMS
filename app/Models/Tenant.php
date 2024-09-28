@@ -5,13 +5,55 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tenant extends Model
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
+
+
+class Tenant extends Authenticatable
 {
-    use HasFactory;
-
-    protected $fillable = ['tenant_name', 'email', 'phone', 'unit_id', 'property_id', 'national_id','agreement'];
+    use HasFactory, HasRoles;
 
 
+    protected $fillable = ['tenant_name', 'email', 'password', 'phone', 'unit_id', 'property_id', 'national_id', 'agreement'];
+
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+        'two_factor_recovery_codes',
+        'two_factor_secret',
+    ];
+
+
+    protected $appends = [
+        'is_tenant',
+        'is_user',
+        'is_landlord',
+        'is_company'
+    ];
+
+    public function getIsTenantAttribute()
+    {
+
+        return true;
+    }
+
+    public function getIsUserAttribute()
+    {
+
+        return false;
+    }
+
+    public function getIsCompanyAttribute()
+    {
+
+        return false;
+    }
+    public function getIsLandlordAttribute()
+    {
+
+        return false;
+    }
 
     public function transactions()
     {
@@ -28,7 +70,7 @@ class Tenant extends Model
         return $this->belongsTo(Unit::class);
     }
 
- 
+
     public function property()
     {
         return $this->belongsTo(Property::class);
