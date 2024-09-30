@@ -14,6 +14,9 @@ class Kernel extends HttpKernel
 protected $routeMiddleware = [
     // ...
     'redirect_if_authenticated' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+    // custom middleware
+    // 'auth.any' => \App\Http\Middleware\AuthAnyGuard::class,  
+
     // ...
 ];
 

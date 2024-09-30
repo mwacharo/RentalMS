@@ -211,7 +211,7 @@ export default {
               });
       },
       openUserPermissions(item){
-        this.$refs.UserPermissions.showDialog(item);
+        this.$refs.UserPermissions.showDialog(item.id);
 
       },
       editItem(item) {

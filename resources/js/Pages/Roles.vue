@@ -93,7 +93,7 @@
 
 <script>
 import AppLayout from "@/Layouts/AppLayout.vue";
-import RolesPermissions from "@/Pages/RolePermissions.vue";
+import RolesPermissions from "./RolePermissions.vue";
 import axios from "axios";
 
 export default {
@@ -149,7 +149,7 @@ export default {
     },
     methods: {
         initialize() {
-            const API_URL = "api/v1/roles";
+            const API_URL = "/v1/roles";
             axios
                 .get(API_URL)
                 .then((response) => {
@@ -178,7 +178,7 @@ export default {
         },
         deleteItemConfirm() {
             axios
-                .delete(`/api/v1/roles/${this.editedItem.id}`)
+                .delete(`/v1/roles/${this.editedItem.id}`)
                 .then(() => {
                     this.roles.splice(this.editedIndex, 1);
                   
@@ -208,11 +208,11 @@ export default {
             let request;
             if (this.editedIndex > -1) {
                 request = axios.put(
-                    `/api/v1/roles/${this.editedItem.id}`,
+                    `/v1/roles/${this.editedItem.id}`,
                     this.editedItem
                 );
             } else {
-                request = axios.post(`/api/v1/roles`, this.editedItem);
+                request = axios.post(`/v1/roles`, this.editedItem);
             }
             request
                 .then((response) => {

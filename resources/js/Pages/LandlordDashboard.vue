@@ -4,7 +4,7 @@
             <!-- Header -->
             <v-row>
                 <v-col cols="12">
-                    <h2>Landlord Dashboard</h2>
+                    <h2>Landlord </h2>
                 </v-col>
             </v-row>
 

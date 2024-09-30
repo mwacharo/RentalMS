@@ -51,6 +51,7 @@ public function show($id)
         Log::info('User ID received in controller:', ['id' => $id]); // Log the ID received
 
         $user = User::findOrFail($id);
+        // dd($user);
         $permissions = $request->input('permissions');
         $user->syncPermissions($permissions);
         return response()->json(['message' => 'Permissions updated successfully']);
@@ -60,6 +61,10 @@ public function show($id)
 // Role 
     public function updateRolePermissions(Request $request, $roleId)
     {
+
+
+    // return $roleId;
+
         // Validate the incoming request
         $validated = $request->validate([
             'permissions' => 'array', // Expect an array of permission names
@@ -68,6 +73,7 @@ public function show($id)
 
         // Find the role by ID
         $role = Role::findById($roleId);
+        // dd($role);
 
         if (!$role) {
             return response()->json(['error' => 'Role not found'], 404);

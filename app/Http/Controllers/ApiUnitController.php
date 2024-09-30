@@ -24,6 +24,55 @@ class ApiUnitController extends Controller
         return response()->json($units);
     }
 
+
+    // public function index()
+    // {
+    //     // Get the currently logged-in landlord
+    //     $landlord = Auth::guard('landlord')->user();
+
+    //     // Fetch units related to the landlord's properties
+    //     $units = Unit::with('tenant', 'property')
+    //         ->whereHas('property', function ($query) use ($landlord) {
+    //             $query->where('landlord_id', $landlord->id);
+    //         })
+    //         ->get();
+
+    //     return response()->json($units);
+    // }
+
+
+
+    // public function index(Request $request)
+    // {
+    //     // Check if the logged-in user is a landlord, tenant, or other role
+    //     if (Auth::guard('landlord')->check()) {
+    //         // Get the logged-in landlord
+    //         $landlord = Auth::guard('landlord')->user();
+
+    //         // Fetch units related to the landlord's properties
+    //         $units = Unit::with('tenant', 'property')
+    //             ->whereHas('property', function ($query) use ($landlord) {
+    //                 $query->where('landlord_id', $landlord->id);
+    //             })
+    //             ->get();
+
+    //         return response()->json($units);
+    //     } elseif (Auth::guard('tenant')->check()) {
+    //         // Get the logged-in tenant
+    //         $tenant = Auth::guard('tenant')->user();
+
+    //         // Fetch units related to the tenant
+    //         $units = Unit::with('property')
+    //             ->where('tenant_id', $tenant->id)
+    //             ->get();
+
+    //         return response()->json($units);
+    //     }
+
+    //     // Default response if no specific guard is authenticated
+    //     return response()->json(['error' => 'Unauthorized'], 401);
+    // }
+
     /**
      * Show the form for creating a new resource.
      */

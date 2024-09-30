@@ -41,7 +41,7 @@
     },
     methods: {
       fetchPermissions() {
-        const API_URL = '/api/v1/permissions';
+        const API_URL = '/v1/permissions';
         axios
           .get(API_URL)
           .then(response => {
@@ -59,7 +59,7 @@
         console.log('Role ID passed to showDialog:', roleId);
         this.mainDialog = true;
   
-        const API_URL = `/api/v1/roles/${roleId}/permissions`;
+        const API_URL = `/v1/roles/${roleId}/permissions`;
         console.log('Fetching permissions from:', API_URL);
         axios
           .get(API_URL)
@@ -78,7 +78,7 @@
       },
   
       updatePermissions() {
-    const API_URL = `/api/v1/roles/${this.selectedRoleId}/permissions`;
+    const API_URL = `/v1/roles/${this.selectedRoleId}/permissions`;
     const payload = { permissions: this.selectedPermissions };
   
     axios

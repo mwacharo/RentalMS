@@ -20,9 +20,9 @@ class UnitScope implements Scope
         }
 
 
-        if (Auth::user()->is_user) {
+            if (Auth::user()->is_tenant== true) {
 
-            // $builder->where('tenant_id', Auth::id());
+            $builder->where('tenant_id', Auth::id());
         }
 
 
