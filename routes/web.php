@@ -16,6 +16,7 @@ use App\Http\Controllers\ApiPropertyController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ApiBookVacantController;
 use App\Http\Controllers\ApiCompanyController;
+use App\Http\Controllers\ApiMaintenanceController;
 use App\Http\Controllers\ApiPermissionsController;
 use App\Http\Controllers\ApiRoleController;
 use App\Http\Controllers\ApiRolesController;
@@ -36,47 +37,53 @@ Route::get('/', function () {
 });
 
 
-Route::get('/unit', function () {
-    return Inertia::render('Unit');
-})->name('unit');
-
-Route::get('/invoice', function () {
-    return Inertia::render('Invoice');
-})->name('invoice'); 
+Route::middleware(['auth:web,tenant,landlord'])->group(function () {
 
 
-Route::get('/bill', function () {
-    return Inertia::render('Bills');
-})->name('bill');
+    Route::get('/unit', function () {
+        return Inertia::render('Unit');
+    })->name('unit');
 
-Route::get('/maintenance', function () {
-    return Inertia::render('Tenant');
-})->name('maintenance');
-
-Route::get('/lease', function () {
-    return Inertia::render('Lease');
-})->name('lease');
-
-Route::get('/payments', function () {
-    return Inertia::render('Payment');
-})->name('payments');
-
-Route::get('/invoice', function () {
-    return Inertia::render('Invoice');
-})->name('invoice');
+    Route::get('/invoice', function () {
+        return Inertia::render('Invoice');
+    })->name('invoice');
 
 
-Route::get('/tenant', function () {
-    return Inertia::render('Tenant');
-})->name('tenant');
+    Route::get('/bill', function () {
+        return Inertia::render('Bills');
+    })->name('bill');
 
-Route::get('/landlord', function () {
-    return Inertia::render('Landlord');
-})->name('landlord');
+    Route::get('/maintenance', function () {
+        return Inertia::render('Maintenance');
+    })->name('maintenance');
 
-Route::get('/property', function () {
-    return Inertia::render('Property');
-})->name('property');
+    Route::get('/lease', function () {
+        return Inertia::render('Lease');
+    })->name('lease');
+
+    Route::get('/payments', function () {
+        return Inertia::render('Payment');
+    })->name('payments');
+
+    Route::get('/invoice', function () {
+        return Inertia::render('Invoice');
+    })->name('invoice');
+
+
+    Route::get('/tenant', function () {
+        return Inertia::render('Tenant');
+    })->name('tenant');
+
+    Route::get('/landlord', function () {
+        return Inertia::render('Landlord');
+    })->name('landlord');
+
+    Route::get('/property', function () {
+        return Inertia::render('Property');
+    })->name('property');
+});
+
+
 
 // Authentication routes for specific roles
 Route::middleware(['auth:web'])->group(function () {
@@ -84,151 +91,52 @@ Route::middleware(['auth:web'])->group(function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::get('/tenant', function () {
-        return Inertia::render('Tenant');
-    })->name('tenant');
-
 
     Route::get('/admin', function () {
         return Inertia::render('Admin');
     })->name('admin');
-    
+
     Route::get('/company', function () {
         return Inertia::render('Company');
     })->name('company');
-    
-    
+
+
     Route::get('/roles', function () {
         return Inertia::render('Roles');
     })->name('roles');
-    
+
     Route::get('/permissions', function () {
         return Inertia::render('UserPermissions');
     })->name('permissions');
-    
-
-    
 });
-// tenant can make  view  invoices ,bills ,maintenance, 
-Route::middleware(['auth:tenant' ,])->group(function () {
+Route::middleware(['auth:tenant',])->group(function () {
     Route::get('/tenant-dashboard', function () {
         return Inertia::render('TenantDashboard');
     })->name('tenant-dashboard');
 
-    // Route::get('/booking', function () {
-    //     return Inertia::render('Booking');
-    // })->name('booking');
-
-
-    // Route::get('/unit', function () {
-    //     return Inertia::render('Unit');
-    // })->name('unit');
-    
-    // Route::get('/invoice', function () {
-    //     return Inertia::render('Invoice');
-    // })->name('invoice'); 
-    
-    
-    // Route::get('/bill', function () {
-    //     return Inertia::render('Bills');
-    // })->name('bill');
-    
-    // Route::get('/maintenance', function () {
-    //     return Inertia::render('Tenant');
-    // })->name('maintenance');
-    
-    // Route::get('/lease', function () {
-    //     return Inertia::render('Lease');
-    // })->name('lease');
-    
-    // Route::get('/payments', function () {
-    //     return Inertia::render('Payment');
-    // })->name('payments');
-    
-    // Route::get('/invoice', function () {
-    //     return Inertia::render('Invoice');
-    // })->name('invoice');
-    
-    
-    // Route::get('/tenant', function () {
-    //     return Inertia::render('Tenant');
-    // })->name('tenant');
-    
-    // Route::get('/landlord', function () {
-    //     return Inertia::render('Landlord');
-    // })->name('landlord');
-    
-    // Route::get('/property', function () {
-    //     return Inertia::render('Property');
-    // })->name('property');
-    
-
-    
+    Route::get('/booking', function () {
+        return Inertia::render('Booking');
+    })->name('booking');
 });
 
 Route::middleware(['auth:landlord'])->group(function () {
     Route::get('/landlord-dashboard', function () {
         return Inertia::render('LandlordDashboard');
     })->name('landlord-dashboard');
+});
+
+Route::middleware(['auth:company'])->group(function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
+
+    //     Route::get('/phone', function () {
+    //         return Inertia::render('Phone');
+    //     })->name('phone');
 
 });
 
-// Route::middleware(['auth:company'])->group(function () {
-//     Route::get('/company-dashboard', function () {
-//         return Inertia::render('Dashboard');
-//     })->name('company-dashboard');
 
-//     Route::get('/phone', function () {
-//         return Inertia::render('Phone');
-//     })->name('phone');
-
-
-
-    // Route::get('/unit', function () {
-    //     return Inertia::render('Unit');
-    // })->name('unit');
-    
-    // Route::get('/invoice', function () {
-    //     return Inertia::render('Invoice');
-    // })->name('invoice'); 
-    
-    
-    // Route::get('/bill', function () {
-    //     return Inertia::render('Bills');
-    // })->name('bill');
-    
-    // Route::get('/maintenance', function () {
-    //     return Inertia::render('Tenant');
-    // })->name('maintenance');
-    
-    // Route::get('/lease', function () {
-    //     return Inertia::render('Lease');
-    // })->name('lease');
-    
-    // Route::get('/payments', function () {
-    //     return Inertia::render('Payment');
-    // })->name('payments');
-    
-    // Route::get('/invoice', function () {
-    //     return Inertia::render('Invoice');
-    // })->name('invoice');
-    
-    
-    // Route::get('/tenant', function () {
-    //     return Inertia::render('Tenant');
-    // })->name('tenant');
-    
-    // Route::get('/landlord', function () {
-    //     return Inertia::render('Landlord');
-    // })->name('landlord');
-    
-    // Route::get('/property', function () {
-    //     return Inertia::render('Property');
-    // })->name('property');
-    
-
-    
-// });
 
 // Routes requiring sanctum authentication (e.g., for API)
 // Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
@@ -239,65 +147,14 @@ Route::middleware(['auth:landlord'])->group(function () {
 
 
 
-
-
-    // Routes accessible by tenant, company, landlord, and user
-    // Route::get('/unit', function () {
-    //     return Inertia::render('Unit');
-    // })->name('unit');
-    
-    // Route::get('/invoice', function () {
-    //     return Inertia::render('Invoice');
-    // })->name('invoice'); 
-    
-    
-    // Route::get('/bill', function () {
-    //     return Inertia::render('Bills');
-    // })->name('bill');
-    
-    // Route::get('/maintenance', function () {
-    //     return Inertia::render('Tenant');
-    // })->name('maintenance');
-    
-    // Route::get('/lease', function () {
-    //     return Inertia::render('Lease');
-    // })->name('lease');
-    
-    // Route::get('/payments', function () {
-    //     return Inertia::render('Payment');
-    // })->name('payments');
-    
-    // Route::get('/invoice', function () {
-    //     return Inertia::render('Invoice');
-    // })->name('invoice');
-    
-    
-    // Route::get('/tenant', function () {
-    //     return Inertia::render('Tenant');
-    // })->name('tenant');
-    
-    // Route::get('/landlord', function () {
-    //     return Inertia::render('Landlord');
-    // })->name('landlord');
-    
-    // Route::get('/property', function () {
-    //     return Inertia::render('Property');
-    // })->name('property');
-    
-
-
-
-
-
+Route::get('/vacantAd', function () {
+    return Inertia::render('VacantAd');
+})->name('vacantAd');
 
 Route::get('/agentdashboard', function () {
     return Inertia::render('AgentDashboard');
 })->name('agentdashboard');
 
-
-Route::get('/vacantAd', function () {
-    return Inertia::render('VacantAd');
-})->name('vacantAd');
 
 Route::post('/unit', [ApiUnitController::class, 'store']);
 Route::get('/unit/{id}', [ApiUnitController::class, 'show']);
@@ -326,9 +183,11 @@ Route::get('/property/{id}', [ApiPropertyController::class, 'show']);
 Route::put('/property/{id}', [ApiPropertyController::class, 'update']);
 
 
-Route::get('/bills/{id}', [ApiBillController::class, 'inApiBookVacantControllerdex']);
+// Route::get('/bills/{id}', [ApiBillController::class, 'inApiBookVacantControllerdex']);
+Route::get('/bills/{id}', [ApiBillController::class, 'index']);
+
 Route::post('/bill', [ApiBillController::class, 'store']);
-Route::get('/billList', [ApiBillController::class, 'billList']);
+Route::get('/v1/billList', [ApiBillController::class, 'billList']);
 
 Route::get('/bill/{id}', [ApiBillController::class, 'show']);
 Route::put('/bill/{id}', [ApiBillController::class, 'update']);
@@ -395,14 +254,11 @@ Route::get('/v1/roles/{roleId}/permissions', [ApiPermissionsController::class, '
 // Route::put('v1/roles/{roleId}/permissions', [ApiPermissionsController::class, 'updateRolePermissions']);
 
 
-
-
 Route::get('/invoices', [ApiInvoiceController::class, 'index']);
 
 Route::get('/invoice{id}', [ApiInvoiceController::class, 'show']);
 Route::post('/invoice{id}', [ApiInvoiceController::class, 'update']);
 Route::post('/invoice', [ApiInvoiceController::class, 'store']);
-
 
 
 // // Route to delete 
@@ -412,12 +268,17 @@ Route::post('/tenant{id}', [ApiTenantController::class, 'destroy']);
 Route::post('/invoice{id}', [ApiInvoiceController::class, 'destroy']);
 
 
+Route::post('/v1/maintenance-request', [ApiMaintenanceController::class, 'store']);
+Route::get('/v1/maintenance-requests', [ApiMaintenanceController::class, 'index']);
+Route::get('/v1/maintenance-request/{id}', [ApiMaintenanceController::class, 'show']);
+Route::put('/v1/maintenance-request/{id}', [ApiMaintenanceController::class, 'update']);
+Route::delete('/v1/maintenance-request/{id}', [ApiMaintenanceController::class, 'destroy']);
+
 
 
 // Route::any('/payment', [TransactionController::class, 'payment']);
 Route::any('/confirmation', [TransactionController::class, 'store']);
 Route::any('/validation', [TransactionController::class, 'store']);
-
 
 
 // // mpesa
@@ -454,7 +315,7 @@ Route::get('/bookings', [ApiBookVacantController::class, 'index']);
 Route::get('/booked', [ApiBookVacantController::class, 'propertyBookings']);
 Route::middleware('userAuth')->group(function () {});
 Route::middleware('auth:api')->group(function () {
-// Route::apiResource('/book{id }', 'ApiBookVacantController');
+    // Route::apiResource('/book{id }', 'ApiBookVacantController');
 });
 
 Route::get('/bookings', [ApiBookVacantController::class, 'index']);

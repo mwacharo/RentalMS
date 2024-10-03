@@ -2,12 +2,8 @@
 import Logout from "@/Components/Logout.vue";
 import { ref, computed } from "vue";
 import { Link, usePage } from "@inertiajs/inertia-vue3";
-
-
-
 const drawer = ref(true);
 const select = ref(false);
-
 
 const userRoles = computed(() => usePage().props.value.user.roles || []);
 const userPermissions = computed(() => usePage().props.value.user.permissions || []);
@@ -17,14 +13,13 @@ console.log("userPermissions:", userPermissions.value);
 
 
 
-
 // Dynamically set available routes based on role
 const menuItems = computed(() => {
     if (userRoles.value.includes('tenant')) {
         return [
             { name: "Dashboard", icon: "mdi-view-dashboard", route: "tenant-dashboard" },
             { name: "Unit", icon: "mdi-home-floor-a", route: "unit" },
-            { name: "Bills", icon: "mdi-currency-usd", route: "bill" },
+            // { name: "Bills", icon: "mdi-currency-usd", route: "bill" },
             { name: "Invoices", icon: "mdi-receipt", route: "invoice" },
             { name: "Maintenance", icon: "mdi-wrench", route: "maintenance" },
             { name: "Payments", icon: "mdi-currency-usd", route: "payments" },
@@ -51,8 +46,7 @@ const menuItems = computed(() => {
 
     else if (userRoles.value.includes('company')) {
         return [
-            { name: "Dashboard", icon: "mdi-view-dashboard", route: "company-dashboard" },
-
+            { name: "Dashboard", icon: "mdi-view-dashboard", route: "dashboard" },
             { name: "Property", icon: "mdi-domain", route: "property" },
             { name: "Unit", icon: "mdi-home-floor-a", route: "unit" },
             { name: "Tenant", icon: "mdi-account", route: "tenant" },
@@ -77,8 +71,6 @@ const menuItems = computed(() => {
             { name: "Company", icon: "mdi-account-multiple", route: "company" },
             { name: "Tenant", icon: "mdi-account", route: "tenant" },
             { name: "Landlord", icon: "mdi-account-multiple", route: "landlord" },
-
-
 
 
         ];
@@ -123,9 +115,6 @@ const menuItems = computed(() => {
                 </Link>
 
   
-
-
-
 
                 <Link  v-for="item in menuItems" :key="item.name" :href="route('tenant-dashboard')">
                 <v-list-item color="info" value="home">

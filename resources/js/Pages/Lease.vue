@@ -11,10 +11,10 @@
                 <template v-slot:top>
                     <v-toolbar flat>
                         <v-toolbar-title>Lease</v-toolbar-title>
-                        <v-btn color="primary" dark class="mb-2" @click="LeaseDetails" prepend-icon="mdi-plus"
+                        <!-- <v-btn color="primary" dark class="mb-2" @click="LeaseDetails" prepend-icon="mdi-plus"
                             variant="outlined">
                             Lease Details
-                        </v-btn>
+                        </v-btn> -->
 
                         <v-btn color="primary" dark class="mb-2" @click="OpenCreateLease" prepend-icon="mdi-plus"
                             variant="outlined">

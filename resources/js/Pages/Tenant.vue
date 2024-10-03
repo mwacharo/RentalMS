@@ -25,11 +25,11 @@
                                 </v-btn>
 
                                 <v-btn color="primary" dark class="mb-2" prepend-icon="mdi-send" variant="outlined">
-                                    Invoice
+                                    SMS
                                 </v-btn>
 
                                 <v-btn color="primary" dark class="mb-2" prepend-icon="mdi-email">
-                                    Invoice
+                                    Email
                                 </v-btn>
 
                                 <v-btn color="primary" dark class="mb-2" v-bind="props" prepend-icon="mdi-plus"
@@ -103,17 +103,17 @@
                 </template>
 
                 <template v-slot:item.actions="{ item }">
-                    <v-tooltip location="bottom">
+                    <!-- <v-tooltip location="bottom">
                         <template v-slot:activator="{ props }">
                             <v-btn icon v-bind="props" @click="tenantInvoice(item)" variant="text">
-                                <v-icon color="info"> mdi-book </v-icon>
+                                <v-icon color="success"> mdi-book </v-icon>
                             </v-btn>
                         </template>
 
                         <span> Create Invoice</span>
-                    </v-tooltip>
+                    </v-tooltip> -->
 
-                    <!-- 
+                    
                     <v-tooltip location="bottom">
                         <template v-slot:activator="{ props }">
                             <v-btn
@@ -127,7 +127,7 @@
                         </template>
 
                         <span>Invoice details</span>
-                    </v-tooltip> -->
+                    </v-tooltip> 
 
                     <v-tooltip location="bottom">
                         <template v-slot:activator="{ props }">
@@ -142,7 +142,7 @@
                     <v-tooltip location="bottom">
                         <template v-slot:activator="{ props }">
                             <v-btn icon v-bind="props" @click="openBill(item)" variant="text">
-                                <v-icon color="info"> mdi-cog </v-icon>
+                                <v-icon color="warning"> mdi-cog </v-icon>
                             </v-btn>
                         </template>
 

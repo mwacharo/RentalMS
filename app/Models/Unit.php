@@ -61,6 +61,13 @@ class Unit extends Model
                     $query->where('landlord_id', $landlord->id);
                 });
             }
+            if (Auth::guard('tenant')->check()) {
+
+                                // Only include units that belong belong to tenant
+             
+                    $builder->where('tenant_id',  Auth::guard('tenant')->id());
+            
+            }
         });
     }
 

@@ -20,7 +20,7 @@ class Bill extends Model
 
      // Change from tenant_id to unit_id or property_id
     //  protected $fillable = ['unit_id', 'water_bill', 'internet_bill', 'waste_collection', 'rent','deposit'];\\
-    protected $fillable= ['bill','amount',
+protected $fillable= ['bill','amount','unit_cost','number_of _units'
     // 'total_amount','unit_price'
 ];
 

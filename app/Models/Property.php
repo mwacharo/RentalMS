@@ -33,6 +33,10 @@ class Property extends Model
     protected static function booted(): void
     {
         static::addGlobalScope('byLandlord', function (Builder $builder) {
+         
+            if (Auth::guard('web')->check()){
+
+            }
             if (Auth::guard('landlord')->check()) {
                 $builder->where('landlord_id', Auth::guard('landlord')->id());
             }
