@@ -60,7 +60,10 @@ class ApiBillController extends Controller
         $validateData = $request->validate(
             [
                 'bill' => 'required|max:255',
-                'amount' => 'required|string'
+                'amount' => 'required|string',
+                'unit_cost' => 'required|max:255',
+                'number_of_units' => 'required|string'
+    
 
             ]
         );
@@ -99,6 +102,9 @@ class ApiBillController extends Controller
         $validatedData = $request->validate([
             'bill' => 'required|max:255',
             'amount' => '|string|max:255',
+            'unit_cost' => 'required|max:255',
+            'number_of_units' => 'required|string'
+
 
 
         ]);
@@ -115,6 +121,7 @@ class ApiBillController extends Controller
     {
         //
         $bill = Bill::find($id);
+        // dd($bill);
         if ($bill) {
             $bill->delete();
             return response()->json(['message' => 'bill deleted successfully']);

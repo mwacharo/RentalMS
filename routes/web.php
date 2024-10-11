@@ -27,14 +27,18 @@ use App\Http\Controllers\TenantController;
 use Illuminate\Support\Facades\Auth;
 
 // Routes for unauthenticated users
-Route::get('/', function () {
+Route::get('/' ,function () {
     return Inertia::render('Login', [
-        // 'canLogin' => Route::has('login'),
+        'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
 });
+//  ->name('login');
+
+
+
 
 
 Route::middleware(['auth:web,tenant,landlord'])->group(function () {
@@ -185,10 +189,8 @@ Route::put('/property/{id}', [ApiPropertyController::class, 'update']);
 
 // Route::get('/bills/{id}', [ApiBillController::class, 'inApiBookVacantControllerdex']);
 Route::get('/bills/{id}', [ApiBillController::class, 'index']);
-
-Route::post('/bill', [ApiBillController::class, 'store']);
+Route::post('/v1/bill', [ApiBillController::class, 'store']);
 Route::get('/v1/billList', [ApiBillController::class, 'billList']);
-
 Route::get('/bill/{id}', [ApiBillController::class, 'show']);
 Route::put('/bill/{id}', [ApiBillController::class, 'update']);
 Route::delete('/bill/{id}', [ApiBillController::class, 'destroy']);
@@ -327,3 +329,6 @@ Route::get('v1/permissions', [ApiPermissionsController::class, 'index']);
 
 
 // });
+
+
+

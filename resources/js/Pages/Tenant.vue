@@ -7,6 +7,9 @@
             </v-container>
         </VCard>
 
+
+
+
         <VCard class="my-card" outlined>
             <v-data-table show-select :headers="headers" :loading="loading" :items="tenants"
                 :sort-by="[{ key: 'tenant_name', order: 'asc' }]">
@@ -24,11 +27,12 @@
                                     Import
                                 </v-btn>
 
-                                <v-btn color="primary" dark class="mb-2" prepend-icon="mdi-send" variant="outlined">
+                                <v-btn color="primary" dark class="mb-2" @click="openSMS" prepend-icon="mdi-send"
+                                    variant="outlined">
                                     SMS
                                 </v-btn>
 
-                                <v-btn color="primary" dark class="mb-2" prepend-icon="mdi-email">
+                                <v-btn color="primary" dark class="mb-2" @click="openEmail" prepend-icon="mdi-email">
                                     Email
                                 </v-btn>
 
@@ -46,24 +50,24 @@
                                 <v-card-text>
                                     <v-container>
                                         <v-row>
-                                            <v-col cols="12" sm="6" >
+                                            <v-col cols="12" sm="6">
                                                 <v-text-field v-model="editedItem.tenant_name
                                                     " label="Tanant Name"></v-text-field>
                                             </v-col>
-                                            <v-col cols="12" sm="6" >
+                                            <v-col cols="12" sm="6">
                                                 <v-text-field v-model="editedItem.email" label="Email"></v-text-field>
                                             </v-col>
-                                            <v-col cols="12" sm="6" >
+                                            <v-col cols="12" sm="6">
                                                 <v-text-field v-model="editedItem.phone" label="phone"></v-text-field>
                                             </v-col>
 
-                                            <v-col cols="12" sm="6" >
+                                            <v-col cols="12" sm="6">
                                                 <v-select v-model="editedItem.property_id
                                                     " :items="properties" item-title="property_name"
                                                     label="Property Name" item-value="id"></v-select>
                                             </v-col>
 
-                                            <v-col cols="12" sm="6" >
+                                            <v-col cols="12" sm="6">
                                                 <v-select v-model="editedItem.unit_id" :items="units"
                                                     item-title="unit_number" label="Account Number"
                                                     item-value="id"></v-select>
@@ -110,24 +114,19 @@
                             </v-btn>
                         </template>
 
-                        <span> Create Invoice</span>
-                    </v-tooltip> -->
+<span> Create Invoice</span>
+</v-tooltip> -->
 
-                    
+
                     <v-tooltip location="bottom">
                         <template v-slot:activator="{ props }">
-                            <v-btn
-                                icon
-                                v-bind="props"
-                                @click="openTenantInvoice(item)"
-                                variant="text"
-                            >
+                            <v-btn icon v-bind="props" @click="openTenantInvoice(item)" variant="text">
                                 <v-icon color="primary"> mdi-eye </v-icon>
                             </v-btn>
                         </template>
 
                         <span>Invoice details</span>
-                    </v-tooltip> 
+                    </v-tooltip>
 
                     <v-tooltip location="bottom">
                         <template v-slot:activator="{ props }">
@@ -169,6 +168,8 @@
             <tenantinvoice ref="tenantinvoice" />
 
             <excel ref="excel" />
+            <smstenant ref="SMSTenantComponent" />
+            <emailtenant ref="EmailTenantComponent" />
         </VCard>
     </AppLayout>
 </template>
@@ -179,6 +180,8 @@ import axios from "axios";
 import bill from "./Bill.vue";
 import tenantinvoice from "./TenantInvoice.vue";
 import excel from "./Excel.vue";
+import smstenant from "./SMSTenant.vue";
+import emailtenant from "./EmailTenant.vue";
 
 export default {
     components: {
@@ -186,6 +189,9 @@ export default {
         bill,
         tenantinvoice,
         excel,
+        smstenant,
+        emailtenant,
+
     },
     data: () => ({
         dialog: false,
@@ -274,6 +280,14 @@ export default {
         openExcel(item) {
             this.$refs.excel.show(item);
         },
+        // SMSTenantComponent
+        openSMS(item) {
+            this.$refs.SMSTenantComponent.show(item);
+        },
+        openEmail(item) {
+            this.$refs.EmailTenantComponent.show(item);
+        },
+
         tenantInvoice(item) {
             const API_URL = "tenantInvoice/" + item.id;
 

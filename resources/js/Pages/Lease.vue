@@ -1,9 +1,9 @@
 <template>
     <AppLayout>
         <VCard class="my-card">
-            <container>
+            <v-container>
                 <v-text-field label="Search" variant="outlined"></v-text-field>
-            </container>
+            </v-container>
         </VCard>
 
         <VCard class="my-card" outlined>

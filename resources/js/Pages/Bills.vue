@@ -6,7 +6,6 @@
                     variant="outlined"></v-text-field>
             </v-container>
         </VCard>
-
         <vCard class="my-card" outlined>
             <v-data-table :headers="headers" :loading="loading" :items="bills"
                 :sort-by="[{ key: 'bill', order: 'asc' }]">
@@ -31,36 +30,24 @@
                                 <v-card-text>
                                     <v-container>
                                         <v-row>
-
-
                                             <v-col cols="12">
-                                                <v-text-field v-model="editedItem.bill
-                                                    " label="Bill "></v-text-field>
+                                                <v-text-field v-model="editedItem.bill" label="Bill "></v-text-field>
                                             </v-col>
 
                                             <v-col cols="12">
                                                 <v-text-field v-model="editedItem.unit_cost"
                                                     label="Unit Cost"></v-text-field>
                                             </v-col>
-
-
                                             <v-col cols="12">
-                                                <v-text-field v-model="editedItem.numberOfUnits"
+                                                <v-text-field v-model="editedItem.number_of_units"
                                                     label="Number Of Units"></v-text-field>
                                             </v-col>
-
-
                                             <v-col cols="12">
                                                 <v-text-field v-model="editedItem.amount" label="Amount"></v-text-field>
                                             </v-col>
-
-
-
-
                                         </v-row>
                                     </v-container>
                                 </v-card-text>
-
                                 <v-card-actions>
                                     <v-spacer></v-spacer>
                                     <v-btn color="blue-darken-1" variant="text" @click="close">
@@ -101,14 +88,12 @@
         </VCard>
     </AppLayout>
 </template>
-
 <script>
 import AppLayout from "@/Layouts/AppLayout.vue";
 import axios from "axios";
 
 export default {
     components: {
-    
         AppLayout,
     },
     data: () => ({
@@ -122,29 +107,26 @@ export default {
                 sortable: false,
                 key: "bill",
             },
+            { title: "Unit Cost", key: "unit_cost" },
+            { title: "Number of units", key: "number_of_units" },
             { title: "Amount", key: "amount" },
             { title: "Actions", key: "actions", sortable: false },
-
 
         ],
         bills: [],
         searchQuery: "",
-
-
         editedIndex: -1,
-
         editedItem: {
-            bill: "",
-            amount: "",
+            bill:"",
+            amount:"",
             unit_cost:"",
-            numberOfUnits:"",
+            number_of_units:"",
         },
         defaultItem: {
             bill: "",
             amount: "",
-            unit_cost:"",
-            numberOfUnits:"",
-
+            unit_cost: "",
+            number_of_units: "",
         },
     }),
     computed: {
@@ -160,7 +142,6 @@ export default {
             val || this.closeDelete();
         },
     },
-
     created() {
         this.initialize();
     },
@@ -190,12 +171,10 @@ export default {
         },
         deleteItemConfirm() {
             axios
-
                 .delete(`/bill/${this.editedItem.id}`)
                 .then(() => {
                     this.bills.splice(this.editedIndex, 1);
                     this.$toastr.warning(' deleted')
-
                     this.closeDelete();
                 })
                 .catch((error) => console.error("Deletion error:", error));
@@ -204,7 +183,6 @@ export default {
             this.dialog = false;
             this.resetForm();
         },
-
         closeDelete() {
             this.dialogDelete = false;
             this.resetForm();
@@ -217,37 +195,30 @@ export default {
             let request;
             if (this.editedIndex > -1) {
                 request = axios.put(
-                    this.$toastr.success(' Updated')
 
-                        `/bill/${this.editedItem.id}`,
-                    this.editedItem
-
-
+                    `/bill/${this.editedItem.id}`,
+                    this.editedItem,
+                    this.$toastr.success('Updated')
                 );
                 this.initialize(); // refresh data
 
             } else {
-                this.$toastr.success(' created ')
-
-                request = axios.post(`/bill`, this.editedItem);
+                request = axios.post(`/v1/bill`, this.editedItem);
             }
             request
                 .then((response) => {
                     if (this.editedIndex > -1) {
                         Object.assign(
                             this.bills[this.editedIndex],
-                            response.data.data
+                            response.data.data,
+                            this.$toastr.success(' created ')
                         );
                     } else {
                         this.bills.push(response.data.data);
                     }
-                    this.close();
                 })
                 .catch((error) => console.error("Saving error:", error));
             this.close();
-
-            // this.close();
-
         },
         performSearch() {
             this.loading = true;
@@ -264,7 +235,6 @@ export default {
                     this.loading = false;
                 });
         },
-
     },
 };
 </script>

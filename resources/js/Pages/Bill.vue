@@ -10,6 +10,9 @@
                                 v-model="bill.clicked"
                                 :label="bill.bill"
                             ></v-checkbox>
+                            <v-text-field v-model="bill.unit_cost"></v-text-field>
+                            <v-text-field v-model="bill.number_of_units"></v-text-field>
+
 
                             <v-text-field v-model="bill.amount"></v-text-field>
                         </div>
