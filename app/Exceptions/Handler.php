@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -27,4 +28,16 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    // new 
+    public function render($request, Throwable $exception)
+{
+    Log::error("Exception on request: {$exception->getMessage()}", [
+        'url' => $request->fullUrl(),
+        'user_id' => optional($request->user())->id,
+        'role' => $request->input('role', 'web'),
+    ]);
+
+    return parent::render($request, $exception);
+}
 }

@@ -70,4 +70,31 @@ class ApiUserController extends Controller
     {
         //
     }
+
+
+
+    public function updateRole(Request $request, $userId)
+    {
+        $user = User::findOrFail($userId);
+        $roleName = $request->input('role');
+
+        // Remove all current roles and assign the new role
+        $user->syncRoles([$roleName]);
+
+        return response()->json(['message' => 'Role updated successfully.']);
+    }
+
+    public function updatePermissions(Request $request, $userId)
+    {
+
+        $user = User::findOrFail($userId);
+
+        dd($user);
+        $permissions = $request->input('permissions', []);
+
+        // Remove all current permissions and assign new ones
+        $user->syncPermissions($permissions);
+
+        return response()->json(['message' => 'Permissions updated successfully.']);
+    }
 }

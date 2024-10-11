@@ -1,9 +1,9 @@
 <template>
     <AppLayout>
         <VCard class="my-card">
-            <container>
+            <v-container>
                 <v-text-field label="Search" variant="outlined"></v-text-field>
-            </container>
+            </v-container>
         </VCard>
 
         <VCard class="my-card" outlined>
@@ -11,10 +11,10 @@
                 <template v-slot:top>
                     <v-toolbar flat>
                         <v-toolbar-title>Lease</v-toolbar-title>
-                        <v-btn color="primary" dark class="mb-2" @click="LeaseDetails" prepend-icon="mdi-plus"
+                        <!-- <v-btn color="primary" dark class="mb-2" @click="LeaseDetails" prepend-icon="mdi-plus"
                             variant="outlined">
                             Lease Details
-                        </v-btn>
+                        </v-btn> -->
 
                         <v-btn color="primary" dark class="mb-2" @click="OpenCreateLease" prepend-icon="mdi-plus"
                             variant="outlined">

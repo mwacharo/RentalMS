@@ -3,7 +3,8 @@
         <v-dialog
             v-model="dialog"
             transition="dialog-bottom-transition"
-            fullscreen
+           
+            width="800"
         >
             <v-card>
                 <v-toolbar color="info">
@@ -96,7 +97,7 @@ export default {
             // this.openExcel(item);
         },
         fetchProperties() {
-            const API_URL = "property";
+            const API_URL = "/properties";
 
             axios
                 .get(API_URL)

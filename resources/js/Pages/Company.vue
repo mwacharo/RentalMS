@@ -16,7 +16,7 @@
                 :headers="headers"
                 :loading="loading"
                 :items="users"
-                :sort-by="[{ key: 'name', order: 'asc' }]"
+                :sort-by="[{ key: 'company_name', order: 'asc' }]"
             >
                 <template v-slot:top>
                     <v-toolbar flat>
@@ -47,7 +47,7 @@
                                             <v-col cols="12" >
                                                 <v-text-field
                                                     v-model="
-                                                        editedItem.name
+                                                        editedItem.company_name
                                                     "
                                                     label=" Name"
                                                 ></v-text-field>
@@ -150,7 +150,7 @@
                 title: "Agent Name",
                 align: "start",
                 sortable: false,
-                key: "name",
+                key: "company_name",
             },
             { title: "Email", key: "email" },
             { title: "Phone", key: "phone" },
@@ -161,12 +161,12 @@
   
         editedIndex: -1,
         editedItem: {
-            name: "",
+            company_name: "",
             email: "",
             phone: "",
         },
         defaultItem: {
-            name: "",
+            company_name: "",
             email: "",
             phone: "",
         },
@@ -190,7 +190,7 @@
     },
     methods: {
         initialize() {
-            const API_URL = "/users";
+            const API_URL = "/companies";
             axios
                 .get(API_URL)
                 .then((response) => {
@@ -214,7 +214,7 @@
         },
         deleteItemConfirm() {
             axios
-                .delete(`/user/${this.editedItem.id}`)
+                .delete(`/company/${this.editedItem.id}`)
                 .then(() => {
                     this.users.splice(this.editedIndex, 1);
                     this.closeDelete();
@@ -241,11 +241,11 @@
             let request;
             if (this.editedIndex > -1) {
                 request = axios.put(
-                    `/user/${this.editedItem.id}`,
+                    `/company/${this.editedItem.id}`,
                     this.editedItem
                 );
             } else {
-                request = axios.post(`/user`, this.editedItem);
+                request = axios.post(`/company`, this.editedItem);
             }
             request
                 .then((response) => {
@@ -265,7 +265,7 @@
         },
         performSearch() {
             this.loading = true;
-            const API_URL = "/users/search?query=" + this.searchQuery;
+            const API_URL = "/company/search?query=" + this.searchQuery;
             axios
                 .get(API_URL)
                 .then((response) => {

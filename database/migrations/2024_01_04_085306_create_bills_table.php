@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
             $table->string('bill');
+            $table->string('unit_cost');
+            $table->string('number_of _units');
+            // unit_cost
             $table->decimal('amount', 8, 2);
             // $table->decimal('total_amount', 8, 2);
             // $table->decimal('unit_price', 8, 2);

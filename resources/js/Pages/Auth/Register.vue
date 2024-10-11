@@ -7,12 +7,14 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import '../../../css/tailwind.css'
 
 const form = useForm({
     name: '',
     email: '',
     password: '',
     password_confirmation: '',
+    user_type: 'User', // Default to 'User', you can change this to whatever default you want
     terms: false,
 });
 
@@ -33,6 +35,9 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
+
+                <v-select v-model="form.user_type" :items="['Landlord', 'Tenant', 'Company','User']" label="Account Type" required variant="outlined"></v-select>
+
                 <InputLabel for="name" value="Name" />
                 <TextInput
                     id="name"

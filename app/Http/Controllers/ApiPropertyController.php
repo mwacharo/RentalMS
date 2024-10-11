@@ -32,6 +32,8 @@ class ApiPropertyController extends Controller
      */
     public function store(Request $request)
     {
+
+         dd($request->all());
         //
         $validatedData = $request->validate([
             'email' => 'required|email|unique:landlords,email',

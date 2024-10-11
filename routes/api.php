@@ -33,18 +33,16 @@ Route::get('/callback', [MpesaApiController::class, 'handleCallback']);
 // In your routes file
 Route::get('/mpesa/stkpush/{phone}/{unit_number}/{amount}', [MpesaApiController::class, 'initiateSTKPush'])->name('mpesa.stkpush');
 
+Route::get('/landlords', [ApiLandlordController::class, 'index']);
+
+
 
 // Route to get a list 
 /*
-Route::get('/landlords', [ApiLandlordController::class, 'index']);
 Route::get('/landlords/search', [ApiLandlordController::class, 'landlordSearch']);
 Route::post('/landlord', [ApiLandlordController::class, 'store']);
 Route::get('/landlord/{id}', [ApiLandlordController::class, 'show']);
 Route::put('/landlord/{id}', [ApiLandlordController::class, 'update']);
-
-
-
-
 
 
 
@@ -56,7 +54,6 @@ Route::put('/property/{id}', [ApiPropertyController::class, 'update']);
 
 
 
-
 Route::get('/bills/{id}', [ApiBillController::class, 'index']);
 Route::post('/bill', [ApiBillController::class, 'store']);
 Route::get('/billList', [ApiBillController::class, 'billList']);
@@ -64,12 +61,6 @@ Route::get('/billList', [ApiBillController::class, 'billList']);
 Route::get('/bill/{id}', [ApiBillController::class, 'show']);
 Route::put('/bill/{id}', [ApiBillController::class, 'update']);
 Route::delete('/bill/{id}', [ApiBillController::class, 'destroy']);
-
-
-
-
-
-
 
 
 
@@ -87,23 +78,10 @@ Route::post('/upload', [ApiTenantController::class, 'upload']);
 
 
 
-
-
-
-
-
-
-
-
 Route::post('/unit', [ApiUnitController::class, 'store']);
 Route::get('/unit/{id}', [ApiUnitController::class, 'show']);
 Route::get('/units', [ApiUnitController::class, 'index']);
 Route::put('/unit/{id}', [ApiUnitController::class, 'update']);
-
-
-
-
-
 
 
 
@@ -116,19 +94,11 @@ Route::post('/invoice', [ApiInvoiceController::class, 'store']);
 
 
 
-
-
-
-
-
-
-
 // Route to delete 
 Route::delete('/property/{id}', [ApiPropertyController::class, 'destroy']);
 Route::delete('/unit/{id}', [ApiUnitController::class, 'destroy']);
 Route::post('/tenant{id}', [ApiTenantController::class, 'destroy']);
 Route::post('/invoice{id}', [ApiInvoiceController::class, 'destroy']);
-
 
 
 
@@ -152,10 +122,7 @@ Route::get('/registerUrl', [MpesaApiController::class, 'registerUrl']);
 Route::post('/mpesa/validation', [MpesaApiController::class, 'handleValidationCallback']);
 
 
-
-
 // routes/web.php or routes/api.php
-
 
 
 

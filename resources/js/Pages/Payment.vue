@@ -1,4 +1,4 @@
-<template>
+ls <template>
   <AppLayout>
       <VCard class="my-card">
           <v-container>
@@ -226,7 +226,7 @@ export default {
   },
   methods: {
       initialize() {
-          const API_URL = "/property";
+          const API_URL = "v1/property";
           axios
               .get(API_URL)
               .then((response) => {

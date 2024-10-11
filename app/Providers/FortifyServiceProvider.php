@@ -8,10 +8,15 @@ use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
+use Laravel\Fortify\Contracts\CreatesNewUsers;
+use Laravel\Fortify\Contracts\ResetsUserPasswords;
+use Laravel\Fortify\Contracts\UpdatesUserPasswords;
+use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -20,27 +25,69 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Bind Fortify's contracts to your custom implementations
+        $this->app->singleton(CreatesNewUsers::class, CreateNewUser::class);
+        $this->app->singleton(ResetsUserPasswords::class, ResetUserPassword::class);
+        $this->app->singleton(UpdatesUserPasswords::class, UpdateUserPassword::class);
+        $this->app->singleton(UpdatesUserProfileInformation::class, UpdateUserProfileInformation::class);
     }
 
-    /**
-     * Bootstrap any application services.
-     */
+
+
     public function boot(): void
     {
-        Fortify::createUsersUsing(CreateNewUser::class);
-        Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
-        Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
-        Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
+        Fortify::authenticateUsing(function (Request $request) {
+            $role = $request->input('user_type', 'web');
+            $guard = Auth::guard($this->mapRoleToGuard($role));
+            
 
-        RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+            // dd($guard);
+            Log::info("Attempting login", [
+                'role' => $role,
+                'email' => $request->input('email'),
+                'ip' => $request->ip(),
+            ]);
 
-            return Limit::perMinute(5)->by($throttleKey);
+            $user = $guard->attempt([
+                'email' => $request->input('email'),
+                'password' => $request->input('password'),
+            ]);
+
+            if ($user) {
+                Log::info("Login successful", [
+                    'user_id' => $guard->user()->id,
+                    'role' => $role,
+                ]);
+                return $guard->user();
+            } else {
+                Log::warning("Login failed", [
+                    'role' => $role,
+                    'email' => $request->input('email'),
+                    'ip' => $request->ip(),
+                ]);
+            }
+
+            return null;
         });
+    }
 
-        RateLimiter::for('two-factor', function (Request $request) {
-            return Limit::perMinute(5)->by($request->session()->get('login.id'));
-        });
+
+    private function mapRoleToGuard($role)
+    {
+        $roleModelMap = [
+
+
+            'Landlord' => 'landlord',
+            'Tenant' => 'tenant',
+            'Company' => 'company',
+            'User' => 'web'
+            // 'Landlord' => \App\Models\Landlord::class,
+            // 'Tenant' => \App\Models\Tenant::class,
+            //         'Tenant' => 'tenant',
+            // 'Company' => \App\Models\Company::class,
+            // 'User' => \App\Models\User::class,
+        ];
+
+        return $roleModelMap[$role] ?? \App\Models\User::class; // Default to User model
     }
 }
