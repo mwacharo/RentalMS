@@ -13,4 +13,27 @@ class TenantsBill extends Pivot
     protected $table = 'tenants_bills';
 
     protected $fillable = ['tenant_id', 'bill_id', 'amount'];
-}
+
+
+    public function bill ()
+    {
+     
+        return $this->belongsTo(Bill::class);
+    }
+
+    public function tenant()
+    {
+     
+        return $this->belongsTo(Tenant::class);
+    }
+
+    // tenant is related to unit through 
+    //  public function unit()
+//     {
+
+//         return $this->belongsTo(Unit::class);
+//     }
+
+// how can I fetch  tenants_bills with unit
+
+ }

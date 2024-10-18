@@ -22,17 +22,98 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ApiTenantController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+
+    public function tenantBills(Request $request, $id)
+    {
+        // Log the incoming request data
+        Log::info('Fetching tenant bills', ['tenant_id' => $id, 'request' => $request->all()]);
+
+        $tenant = Tenant::find($id);
+
+        if (!$tenant) {
+            // Log a warning if the tenant is not found
+            Log::warning('Tenant not found', ['tenant_id' => $id]);
+            return response()->json(['message' => 'Tenant not found'], 404);
+        }
+
+        // Log tenant details
+        Log::info('Tenant found', ['tenant' => $tenant]);
+
+        // $tenantsbills = TenantsBill::where('tenant_id', $tenant->id)->get();
+
+        $tenantsbills = TenantsBill::with('bill', 'tenant.unit')->where('tenant_id', $tenant->id)->get();
+
+        if ($tenantsbills->isEmpty()) {
+            // Log if no bills are found
+            Log::info('No bills found for tenant', ['tenant_id' => $tenant->id]);
+
+            $tenantUnit = $tenant->unit;
+
+            // Check if deposit status is zero (unpaid)
+            if ($tenantUnit && $tenantUnit->deposit_status == 0) {
+                // Add rent and deposit to the bill result as a custom entry
+                $tenantsbills->push([
+                    'id' => null, // No bill ID since it's a custom addition
+                    'tenant_id' => $tenant->id,
+                    'bill_id' => null, // No specific bill
+                    'amount' => $tenantUnit->rent + $tenantUnit->deposit, // Add rent and deposit
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                    'bill' => [
+                        'bill' => 'Rent & Deposit',
+                        'unit_cost' => $tenantUnit->rent,
+                        'number_of_units' => 1,
+                        'amount' => $tenantUnit->rent + $tenantUnit->deposit,
+                    ],
+                    'tenant' => [
+                        'tenant_name' => $tenant->tenant_name,
+                        'email' => $tenant->email,
+                        'unit' => $tenantUnit,
+                    ]
+                ]);
+            }
+            elseif ($tenantUnit->deposit_status == 1) {
+                // Add only the rent to the bill result if the deposit is already paid
+                $tenantsbills->push([
+                    'id' => null, // No bill ID since it's a custom addition
+                    'tenant_id' => $tenant->id,
+                    'bill_id' => null, // No specific bill
+                    'amount' => $tenantUnit->rent, // Add only rent
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                    'bill' => [
+                        'bill' => 'Rent',
+                        'unit_cost' => $tenantUnit->rent,
+                        'number_of_units' => 1,
+                        'amount' => $tenantUnit->rent,
+                    ],
+                    'tenant' => [
+                        'tenant_name' => $tenant->tenant_name,
+                        'email' => $tenant->email,
+                        'unit' => $tenantUnit,
+                    ]
+                ]);
+            }
+        } 
+        
+   
+else {
+            // Log the tenant bills fetched
+            Log::info('Tenant bills fetched', ['tenant_id' => $tenant->id, 'bills' => $tenantsbills]);
+        }
+
+        return response()->json($tenantsbills);
+    }
+
     public function index()
     {
         //  $tenants = Tenant::all();
-        $tenants = Tenant::with('property','unit')->get();
+        $tenants = Tenant::with('property', 'unit')->get();
         return response()->json($tenants);
     }
 
-   
+
     public function store(Request $request)
     {
         try {
@@ -44,8 +125,6 @@ class ApiTenantController extends Controller
                 'property_id' => 'required|max:255',
                 'nationa_id' => 'max:255',
                 'agreement' => 'max:255',
-
-
 
             ]);
 
@@ -77,7 +156,7 @@ class ApiTenantController extends Controller
     }
 
 
-    
+
     public function update(Request $request, string $id)
     {
         try {
@@ -174,12 +253,12 @@ class ApiTenantController extends Controller
         // $tenant_bills= $tenant->bills;
         // // dd( $tenant_bills);
 
-        
-        $deposit=$unit->deposit;
-        $rent=$unit->rent;
+
+        $deposit = $unit->deposit;
+        $rent = $unit->rent;
 
         $totalAmount = $unit->rent + $tenant->bills->sum('amount');
-        $deposit_status=$unit->deposit_status;
+        $deposit_status = $unit->deposit_status;
         // dd($deposit_status);
 
         // Check if deposit status is 0 to include it in totalAmount
@@ -242,13 +321,13 @@ class ApiTenantController extends Controller
             'unit_number' => $unit_number,
             'property_name' => $property_name,
             'bills_summary' => $billsSummary,
-            'rent'=>$rent,
-            'deposit'=>$deposit,
-            'deposit_status'=>$deposit_status,
+            'rent' => $rent,
+            'deposit' => $deposit,
+            'deposit_status' => $deposit_status,
             'issued_at' => $invoice->created_at->toDateString(), // Format the created_at date as needed
             'due_date' => $invoice->due_date->toDateString(), // Format the due date as needed
             'total_amount' => $invoice->total_amount,
-            'link'=>$link
+            'link' => $link
         ];
 
         //  dd($invoice);
