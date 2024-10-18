@@ -1,15 +1,10 @@
-<template>
-    <AppLayout>
+<template>,    <AppLayout>
         <VCard class="my-card">
             <v-container>
                 <v-text-field v-model="searchQuery" label="Search" @keyup.enter="performSearch"
                     variant="outlined"></v-text-field>
             </v-container>
         </VCard>
-
-
-
-
         <VCard class="my-card" outlined>
             <v-data-table show-select :headers="headers" :loading="loading" :items="tenants"
                 :sort-by="[{ key: 'tenant_name', order: 'asc' }]">
@@ -117,7 +112,6 @@
 <span> Create Invoice</span>
 </v-tooltip> -->
 
-
                     <v-tooltip location="bottom">
                         <template v-slot:activator="{ props }">
                             <v-btn icon v-bind="props" @click="openTenantInvoice(item)" variant="text">
@@ -165,8 +159,8 @@
             </v-data-table>
             <!-- import of bill component -->
             <bill ref="bill" />
-            <tenantinvoice ref="tenantinvoice" />
-
+            <tenantinvoice :bills="bills" ref="tenantinvoice" />
+ 
             <excel ref="excel" />
             <smstenant ref="SMSTenantComponent" />
             <emailtenant ref="EmailTenantComponent" />
@@ -275,6 +269,20 @@ export default {
             this.$refs.bill.show(item);
         },
         openTenantInvoice(item) {
+
+            const API_URL = "tenantBills/" + item.id;
+
+            axios
+                .post(API_URL)
+                .then((response) => {
+                    this.bills = response.data; // Store the response data
+
+                    // Handle success (e.g., show a success message or update UI)
+                })
+                .catch((error) => {
+                    console.error("Error creating invoice:", error);
+                    // Handle error (e.g., show an error message)
+                });
             this.$refs.tenantinvoice.show(item);
         },
         openExcel(item) {
@@ -288,26 +296,26 @@ export default {
             this.$refs.EmailTenantComponent.show(item);
         },
 
-        tenantInvoice(item) {
-            const API_URL = "tenantInvoice/" + item.id;
+        // tenantInvoice(item) {
+        //     const API_URL = "tenantInvoice/" + item.id;
 
-            const data = {
-                tenantId: this.tenantId,
-            };
+        //     const data = {
+        //         tenantId: this.tenantId,
+        //     };
 
-            axios
-                .post(API_URL, data)
-                .then((response) => {
-                    console.log("Invoice created:", response.data);
-                    this.invoiceData = response.data; // Store the response data
+        //     axios
+        //         .post(API_URL, data)
+        //         .then((response) => {
+        //             console.log("Invoice created:", response.data);
+        //             this.invoiceData = response.data; // Store the response data
 
-                    // Handle success (e.g., show a success message or update UI)
-                })
-                .catch((error) => {
-                    console.error("Error creating invoice:", error);
-                    // Handle error (e.g., show an error message)
-                });
-        },
+        //             // Handle success (e.g., show a success message or update UI)
+        //         })
+        //         .catch((error) => {
+        //             console.error("Error creating invoice:", error);
+        //             // Handle error (e.g., show an error message)
+        //         });
+        // },
 
         editItem(item) {
             this.editedIndex = this.tenants.indexOf(item);
@@ -420,3 +428,5 @@ export default {
     /* Adjust the margin as needed */
 }
 </style>
+
+

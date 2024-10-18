@@ -247,7 +247,7 @@ class CreateNewUser implements CreatesNewUsers
         ]);
 
         Log::info('Created Team for User:', [$team]);
-        $user->ownedTeams()->save($team);
+        // $user->ownedTeams()->save($team);
     }
 }
 

@@ -32,8 +32,6 @@ class FortifyServiceProvider extends ServiceProvider
         $this->app->singleton(UpdatesUserProfileInformation::class, UpdateUserProfileInformation::class);
     }
 
-
-
     public function boot(): void
     {
         Fortify::authenticateUsing(function (Request $request) {

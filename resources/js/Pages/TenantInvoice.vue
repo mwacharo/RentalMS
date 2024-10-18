@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="dialog" max-width="900px">
+    <v-dialog v-model="dialog" max-width="800px">
         <v-card>
             <v-card-title class="blue white--text">
                 <span class="text-h6">Invoice Details</span>
@@ -16,11 +16,10 @@
                         <v-col cols="6">
                             <h5 class="font-weight-bold">Bill To:</h5>
                             <!-- tenant Name  -->
-                            <v-text-field v-model="invoice.company" label="Company Name" outlined
+                            <v-text-field v-model="tenantInfo.tenant_name" label="Tenant Name" outlined
                                 required></v-text-field>
-                            <v-text-field v-model="invoice.address" label="Address" outlined></v-text-field>
-                            <v-text-field v-model="invoice.city" label="City" outlined></v-text-field>
-                            <!-- <v-text-field v-model="invoice.postalCode" label="Postal Code" outlined></v-text-field>  -->
+                            <v-text-field v-model="tenantInfo.unit_number" label="Unit Number" outlined></v-text-field>
+                            <v-text-field v-model="tenantInfo.phone" label="Phone" outlined></v-text-field>
                         </v-col>
                         <v-col cols="6" class="text-right">
                             <v-text-field v-model="invoice.number" label="Invoice #" outlined readonly></v-text-field>
@@ -35,23 +34,20 @@
                         <v-col>
                             <v-data-table :headers="tableHeaders" :items="invoice.items" class="elevation-1"
                                 hide-default-footer disable-pagination>
+                                <template v-slot:item.item="{ item }">
+                                    <span>{{ item.item }}</span>
+                                </template>
+                                <template v-slot:item.description="{ item }">
+                                    <span>{{ item.unit_cost }}</span>
+                                </template>
                                 <template v-slot:item.quantity="{ item }">
-                                    <v-text-field v-model="item.quantity" type="number" min="1" outlined
-                                        dense></v-text-field>
+                                    <span>{{ item.number_of_units }}</span>
                                 </template>
-                                <template v-slot:item.price="{ item }">
-                                    <v-text-field v-model="item.price" type="number" min="0" outlined
-                                        dense></v-text-field>
-                                </template>
-                                <template v-slot:item.tax="{ item }">
-                                    <v-select v-model="item.tax" :items="taxOptions" outlined dense></v-select>
-                                </template>
+
                                 <template v-slot:item.amount="{ item }">
-                                    <span>{{ formatCurrency(item.quantity * item.price) }}</span>
+                                    <span>{{ formatCurrency(item.amount) }}</span>
                                 </template>
                             </v-data-table>
-
-                            <v-btn color="primary" class="mt-3" @click="addItem">Add Item</v-btn>
                         </v-col>
                     </v-row>
 
@@ -82,61 +78,95 @@
 
 <script>
 export default {
+    props: {
+        bills: {
+            type: Array,
+            required: true,
+        }
+    },
     data() {
         return {
             dialog: false,
             valid: true,
             tableHeaders: [
-                { title: 'Items', value: 'item' },
-                { title: 'Description', value: 'description' },
-                { title: 'Quantity', value: 'quantity' },
-                { title: 'Price', value: 'price' },
-                { title: 'Tax', value: 'tax' },
+                { title: 'Item', value: 'item' },
+                { title: 'Unit Cost', value: 'unit_cost' },
+                { title: 'Number of Units', value: 'number_of_units' },
                 { title: 'Amount', value: 'amount' }
             ],
-            taxOptions: ['0%', '5%', '10%', '15%', '16%', '20%',],
             paymentStatuses: ['Paid', 'Pending', 'Overdue'],
+            tenantInfo: {
+                tenant_name: '',
+                unit_number: '',
+                phone: ''
+            },
             invoice: {
                 number: '000001',
                 date: new Date().toISOString().substr(0, 10),
                 dueDate: '',
-                company: '',
-                address: '',
-                city: '',
-                postalCode: '',
-                items: [
-                    { item: 'Item 1', description: 'Description', quantity: 1, price: 0, tax: '0%', amount: 0 }
-                ],
+                items: [], // Items filled from the bills prop
                 notes: '',
                 payment_status: 'Pending',
-            }
+            },
         };
     },
     computed: {
         total() {
-            return this.invoice.items.reduce((total, item) => {
-                return total + item.quantity * item.price;
-            }, 0);
+            return this.invoice.items.reduce((total, item) => total + parseFloat(item.amount), 0);
+        }
+    },
+    watch: {
+        bills: {
+            immediate: true,
+            handler(newBills) {
+                if (newBills && newBills.length) {
+                    const rent = newBills[0].tenant.unit.rent;
+                    const deposit = newBills[0].tenant.unit.deposit;
+
+                    this.tenantInfo = {
+                        tenant_name: newBills[0].tenant.tenant_name,
+                        unit_number: newBills[0].tenant.unit.unit_number,
+                        phone: newBills[0].tenant.phone
+                    };
+
+                    // Adding rent, deposit, and bills to invoice items
+                    const rentItem = {
+                        item: 'Rent',
+                        unit_cost: rent,
+                        number_of_units: 1,
+                        amount: rent
+                    };
+                    const depositItem = {
+                        item: 'Deposit',
+                        unit_cost: deposit,
+                        number_of_units: 1,
+                        amount: deposit
+                    };
+
+                    const billItems = newBills.map(bill => ({
+                        item: bill.bill.bill,
+                        unit_cost: bill.bill.unit_cost,
+                        number_of_units: bill.bill.number_of_units,
+                        amount: bill.amount
+                    }));
+
+                    this.invoice.items = [rentItem, depositItem, ...billItems];
+                }
+            }
         }
     },
     methods: {
+
         show(item) {
             console.log(item);
             this.dialog = true;
             this.id = item.id;
         },
         formatCurrency(value) {
-            return `$${value.toFixed(2)}`;
-        },
-        addItem() {
-            this.invoice.items.push({ item: '', description: '', quantity: 1, price: 0, tax: '0%', amount: 0 });
+            return `$${parseFloat(value).toFixed(2)}`;
         },
         close() {
             this.dialog = false;
-        },
-        submitInvoice() {
-            // Submit logic here
-            alert('Invoice Submitted!');
         }
     }
 };

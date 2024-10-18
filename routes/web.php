@@ -204,6 +204,7 @@ Route::delete('/tenant/{id}', [ApiTenantController::class, 'destroy']);
 
 Route::post('submitBill/{id}', [ApiTenantController::class, 'submitBill']);
 Route::post('tenantInvoice/{id}', [ApiTenantController::class, 'tenantInvoice']);
+Route::post('tenantBills/{id}', [ApiTenantController::class, 'tenantBills']);
 
 Route::post('/upload', [ApiTenantController::class, 'upload']);
 
