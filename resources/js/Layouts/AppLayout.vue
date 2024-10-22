@@ -31,6 +31,7 @@ const menuItems = computed(() => {
     } else if (userRoles.value.includes('landlord')) {
         return [
             { name: "Dashboard", icon: "mdi-view-dashboard", route: "landlord-dashboard" },
+            { name: "Tenant", icon: "mdi-account", route: "tenant" },
             { name: "Property", icon: "mdi-domain", route: "property" },
             { name: "Unit", icon: "mdi-home-floor-a", route: "unit" },
             { name: "Bills", icon: "mdi-currency-usd", route: "bill" },
@@ -38,7 +39,7 @@ const menuItems = computed(() => {
             { name: "Maintenance", icon: "mdi-wrench", route: "maintenance" },
             { name: "Payments", icon: "mdi-currency-usd", route: "payments" },
             { name: "Lease", icon: "mdi-file-document-edit", route: "lease" },
-            { name: "Tenant", icon: "mdi-account", route: "tenant" },
+            // { name: "Admin", icon: "mdi-account-multiple", route: "admin" },
 
         ];
     }
@@ -51,6 +52,13 @@ const menuItems = computed(() => {
             { name: "Unit", icon: "mdi-home-floor-a", route: "unit" },
             { name: "Tenant", icon: "mdi-account", route: "tenant" },
             { name: "Landlord", icon: "mdi-account-multiple", route: "landlord" },
+            { name: "Bills", icon: "mdi-currency-usd", route: "bill" },
+            { name: "Invoices", icon: "mdi-receipt", route: "invoice" },
+            { name: "Maintenance", icon: "mdi-wrench", route: "maintenance" },
+            { name: "Payments", icon: "mdi-currency-usd", route: "payments" },
+            { name: "Lease", icon: "mdi-file-document-edit", route: "lease" },
+            { name: "Invoices", icon: "mdi-receipt", route: "invoice" },
+
 
 
         ];
@@ -67,7 +75,10 @@ const menuItems = computed(() => {
             { name: "Maintenance", icon: "mdi-wrench", route: "maintenance" },
             { name: "Payments", icon: "mdi-currency-usd", route: "payments" },
             { name: "Lease", icon: "mdi-file-document-edit", route: "lease" },
-            { name: "Admin", icon: "mdi-account-multiple", route: "admin" },
+            { name: "Admin", icon: "mdi-account-cog", route: "admin" },
+            { name: "Permissions", icon: "mdi-shield-key", route: "permissions" },
+            { name: "Roles", icon: "mdi-account-key", route: "roles" },
+
             { name: "Company", icon: "mdi-account-multiple", route: "company" },
             { name: "Tenant", icon: "mdi-account", route: "tenant" },
             { name: "Landlord", icon: "mdi-account-multiple", route: "landlord" },
