@@ -41,7 +41,7 @@ Route::get('/' ,function () {
 
 
 
-Route::middleware(['auth:web,tenant,landlord'])->group(function () {
+Route::middleware(['auth:web,tenant,landlord,company'])->group(function () {
 
 
     Route::get('/unit', function () {
