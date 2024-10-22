@@ -72,8 +72,7 @@ class ApiTenantController extends Controller
                         'unit' => $tenantUnit,
                     ]
                 ]);
-            }
-            elseif ($tenantUnit->deposit_status == 1) {
+            } elseif ($tenantUnit->deposit_status == 1) {
                 // Add only the rent to the bill result if the deposit is already paid
                 $tenantsbills->push([
                     'id' => null, // No bill ID since it's a custom addition
@@ -95,10 +94,7 @@ class ApiTenantController extends Controller
                     ]
                 ]);
             }
-        } 
-        
-   
-else {
+        } else {
             // Log the tenant bills fetched
             Log::info('Tenant bills fetched', ['tenant_id' => $tenant->id, 'bills' => $tenantsbills]);
         }
