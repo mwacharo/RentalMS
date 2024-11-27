@@ -49,10 +49,6 @@ Route::get('/', function () {
 });
 
 
-
-
-
-
 Route::middleware(['auth:web,tenant,landlord,company'])->group(function () {
 
 
