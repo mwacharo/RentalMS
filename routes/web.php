@@ -27,15 +27,27 @@ use App\Http\Controllers\TenantController;
 use Illuminate\Support\Facades\Auth;
 
 // Routes for unauthenticated users
-Route::get('/' ,function () {
+Route::get('/login' ,function () {
     return Inertia::render('Login', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-// })->name('login');
+})->name('login');
+
+
+Route::get('/register', function () {
+    return Inertia::render('Auth/Register', [
+
+    ]);
+})->name('register');
+
+
+Route::get('/', function () {
+    return redirect()->route('login');
 });
+
 
 
 
@@ -130,9 +142,9 @@ Route::middleware(['auth:landlord'])->group(function () {
 });
 
 Route::middleware(['auth:company'])->group(function () {
-    Route::get('/dashboard', function () {
+    Route::get('/company-dashboard', function () {
         return Inertia::render('Dashboard');
-    })->name('dashboard');
+    })->name('company-dashboard');
 
     //     Route::get('/phone', function () {
     //         return Inertia::render('Phone');

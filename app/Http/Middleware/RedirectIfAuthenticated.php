@@ -21,7 +21,13 @@ class RedirectIfAuthenticated
 
     // Check the user_type to select the appropriate guard
     $role = $request->input('user_type', 'web'); // 'web' as default
+
+    Log::info('user_type received:', ['user_type' => $role]);
+
+
     $guard = $this->mapRoleToGuard($role); // Map the role to guard
+    Log::info('Mapped role to guard:', ['role' => $role, 'guard' => $guard]);
+
 
     // dd($guard );
 
@@ -41,7 +47,7 @@ class RedirectIfAuthenticated
                 return redirect()->route('landlord-dashboard');
             case 'company':
                 Log::info('Redirecting to company dashboard.');
-                return redirect()->route('dashboard');
+                return redirect()->route('company-dashboard');
             default:
                 Log::info('Redirecting to user dashboard.');
                 return redirect()->route('dashboard');
@@ -67,45 +73,5 @@ private function mapRoleToGuard($role)
 
 
 
-    // public function handle(Request $request, Closure $next, string ...$guards): Response
-    // {
-    //     Log::info('RedirectIfAuthenticated middleware guards:', ['guards' => $guards]);
-    
-    //     $guards = empty($guards) ? [null] : $guards;
-
-
-    //     // dd($guards);
-    
-    //     foreach ($guards as $guard) {
-    //         Log::info('Checking guard:', ['guard' => $guard]);
-    
-    //         if (Auth::guard($guard)->check()) {
-    //             $user = Auth::guard($guard)->user();
-    //             Log::info('Authenticated user details:', ['user' => $user]);
-    
-    //             // Check for user roles
-    //             if ($user) {
-    //                 Log::info('User role:', ['role' => $user->role]);
-    
-    //                 switch ($user->guard) {
-    //                     case 'tenant':
-    //                         Log::info('Redirecting to tenant dashboard.');
-    //                         return redirect()->route('tenant.dashboard');
-    //                     case 'landlord':
-    //                         Log::info('Redirecting to landlord dashboard.');
-    //                         return redirect()->route('landlord.dashboard');
-    //                     case 'company':
-    //                         Log::info('Redirecting to company dashboard.');
-    //                         return redirect()->route('dashboard');
-    //                     default:
-    //                         Log::info('Redirecting to user dashboard.');
-    //                         return redirect()->route('dashboard');
-    //                 }
-    //             }
-    //         }
-    //     }
-    
-    //     Log::info('No authenticated user found. Proceeding with request.');
-    //     return $next($request);
-    // }
+   
 }    

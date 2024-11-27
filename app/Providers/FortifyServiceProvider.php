@@ -34,39 +34,72 @@ class FortifyServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        Fortify::authenticateUsing(function (Request $request) {
-            $role = $request->input('user_type', 'web');
-            $guard = Auth::guard($this->mapRoleToGuard($role));
+        // Fortify::authenticateUsing(function (Request $request) {
+        //     $role = $request->input('user_type', 'web');
+        //     $guard = Auth::guard($this->mapRoleToGuard($role));
             
 
-            // dd($guard);
-            Log::info("Attempting login", [
-                'role' => $role,
-                'email' => $request->input('email'),
-                'ip' => $request->ip(),
-            ]);
 
-            $user = $guard->attempt([
-                'email' => $request->input('email'),
-                'password' => $request->input('password'),
-            ]);
+        //      // Log the active guard
+        // Log::info('Active guard during authentication:', ['guard' => Auth::getDefaultDriver()]);
 
-            if ($user) {
-                Log::info("Login successful", [
+
+        //     // dd($guard);
+        //     Log::info("Attempting login", [
+        //         'role' => $role,
+        //         'email' => $request->input('email'),
+        //         'ip' => $request->ip(),
+        //     ]);
+
+        //     $user = $guard->attempt([
+        //         'email' => $request->input('email'),
+        //         'password' => $request->input('password'),
+        //     ]);
+
+        //     if ($user) {
+        //         Log::info("Login successful", [
+        //             'user_id' => $guard->user()->id,
+        //             'role' => $role,
+        //         ]);
+        //         return $guard->user();
+        //     } else {
+        //         Log::warning("Login failed", [
+        //             'role' => $role,
+        //             'email' => $request->input('email'),
+        //             'ip' => $request->ip(),
+        //         ]);
+        //     }
+
+        //     return null;
+        // });
+
+
+        Fortify::authenticateUsing(function (Request $request) {
+            $role = $request->input('user_type', 'web'); // Default to web if not provided
+            $guardName = $this->mapRoleToGuard($role);
+            $guard = Auth::guard($guardName);
+        
+            Log::info('Active guard during authentication:', ['guard' => $guardName]);
+        
+            $credentials = $request->only('email', 'password');
+            if ($guard->attempt($credentials)) {
+                Log::info('Login successful', [
                     'user_id' => $guard->user()->id,
                     'role' => $role,
                 ]);
+                session(['auth_guard' => $guardName]); // Store the guard in the session
                 return $guard->user();
             } else {
-                Log::warning("Login failed", [
+                Log::warning('Login failed', [
                     'role' => $role,
-                    'email' => $request->input('email'),
+                    'email' => $credentials['email'],
                     'ip' => $request->ip(),
                 ]);
             }
-
+        
             return null;
         });
+        
     }
 
 
@@ -79,11 +112,7 @@ class FortifyServiceProvider extends ServiceProvider
             'Tenant' => 'tenant',
             'Company' => 'company',
             'User' => 'web'
-            // 'Landlord' => \App\Models\Landlord::class,
-            // 'Tenant' => \App\Models\Tenant::class,
-            //         'Tenant' => 'tenant',
-            // 'Company' => \App\Models\Company::class,
-            // 'User' => \App\Models\User::class,
+     
         ];
 
         return $roleModelMap[$role] ?? \App\Models\User::class; // Default to User model
