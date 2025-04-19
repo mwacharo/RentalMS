@@ -38,7 +38,7 @@ const userTypes = [
 
     { title: 'Landlord', icon: 'mdi-home-city' },
     { title: 'Tenant', icon: 'mdi-clipboard-account' },
-    { title: 'User', icon: 'mdi-account-tie' },
+    // { title: 'User', icon: 'mdi-account-tie' },
     { title: 'Company', icon: 'mdi-domain' }
 ];
 

@@ -53,16 +53,12 @@ class FortifyServiceProvider extends ServiceProvider
 
 
         RateLimiter::for('login', function (Request $request) {
-            return Limit::perMinute(10)->by($request->input('email').$request->ip());
+            return Limit::perMinute(10)->by($request->input('email') . $request->ip());
         });
-        
 
 
-            // Register custom login response
-    
 
-             // Bind custom login response
-    $this->app->singleton(LoginResponseContract::class, LoginResponse::class);
+        $this->app->singleton(LoginResponseContract::class, LoginResponse::class);
 
         Fortify::authenticateUsing(function ($request) {
             $email = $request->input('email');
@@ -116,10 +112,5 @@ class FortifyServiceProvider extends ServiceProvider
 
             return $user;
         });
-        
     }
-        
-
-
-
-    }
+}

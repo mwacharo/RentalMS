@@ -39,7 +39,7 @@ const menuItems = computed(() => {
             { name: "Maintenance", icon: "mdi-wrench", route: "maintenance" },
             { name: "Payments", icon: "mdi-currency-usd", route: "payments" },
             { name: "Lease", icon: "mdi-file-document-edit", route: "lease" },
-            // { name: "Admin", icon: "mdi-account-multiple", route: "admin" },
+            { name: "Admin", icon: "mdi-account-multiple", route: "admin" },
 
         ];
     }

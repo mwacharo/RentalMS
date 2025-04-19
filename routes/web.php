@@ -104,9 +104,9 @@ Route::middleware(['auth:web,tenant,landlord,company'])->group(function () {
 //     })->name('dashboard');
 
 
-//     Route::get('/admin', function () {
-//         return Inertia::render('Admin');
-//     })->name('admin');
+    Route::get('/admin', function () {
+        return Inertia::render('Admin');
+    })->name('admin');
 
 //     Route::get('/company', function () {
 //         return Inertia::render('Company');
