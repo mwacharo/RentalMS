@@ -22,7 +22,7 @@ const form = useForm({
     email: '',
     password: '',
     password_confirmation: '',
-    user_type: 'Landlord', // Default to 'Landlord' for real estate focus
+    user_type: 'Tenant', // Default to 'Tenant' for real estate focus
     phone_number: '',
     company_name: '',
     terms: false,
@@ -30,9 +30,15 @@ const form = useForm({
 
 // Available account types
 const userTypes = [
+    // { title: 'Landlord', icon: 'mdi-home-city' },
+    // { title: 'Property Manager', icon: 'mdi-clipboard-account' },
+    // { title: 'Agent', icon: 'mdi-account-tie' },
+    // { title: 'Company', icon: 'mdi-domain' }
+
+
     { title: 'Landlord', icon: 'mdi-home-city' },
-    { title: 'Property Manager', icon: 'mdi-clipboard-account' },
-    { title: 'Agent', icon: 'mdi-account-tie' },
+    { title: 'Tenant', icon: 'mdi-clipboard-account' },
+    { title: 'User', icon: 'mdi-account-tie' },
     { title: 'Company', icon: 'mdi-domain' }
 ];
 

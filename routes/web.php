@@ -98,29 +98,60 @@ Route::middleware(['auth:web,tenant,landlord,company'])->group(function () {
 
 
 // Authentication routes for specific roles
+// Route::middleware(['auth:web'])->group(function () {
+//     Route::get('/dashboard', function () {
+//         return Inertia::render('Dashboard');
+//     })->name('dashboard');
+
+
+//     Route::get('/admin', function () {
+//         return Inertia::render('Admin');
+//     })->name('admin');
+
+//     Route::get('/company', function () {
+//         return Inertia::render('Company');
+//     })->name('company');
+
+
+//     Route::get('/roles', function () {
+//         return Inertia::render('Roles');
+//     })->name('roles');
+
+//     Route::get('/permissions', function () {
+//         return Inertia::render('UserPermissions');
+//     })->name('permissions');
+// });
+
+
+
+// Routes for 'tenant'
+Route::middleware(['auth:tenant'])->group(function () {
+    Route::get('/tenant/dashboard', function () {
+        return Inertia::render('TenantDashboard');
+    })->name('tenant-dashboard');
+});
+
+// Routes for 'landlord'
+Route::middleware(['auth:landlord'])->group(function () {
+    Route::get('/landlord/dashboard', function () {
+        return Inertia::render('LandlordDashboard');
+    })->name('landlord-dashboard');
+});
+
+// Routes for 'company'
+Route::middleware(['auth:company'])->group(function () {
+    Route::get('/company/dashboard', function () {
+        return Inertia::render('CompanyDashboard');
+    })->name('company-dashboard');
+});
+
+// Optional: 'web' user routes
 Route::middleware(['auth:web'])->group(function () {
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
-
-
-    Route::get('/admin', function () {
-        return Inertia::render('Admin');
-    })->name('admin');
-
-    Route::get('/company', function () {
-        return Inertia::render('Company');
-    })->name('company');
-
-
-    Route::get('/roles', function () {
-        return Inertia::render('Roles');
-    })->name('roles');
-
-    Route::get('/permissions', function () {
-        return Inertia::render('UserPermissions');
-    })->name('permissions');
 });
+
 Route::middleware(['auth:tenant',])->group(function () {
     Route::get('/tenant-dashboard', function () {
         return Inertia::render('TenantDashboard');

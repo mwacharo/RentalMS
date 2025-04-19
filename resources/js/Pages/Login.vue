@@ -13,11 +13,13 @@ const showPassword = ref(false);
 const form = useForm({
   email: '',
   password: '',
-  user_type: 'Landlord',
+  user_type: '',
   remember: false,
 });
 
-const userTypes = ['Landlord', 'Property Manager', 'Agent', 'Admin'];
+// const userTypes = ['Landlord', 'Property Manager', 'Agent', 'Admin'];
+const userTypes = ['Tenant','Landlord','Company','User'
+];
 
 const submit = () => {
   form.transform((data) => ({
@@ -51,7 +53,8 @@ const submit = () => {
           <!-- Image container -->
           <div class="flex-grow-1 d-flex align-center justify-center">
             <v-img
-              src="/api/placeholder/600/400"
+
+              src="/assets/img/rentalms.png" 
               alt="Real Estate Management"
               cover
               class="rounded-lg elevation-10"

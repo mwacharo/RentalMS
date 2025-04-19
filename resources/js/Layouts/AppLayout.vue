@@ -47,7 +47,7 @@ const menuItems = computed(() => {
 
     else if (userRoles.value.includes('company')) {
         return [
-            { name: "Dashboard", icon: "mdi-view-dashboard", route: "dashboard" },
+            { name: "Dashboard", icon: "mdi-view-dashboard", route: "company-dashboard" },
             { name: "Property", icon: "mdi-domain", route: "property" },
             { name: "Unit", icon: "mdi-home-floor-a", route: "unit" },
             { name: "Tenant", icon: "mdi-account", route: "tenant" },
@@ -97,7 +97,8 @@ const menuItems = computed(() => {
         <v-navigation-drawer v-model="drawer" app color="white">
 
             <v-list-item>
-                <v-img src="path/to/logo.png" alt="Logo" height="60" contain></v-img>
+                <v-img  src="/assets/img/RMS-1-Logo.jpg"              
+                alt="Logo" width="150" contain></v-img>
             </v-list-item>
 
 
@@ -299,7 +300,7 @@ const menuItems = computed(() => {
         <v-app-bar app>
             <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-            <v-toolbar-title>Rental Management System</v-toolbar-title>
+            <v-toolbar-title>Professional Property Management</v-toolbar-title>
 
             <v-spacer></v-spacer>
 

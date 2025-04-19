@@ -18,6 +18,21 @@ use Laravel\Fortify\Contracts\ResetsUserPasswords;
 use Laravel\Fortify\Contracts\UpdatesUserPasswords;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 
+
+
+use App\Models\User;
+use App\Models\Tenant;
+use App\Models\Landlord;
+use App\Models\Company;
+use Illuminate\Support\Facades\Hash;
+
+use App\Http\Responses\LoginResponse;
+
+
+use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
+
+
+
 class FortifyServiceProvider extends ServiceProvider
 {
     /**
@@ -34,87 +49,77 @@ class FortifyServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        // Fortify::authenticateUsing(function (Request $request) {
-        //     $role = $request->input('user_type', 'web');
-        //     $guard = Auth::guard($this->mapRoleToGuard($role));
-            
 
 
-        //      // Log the active guard
-        // Log::info('Active guard during authentication:', ['guard' => Auth::getDefaultDriver()]);
 
-
-        //     // dd($guard);
-        //     Log::info("Attempting login", [
-        //         'role' => $role,
-        //         'email' => $request->input('email'),
-        //         'ip' => $request->ip(),
-        //     ]);
-
-        //     $user = $guard->attempt([
-        //         'email' => $request->input('email'),
-        //         'password' => $request->input('password'),
-        //     ]);
-
-        //     if ($user) {
-        //         Log::info("Login successful", [
-        //             'user_id' => $guard->user()->id,
-        //             'role' => $role,
-        //         ]);
-        //         return $guard->user();
-        //     } else {
-        //         Log::warning("Login failed", [
-        //             'role' => $role,
-        //             'email' => $request->input('email'),
-        //             'ip' => $request->ip(),
-        //         ]);
-        //     }
-
-        //     return null;
-        // });
-
-
-        Fortify::authenticateUsing(function (Request $request) {
-            $role = $request->input('user_type', 'web'); // Default to web if not provided
-            $guardName = $this->mapRoleToGuard($role);
-            $guard = Auth::guard($guardName);
+        RateLimiter::for('login', function (Request $request) {
+            return Limit::perMinute(10)->by($request->input('email').$request->ip());
+        });
         
-            Log::info('Active guard during authentication:', ['guard' => $guardName]);
-        
-            $credentials = $request->only('email', 'password');
-            if ($guard->attempt($credentials)) {
-                Log::info('Login successful', [
-                    'user_id' => $guard->user()->id,
-                    'role' => $role,
-                ]);
-                session(['auth_guard' => $guardName]); // Store the guard in the session
-                return $guard->user();
-            } else {
-                Log::warning('Login failed', [
-                    'role' => $role,
-                    'email' => $credentials['email'],
-                    'ip' => $request->ip(),
-                ]);
+
+
+            // Register custom login response
+    
+
+             // Bind custom login response
+    $this->app->singleton(LoginResponseContract::class, LoginResponse::class);
+
+        Fortify::authenticateUsing(function ($request) {
+            $email = $request->input('email');
+            $password = $request->input('password');
+            $role = $request->input('user_type', 'User');
+
+            Log::info('Attempting login', [
+                'email' => $email,
+                'password' => $password, // Be cautious in production, for debug only!
+                'user_type' => $role,
+            ]);
+
+            $guardsToTry = [
+                'User' => ['guard' => 'web', 'model' => User::class],
+                'Tenant' => ['guard' => 'tenant', 'model' => Tenant::class],
+                'Landlord' => ['guard' => 'landlord', 'model' => Landlord::class],
+                'Company' => ['guard' => 'company', 'model' => Company::class],
+            ];
+
+            if (!isset($guardsToTry[$role])) {
+                Log::warning("Unknown user_type provided", ['user_type' => $role]);
+                return null;
             }
-        
-            return null;
+
+            $guard = $guardsToTry[$role]['guard'];
+            $model = $guardsToTry[$role]['model'];
+
+            $user = $model::where('email', $email)->first();
+
+            if (!$user) {
+                Log::warning('Login failed: Email not found', ['email' => $email, 'guard' => $guard]);
+                return null;
+            }
+
+            if (!Hash::check($password, $user->password)) {
+                Log::warning('Login failed: Password mismatch', [
+                    'email' => $email,
+                    'guard' => $guard,
+                ]);
+                return null;
+            }
+
+            Auth::guard($guard)->login($user);
+            session(['guard_used' => $guard]); // Optional, useful for debugging
+
+            Log::info('Login successful', [
+                'email' => $email,
+                'guard' => $guard,
+                'user_id' => $user->id
+            ]);
+
+            return $user;
         });
         
     }
+        
 
 
-    private function mapRoleToGuard($role)
-    {
-        $roleModelMap = [
 
-
-            'Landlord' => 'landlord',
-            'Tenant' => 'tenant',
-            'Company' => 'company',
-            'User' => 'web'
-     
-        ];
-
-        return $roleModelMap[$role] ?? \App\Models\User::class; // Default to User model
     }
-}
