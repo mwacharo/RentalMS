@@ -98,29 +98,29 @@ Route::middleware(['auth:web,tenant,landlord,company'])->group(function () {
 
 
 // Authentication routes for specific roles
-// Route::middleware(['auth:web'])->group(function () {
-//     Route::get('/dashboard', function () {
-//         return Inertia::render('Dashboard');
-//     })->name('dashboard');
+Route::middleware(['auth:web'])->group(function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
 
 
     Route::get('/admin', function () {
         return Inertia::render('Admin');
     })->name('admin');
 
-//     Route::get('/company', function () {
-//         return Inertia::render('Company');
-//     })->name('company');
+    Route::get('/company', function () {
+        return Inertia::render('Company');
+    })->name('company');
 
 
-//     Route::get('/roles', function () {
-//         return Inertia::render('Roles');
-//     })->name('roles');
+    Route::get('/roles', function () {
+        return Inertia::render('Roles');
+    })->name('roles');
 
-//     Route::get('/permissions', function () {
-//         return Inertia::render('UserPermissions');
-//     })->name('permissions');
-// });
+    Route::get('/permissions', function () {
+        return Inertia::render('UserPermissions');
+    })->name('permissions');
+ });
 
 
 
