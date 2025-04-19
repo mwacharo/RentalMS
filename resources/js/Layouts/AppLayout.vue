@@ -94,7 +94,7 @@ const menuItems = computed(() => {
 <template>
     <v-app>
         <!-- Navigation Drawer -->
-        <v-navigation-drawer v-model="drawer" app color="black">
+        <v-navigation-drawer v-model="drawer" app color="white">
 
             <v-list-item>
                 <v-img src="path/to/logo.png" alt="Logo" height="60" contain></v-img>
