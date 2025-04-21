@@ -298,15 +298,15 @@
                 item-key="id"
               >
                 <template v-slot:item.actions="{ item }">
-                  <v-btn icon color="primary" @click="viewProperty(item)">
-                    <v-icon>mdi-eye</v-icon>
-                  </v-btn>
-                  <v-btn icon color="warning" @click="editProperty(item)">
-                    <v-icon>mdi-pencil</v-icon>
-                  </v-btn>
-                  <v-btn icon color="error" @click="deleteProperty(item)">
-                    <v-icon>mdi-delete</v-icon>
-                  </v-btn>
+                    <v-btn icon color="primary" @click="viewProperty(item)" class="rounded-pill" style="width: 36px; height: 36px;">
+                    <v-icon size="18">mdi-eye</v-icon>
+                    </v-btn>
+                    <v-btn icon color="warning" @click="editProperty(item)" class="rounded-pill" style="width: 36px; height: 36px;">
+                    <v-icon size="18">mdi-pencil</v-icon>
+                    </v-btn>
+                    <v-btn icon color="error" @click="deleteProperty(item)" class="rounded-pill" style="width: 36px; height: 36px;">
+                    <v-icon size="18">mdi-delete</v-icon>
+                    </v-btn>
                 </template>
               </v-data-table>
             </v-card-text>
